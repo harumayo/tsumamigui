@@ -7,836 +7,305 @@
   <meta name="description" content="ぎゅうぎゅうな毎日に、一拍の余白を。" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400;1,9..144,700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --sun:   #FEC66C;
-      --tangy: #FC9343;
-      --earth: #AF7551;
-      --moss:  #D0D67B;
-      --sage:  #89B88A;
-      --mint:  #7DCFB6;
-      --cream: #FFF8EE;
-      --warm:  #FDF4E3;
-      --paper: #FAF0D7;
-      --ink:   #3D2B1F;
-      --muted: #9A7B68;
-      --line:  rgba(175,117,81,.18);
-      --r: 18px;
+      --sun:#F5C842;--sun-soft:#FDE9A0;--orange:#F0874A;
+      --mint:#6ECFB5;--mint-soft:#C2EDE4;--green:#7BAF7A;
+      --cream:#FEFAE8;--warm:#FDF3DC;--paper:#FAF0D0;
+      --brick:#C4845A;--earth:#8C5E3C;--ink:#3A2A1E;--muted:#8A7060;
+      --line:rgba(140,94,60,.14);
     }
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: 'Zen Maru Gothic', 'Hiragino Maru Gothic Pro', sans-serif;
-      background-color: var(--cream);
-      color: var(--ink);
-      min-height: 100vh;
-      cursor: none;
-      overflow-x: hidden;
-    }
-
-    /* ── LOADER ── */
-    #loader {
-      position: fixed; inset: 0; z-index: 99999;
-      background: var(--cream);
-      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 18px;
-      transition: opacity .5s ease, visibility .5s ease;
-    }
-    #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .loader-text {
-      font-size: 22px; font-weight: 900; color: var(--ink);
-      letter-spacing: .12em;
-    }
-    .loader-dots { display: flex; gap: 10px; }
-    .loader-dots span {
-      width: 12px; height: 12px; border-radius: 50%;
-      animation: loaderBounce .8s ease-in-out infinite alternate;
-    }
-    .loader-dots span:nth-child(1) { background: var(--tangy); animation-delay: 0s; }
-    .loader-dots span:nth-child(2) { background: var(--mint);  animation-delay: .15s; }
-    .loader-dots span:nth-child(3) { background: var(--moss);  animation-delay: .3s; }
-    @keyframes loaderBounce {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-16px); }
-    }
-
-    /* ── CUSTOM CURSOR ── */
-    #cursor-ring {
-      position: fixed; top: 0; left: 0; z-index: 9999;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      border: 2px solid var(--tangy);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: width .25s ease, height .25s ease, border-color .25s ease, background .25s ease;
-      mix-blend-mode: multiply;
-    }
-    #cursor-dot {
-      position: fixed; top: 0; left: 0; z-index: 10000;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--tangy);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-    }
-    #cursor-ring.hover {
-      width: 60px; height: 60px;
-      background: rgba(254,198,108,.18);
-      border-color: var(--sun);
-    }
-    #cursor-ring.click {
-      width: 20px; height: 20px;
-      background: rgba(252,147,67,.3);
-    }
-
-    #trailCanvas {
-      position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-    }
-
-    /* ── GRAIN ── */
-    body::before {
-      content: "";
-      position: fixed; inset: 0; z-index: 1;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-      pointer-events: none;
-      opacity: .5;
-    }
-
-    /* ── BLOBS ── */
-    .blob-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-    .blob {
-      position: absolute; border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
-      filter: blur(50px); opacity: .22;
-      animation: blobFloat 14s ease-in-out infinite alternate;
-    }
-    .blob-a { width: 550px; height: 420px; background: var(--sun); top: -120px; left: -120px; animation-duration: 14s; }
-    .blob-b { width: 420px; height: 360px; background: var(--mint); top: 8%; right: -90px; animation-duration: 10s; animation-delay: -3s; }
-    .blob-c { width: 340px; height: 310px; background: var(--moss); bottom: 18%; left: 8%; animation-duration: 16s; animation-delay: -6s; }
-    .blob-d { width: 290px; height: 270px; background: var(--tangy); bottom: 4%; right: 12%; animation-duration: 11s; animation-delay: -2s; }
-    @keyframes blobFloat {
-      from { transform: translate(0, 0) rotate(0deg) scale(1); }
-      to   { transform: translate(35px, 45px) rotate(10deg) scale(1.1); }
-    }
-
-    #particleCanvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-
-    .wrap {
-      position: relative; z-index: 2;
-      max-width: 1040px; margin: 0 auto; padding: 20px 20px 120px;
-    }
-
-    /* ── HEADER ── */
-    header {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(255,248,238,.85);
-      backdrop-filter: blur(20px);
-      border: 1.5px solid rgba(254,198,108,.5);
-      box-shadow: 0 4px 24px rgba(252,147,67,.1), inset 0 1px 0 rgba(255,255,255,.8);
-      position: sticky; top: 14px; z-index: 10;
-      animation: slideDown .8s cubic-bezier(.22,1,.36,1) both;
-    }
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .brand {
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 900; font-size: 16px; letter-spacing: .03em;
-    }
-    .brand-icon {
-      width: 34px; height: 34px; border-radius: 12px;
-      background: linear-gradient(135deg, var(--sun), var(--tangy));
-      box-shadow: 0 4px 14px rgba(252,147,67,.4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 17px;
-      animation: spin-idle 5s ease-in-out infinite;
-    }
-    @keyframes spin-idle {
-      0%, 100% { transform: rotate(-7deg) scale(1); }
-      50%       { transform: rotate(7deg) scale(1.05); }
-    }
-
-    nav { display: flex; gap: 7px; flex-wrap: wrap; }
-    .pill {
-      padding: 8px 15px; border-radius: 999px;
-      font-size: 13px; font-weight: 700;
-      border: 1.5px solid var(--line);
-      background: rgba(255,255,255,.55);
-      color: var(--muted);
-      position: relative; overflow: hidden;
-      display: inline-block;
-      transition: color .2s ease;
-      will-change: transform;
-    }
-    .pill-inner { position: relative; z-index: 1; display: block; }
-    .pill::before {
-      content: "";
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, var(--sun), var(--tangy));
-      opacity: 0; transition: opacity .2s;
-      border-radius: inherit;
-    }
-    .pill:hover { color: var(--ink); }
-    .pill:hover::before { opacity: .2; }
-
-    /* ── HERO ── */
-    .hero { padding: 60px 8px 36px; position: relative; }
-    .hero-inner { animation: fadeUp 1s cubic-bezier(.22,1,.36,1) .1s both; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .kicker {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 11px; font-weight: 700; letter-spacing: .2em;
-      text-transform: uppercase; color: var(--tangy);
-      background: rgba(252,147,67,.08);
-      border: 1px solid rgba(252,147,67,.3);
-      padding: 5px 14px; border-radius: 999px;
-      margin-bottom: 20px;
-    }
-    .kicker-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--tangy);
-      animation: pulse-dot 1.8s ease-in-out infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.8); opacity: .4; }
-    }
-
-    h1 {
-      margin: 0 0 14px;
-      font-family: 'Fraunces', serif;
-      font-size: clamp(40px, 6.5vw, 74px);
-      line-height: 1.08;
-      font-weight: 700;
-      letter-spacing: -.02em;
-    }
-    h1 em { font-style: italic; color: var(--tangy); }
-    .h1-line2 {
-      display: block;
-      font-size: clamp(18px, 2.8vw, 30px);
-      font-weight: 400;
-      color: var(--muted);
-      margin-top: 6px;
-      letter-spacing: .01em;
-    }
-
-    .sticker {
-      position: absolute; pointer-events: none; user-select: none;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
-      background: #fffde8;
-      border-radius: 14px;
-      padding: 10px 12px;
-      box-shadow: 2px 4px 16px rgba(61,43,31,.14), inset 0 1px 0 rgba(255,255,255,.9);
-      border: 1.5px solid rgba(254,198,108,.45);
-    }
-    .sticker::before {
-      content: "";
-      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-      width: 30px; height: 14px;
-      background: rgba(254,198,108,.55);
-      border-radius: 4px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.1);
-    }
-    .sticker-a { top: 20px; right: 260px; animation: stickerFloat 5s ease-in-out infinite alternate; }
-    .sticker-b { top: 80px; right: 120px; animation: stickerFloat 6.5s ease-in-out infinite alternate; animation-delay: -1.5s; }
-    .sticker-c { top: -10px; right: 380px; animation: stickerFloat 4.5s ease-in-out infinite alternate; animation-delay: -3s; }
-    @keyframes stickerFloat {
-      from { transform: translateY(0) rotate(var(--rot, -8deg)); }
-      to   { transform: translateY(-12px) rotate(calc(var(--rot, -8deg) + 5deg)); }
-    }
-
-    .lead { font-size: 15px; line-height: 2; color: var(--muted); max-width: 50ch; margin: 0; }
-    .lead b { color: var(--ink); font-weight: 700; }
-
-    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-    .mag-wrap { position: relative; display: inline-block; }
-
-    .btn-main {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 24px; border-radius: 16px;
-      background: linear-gradient(135deg, var(--sun) 0%, var(--tangy) 100%);
-      color: var(--ink); font-weight: 900; font-size: 14px;
-      border: none;
-      box-shadow: 0 6px 20px rgba(252,147,67,.4), inset 0 1px 0 rgba(255,255,255,.45);
-      font-family: inherit;
-      will-change: transform;
-      transition: box-shadow .2s ease;
-    }
-    .btn-main:hover { box-shadow: 0 14px 32px rgba(252,147,67,.5); }
-    .btn-main:active { transform: scale(.96) !important; }
-
-    .btn-sub {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 18px; border-radius: 16px;
-      background: rgba(255,255,255,.65);
-      color: var(--muted); font-weight: 700; font-size: 13px;
-      border: 1.5px solid var(--line);
-      backdrop-filter: blur(10px);
-      cursor: pointer; font-family: inherit;
-      will-change: transform;
-      transition: border-color .2s, color .2s, box-shadow .2s;
-    }
-    .btn-sub:hover { border-color: var(--sage); color: var(--ink); box-shadow: 0 8px 18px rgba(137,184,138,.2); }
-
-    /* ── TICKER ── */
-    .ticker-wrap { overflow: hidden; margin: 32px 0; position: relative; }
-    .ticker-track {
-      display: flex; gap: 0; width: max-content;
-      animation: ticker 20s linear infinite;
-    }
-    .ticker-item {
-      white-space: nowrap; padding: 8px 22px;
-      font-size: 12px; font-weight: 700; color: var(--ink);
-      display: flex; align-items: center; gap: 10px;
-      border-radius: 8px; margin: 3px 4px;
-    }
-    .ticker-item:nth-child(8n+1) { background: rgba(254,198,108,.35); }
-    .ticker-item:nth-child(8n+2) { background: rgba(125,207,182,.3); }
-    .ticker-item:nth-child(8n+3) { background: rgba(208,214,123,.3); }
-    .ticker-item:nth-child(8n+4) { background: rgba(252,147,67,.2); }
-    .ticker-item:nth-child(8n+5) { background: rgba(137,184,138,.25); }
-    .ticker-item:nth-child(8n+6) { background: rgba(254,198,108,.35); }
-    .ticker-item:nth-child(8n+7) { background: rgba(125,207,182,.3); }
-    .ticker-item:nth-child(8n+8) { background: rgba(208,214,123,.3); }
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    .ticker-sep { color: var(--tangy); font-size: 10px; }
-
-    /* ── GRID ── */
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-
-    /* ── CARD ── */
-    .card {
-      border-radius: 24px;
-      border: 1.5px solid rgba(255,255,255,.75);
-      padding: 22px;
-      position: relative; overflow: hidden;
-      transition: box-shadow .3s ease;
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-    .card.hidden-card { opacity: 0; transform: translateY(30px) scale(.96); }
-    .card.reveal-card { animation: cardReveal .6s cubic-bezier(.22,1,.36,1) both; }
-    @keyframes cardReveal {
-      from { opacity: 0; transform: translateY(30px) scale(.96); }
-      to   { opacity: 1; transform: none; }
-    }
-    .card-sun  { background: linear-gradient(145deg, #FFF9E6 0%, #FEF0C0 100%); box-shadow: 0 8px 30px rgba(254,198,108,.2); }
-    .card-mint { background: linear-gradient(145deg, #EAF9F4 0%, #D4F4EB 100%); box-shadow: 0 8px 30px rgba(125,207,182,.18); }
-    .card-moss { background: linear-gradient(145deg, #F4FAD8 0%, #E5F2BC 100%); box-shadow: 0 8px 30px rgba(208,214,123,.18); }
-    .card-tangy{ background: linear-gradient(145deg, #FFF3E8 0%, #FFE6CC 100%); box-shadow: 0 8px 30px rgba(252,147,67,.15); }
-    .card-sage { background: linear-gradient(145deg, #EFF7EF 0%, #DDEEDD 100%); box-shadow: 0 8px 30px rgba(137,184,138,.15); }
-
-    .span-6  { grid-column: span 6; }
-    .span-4  { grid-column: span 4; }
-    .span-8  { grid-column: span 8; }
-    .span-12 { grid-column: span 12; }
-    @media (max-width: 820px) {
-      .span-6, .span-4, .span-8 { grid-column: span 12; }
-      .sticker-a, .sticker-b, .sticker-c { display: none; }
-    }
-
-    .card::after {
-      content: "";
-      position: absolute; top: -6px; right: 24px;
-      width: 36px; height: 16px;
-      background: rgba(254,198,108,.45);
-      border-radius: 3px;
-      box-shadow: 0 1px 4px rgba(0,0,0,.08);
-      transform: rotate(-1deg);
-    }
-    .card-mint::after  { background: rgba(125,207,182,.4); }
-    .card-moss::after  { background: rgba(208,214,123,.5); }
-    .card-tangy::after { background: rgba(252,147,67,.35); }
-    .card-sage::after  { background: rgba(137,184,138,.4); }
-
-    .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
-    .card-title { margin: 0; font-size: 17px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
-    .card-emoji { font-size: 22px; line-height: 1; display: inline-block; transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
-    .card:hover .card-emoji { transform: scale(1.25) rotate(12deg); }
-    .card-tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.7); border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
-    .card-desc { font-size: 13px; line-height: 1.85; color: var(--muted); margin: 0 0 14px; }
-
-    /* ── LIST ── */
-    .pop-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .pop-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 11px 13px; border-radius: 14px;
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(255,255,255,.85);
-      transition: all .25s cubic-bezier(.34,1.56,.64,1);
-      cursor: default; position: relative; overflow: hidden;
-    }
-    .pop-item::before {
-      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 3px; border-radius: 0 3px 3px 0; background: var(--tangy);
-      transform: scaleY(0); transition: transform .25s ease; transform-origin: bottom;
-    }
-    .pop-item:hover { background: rgba(255,255,255,.9); transform: translateX(6px); box-shadow: 0 4px 16px rgba(61,43,31,.08); }
-    .pop-item:hover::before { transform: scaleY(1); }
-    .pop-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
-    .pop-dot-sun  { background: var(--tangy); box-shadow: 0 0 8px rgba(252,147,67,.6); }
-    .pop-dot-mint { background: var(--mint);  box-shadow: 0 0 8px rgba(125,207,182,.6); }
-    .pop-dot-moss { background: var(--moss);  box-shadow: 0 0 8px rgba(208,214,123,.6); }
-    .pop-dot-sage { background: var(--sage);  box-shadow: 0 0 8px rgba(137,184,138,.6); }
-    .pop-text { font-size: 13px; line-height: 1.75; color: var(--ink); }
-    .pop-text b { font-weight: 900; }
-    .pop-sub { color: var(--muted); font-size: 12px; display: block; }
-
-    .add-btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      margin-top: 13px; padding: 9px 15px; border-radius: 12px;
-      background: rgba(255,255,255,.75); border: 1.5px dashed rgba(175,117,81,.3);
-      color: var(--muted); font-size: 13px; font-weight: 700;
-      cursor: pointer; font-family: inherit; will-change: transform;
-      transition: all .25s cubic-bezier(.34,1.56,.64,1);
-    }
-    .add-btn:hover { background: rgba(255,255,255,.95); border-color: var(--tangy); color: var(--ink); transform: scale(1.04); box-shadow: 0 4px 14px rgba(252,147,67,.2); }
-
-    .lab-box { padding: 14px; border-radius: 16px; background: rgba(255,255,255,.5); border: 1.5px dashed rgba(137,184,138,.5); margin-top: 10px; }
-    .lab-title { font-size: 13px; font-weight: 900; margin: 0 0 10px; }
-    #sparkCanvas { display: block; width: 100%; height: 130px; border-radius: 12px; background: rgba(255,255,255,.35); cursor: crosshair; }
-
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } }
-    .about-item { padding: 13px 15px; border-radius: 14px; background: rgba(255,255,255,.58); border: 1px solid rgba(255,255,255,.85); font-size: 13px; line-height: 1.7; transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s; }
-    .about-item:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(61,43,31,.08); }
-    .about-item b { font-weight: 900; display: block; font-size: 11px; color: var(--muted); margin-bottom: 3px; letter-spacing: .1em; text-transform: uppercase; }
-
-    .band {
-      margin: 32px 0 0; padding: 32px 30px; border-radius: 24px;
-      background: linear-gradient(135deg, rgba(254,198,108,.2) 0%, rgba(125,207,182,.16) 100%);
-      border: 1.5px solid rgba(254,198,108,.4); text-align: center;
-      position: relative; overflow: hidden;
-    }
-    .band::before { content: "✦"; position: absolute; top: 16px; right: 24px; font-size: 20px; color: var(--tangy); opacity: .4; animation: spin-idle 4s ease-in-out infinite; }
-    .band::after  { content: "✦"; position: absolute; bottom: 16px; left: 24px; font-size: 14px; color: var(--mint); opacity: .5; animation: spin-idle 6s ease-in-out infinite reverse; }
-    .band-q { font-family: 'Fraunces', serif; font-size: clamp(19px, 3vw, 28px); font-style: italic; font-weight: 400; color: var(--earth); margin: 0 0 10px; line-height: 1.5; }
-    .band-p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.85; }
-
-    footer { position: relative; z-index: 2; margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); }
-    .footer-brand { font-weight: 900; color: var(--earth); }
-
-    .burst { position: fixed; pointer-events: none; z-index: 9997; width: 0; height: 0; }
-    .burst-dot { position: absolute; border-radius: 50%; transform: translate(-50%, -50%); animation: burstFly .8s cubic-bezier(.25,.46,.45,.94) forwards; }
-    @keyframes burstFly {
-      from { opacity: 1; transform: translate(-50%,-50%) scale(1); }
-      to   { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
-    }
-    .emoji-float { position: fixed; pointer-events: none; z-index: 9997; font-size: 22px; animation: emojiFly 1.2s ease-out forwards; }
-    @keyframes emojiFly {
-      from { opacity: 1; transform: translateY(0) scale(1); }
-      to   { opacity: 0; transform: translateY(-80px) scale(0.5); }
-    }
-    .wobble-word { display: inline-block; transition: transform .3s cubic-bezier(.34,1.56,.64,1); cursor: default; }
-    .wobble-word:hover { transform: scale(1.08) rotate(-2deg); }
-    #scroll-progress { position: fixed; top: 0; left: 0; z-index: 9999; height: 3px; width: 0%; background: linear-gradient(90deg, var(--tangy), var(--mint)); transition: width .1s linear; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Zen Maru Gothic','Hiragino Maru Gothic Pro',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 700px 500px at 15% 0%,rgba(245,200,66,.28) 0%,transparent 65%),radial-gradient(ellipse 600px 400px at 85% 5%,rgba(110,207,181,.22) 0%,transparent 60%),radial-gradient(ellipse 400px 600px at 70% 80%,rgba(123,175,122,.15) 0%,transparent 55%),radial-gradient(ellipse 300px 300px at 10% 85%,rgba(240,135,74,.12) 0%,transparent 50%)}
+    .light-rays{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
+    .ray{position:absolute;top:-10%;width:60px;height:130%;background:linear-gradient(180deg,rgba(255,230,100,.09) 0%,transparent 100%);transform-origin:top center;animation:rayFloat 8s ease-in-out infinite alternate}
+    .ray:nth-child(1){left:8%;transform:rotate(12deg);animation-duration:9s}
+    .ray:nth-child(2){left:18%;transform:rotate(8deg);animation-duration:11s;animation-delay:-2s;width:40px}
+    .ray:nth-child(3){left:30%;transform:rotate(14deg);animation-duration:10s;animation-delay:-4s;width:80px}
+    .ray:nth-child(4){left:50%;transform:rotate(6deg);animation-duration:13s;animation-delay:-1s;width:50px}
+    .ray:nth-child(5){left:65%;transform:rotate(10deg);animation-duration:8s;animation-delay:-3s;width:35px}
+    @keyframes rayFloat{from{opacity:.6}to{opacity:1;transform:translateX(10px)}}
+    .floaties{position:fixed;inset:0;z-index:0;pointer-events:none}
+    .floaty{position:absolute;font-size:22px;opacity:.35;animation:floatyDrift 12s ease-in-out infinite alternate}
+    .floaty:nth-child(1){top:8%;left:5%;font-size:18px;animation-duration:10s}
+    .floaty:nth-child(2){top:15%;right:8%;font-size:24px;animation-duration:14s;animation-delay:-3s}
+    .floaty:nth-child(3){top:45%;left:3%;font-size:16px;animation-duration:11s;animation-delay:-6s}
+    .floaty:nth-child(4){top:60%;right:5%;font-size:20px;animation-duration:9s;animation-delay:-2s}
+    .floaty:nth-child(5){top:80%;left:8%;font-size:14px;animation-duration:13s;animation-delay:-5s}
+    .floaty:nth-child(6){top:25%;right:15%;font-size:16px;animation-duration:12s;animation-delay:-1s}
+    @keyframes floatyDrift{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-18px) rotate(6deg)}}
+    .wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:16px 16px 80px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;background:rgba(253,243,220,.85);backdrop-filter:blur(12px);border:1.5px solid rgba(245,200,66,.45);border-radius:999px;box-shadow:0 4px 20px rgba(140,94,60,.1),inset 0 1px 0 rgba(255,255,255,.8);position:sticky;top:12px;z-index:10;animation:dropIn .8s cubic-bezier(.22,1,.36,1) both}
+    @keyframes dropIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:15px}
+    .brand-mark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--sun),var(--orange));display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 3px 10px rgba(240,135,74,.35);animation:wobble 5s ease-in-out infinite}
+    @keyframes wobble{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+    nav{display:flex;gap:6px}
+    .nav-pill{padding:7px 13px;border-radius:999px;font-size:13px;font-weight:700;border:1.5px solid var(--line);background:rgba(255,255,255,.55);color:var(--muted);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+    .nav-pill:hover{background:rgba(255,255,255,.95);border-color:var(--orange);color:var(--ink);transform:translateY(-2px) scale(1.04);box-shadow:0 4px 12px rgba(240,135,74,.2)}
+    .hero{padding:50px 8px 24px;animation:riseUp .9s cubic-bezier(.22,1,.36,1) .15s both}
+    @keyframes riseUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:999px;background:rgba(110,207,181,.18);border:1px solid rgba(110,207,181,.4);font-size:12px;font-weight:700;letter-spacing:.12em;color:#3A9A84;margin-bottom:16px}
+    .blink{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:blink 2s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+    .hero-title{font-family:'Shippori Mincho','Zen Maru Gothic',serif;font-size:clamp(36px,6vw,64px);line-height:1.15;font-weight:700;margin-bottom:14px}
+    .hero-title .accent{color:var(--orange)}
+    .hero-title .sub{display:block;font-size:clamp(16px,2.5vw,22px);font-weight:400;color:var(--muted);margin-top:6px;font-family:'Zen Maru Gothic',sans-serif}
+    .hero-lead{font-size:14px;line-height:2;color:var(--muted);max-width:48ch;margin-bottom:22px}
+    .hero-lead strong{color:var(--ink);font-weight:700}
+    .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-warm{display:inline-flex;align-items:center;gap:7px;padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,var(--sun) 0%,var(--orange) 100%);color:var(--ink);font-weight:900;font-size:14px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(240,135,74,.3),inset 0 1px 0 rgba(255,255,255,.4);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+    .btn-warm:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 24px rgba(240,135,74,.4)}
+    .btn-soft{display:inline-flex;align-items:center;gap:7px;padding:12px 18px;border-radius:14px;background:rgba(255,255,255,.65);color:var(--muted);font-weight:700;font-size:13px;border:1.5px solid var(--line);cursor:pointer;font-family:inherit;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+    .btn-soft:hover{background:rgba(255,255,255,.95);border-color:var(--mint);color:var(--ink);transform:translateY(-2px)}
+    .marquee-wrap{overflow:hidden;margin:22px 0;padding:9px 0;border-top:1px dashed rgba(140,94,60,.2);border-bottom:1px dashed rgba(140,94,60,.2)}
+    .marquee{display:flex;width:max-content;animation:marquee 20s linear infinite}
+    .marquee-item{white-space:nowrap;padding:0 24px;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);display:flex;align-items:center;gap:8px}
+    .marquee-item::after{content:"✿";color:var(--orange);font-size:10px}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .concept{margin:0 0 22px;padding:24px 28px;border-radius:22px;background:linear-gradient(135deg,rgba(245,200,66,.15) 0%,rgba(110,207,181,.12) 100%);border:1.5px solid rgba(245,200,66,.35);text-align:center;animation:riseUp .9s cubic-bezier(.22,1,.36,1) .3s both}
+    .concept-q{font-family:'Shippori Mincho',serif;font-size:clamp(17px,2.5vw,24px);font-weight:500;color:var(--earth);line-height:1.6;margin-bottom:8px}
+    .concept-p{font-size:13px;color:var(--muted);line-height:1.9}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
+    .col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+    @media(max-width:780px){.col-6,.col-4,.col-8{grid-column:span 12}}
+    .card{border-radius:20px;border:1.5px solid rgba(255,255,255,.75);padding:18px 18px 16px;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;animation:cardPop .65s cubic-bezier(.22,1,.36,1) both}
+    .card:hover{transform:translateY(-5px) rotate(.3deg);box-shadow:0 16px 40px rgba(58,42,30,.14)}
+    .card:nth-child(even):hover{transform:translateY(-5px) rotate(-.3deg)}
+    .card-sun{background:linear-gradient(145deg,#FFFBE8 0%,#FEF0BB 100%);box-shadow:0 6px 24px rgba(245,200,66,.18)}
+    .card-mint{background:linear-gradient(145deg,#EAFAF5 0%,#D2F4EC 100%);box-shadow:0 6px 24px rgba(110,207,181,.18)}
+    .card-green{background:linear-gradient(145deg,#F0F8EF 0%,#DDEEDD 100%);box-shadow:0 6px 24px rgba(123,175,122,.16)}
+    .card-orange{background:linear-gradient(145deg,#FFF4EC 0%,#FFE5D0 100%);box-shadow:0 6px 24px rgba(240,135,74,.16)}
+    .card-warm{background:linear-gradient(145deg,#FEFAE8 0%,#FAF0D0 100%);box-shadow:0 6px 24px rgba(196,132,90,.14)}
+    @keyframes cardPop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.12s}.card:nth-child(3){animation-delay:.18s}.card:nth-child(4){animation-delay:.24s}.card:nth-child(5){animation-delay:.30s}.card:nth-child(6){animation-delay:.36s}
+    .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
+    .card-title{font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px}
+    .card-emoji{font-size:20px;line-height:1}
+    .card-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid rgba(140,94,60,.14);color:var(--muted);white-space:nowrap}
+    .card-desc{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:12px}
+    .item-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+    .item{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);transition:all .2s ease;cursor:default}
+    .item:hover{background:rgba(255,255,255,.92);transform:translateX(3px)}
+    .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:7px}
+    .dot-sun{background:var(--sun);box-shadow:0 0 8px rgba(245,200,66,.6)}
+    .dot-orange{background:var(--orange);box-shadow:0 0 8px rgba(240,135,74,.6)}
+    .dot-mint{background:var(--mint);box-shadow:0 0 8px rgba(110,207,181,.6)}
+    .dot-green{background:var(--green);box-shadow:0 0 8px rgba(123,175,122,.6)}
+    .item-text{font-size:13px;line-height:1.7}
+    .item-text b{font-weight:900}
+    .item-sub{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+    .add-btn{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:7px 12px;border-radius:10px;background:rgba(255,255,255,.65);border:1.5px dashed rgba(140,94,60,.25);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+    .add-btn:hover{background:rgba(255,255,255,.95);border-color:var(--orange);color:var(--ink);transform:scale(1.04)}
+    .lab-canvas-wrap{margin-top:10px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.45);border:1px dashed rgba(123,175,122,.45)}
+    #labCanvas{display:block;width:100%;height:130px;cursor:crosshair}
+    .lab-hint{font-size:11px;color:var(--muted);text-align:center;padding:6px 0 8px}
+    .diary-entry{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.9);margin-bottom:8px;font-size:13px;line-height:1.8}
+    .diary-date{font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:700}
+    .about-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+    .chip{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(255,255,255,.65);border:1.5px solid rgba(255,255,255,.9);color:var(--muted);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+    .chip:hover{transform:translateY(-2px) scale(1.06);background:rgba(255,255,255,.95);color:var(--ink)}
+    .rules{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+    .rule{padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.55);border-left:3px solid var(--orange);font-size:13px;line-height:1.6}
+    .rule b{font-weight:900;color:var(--earth)}
+    .rule span{font-size:11px;color:var(--muted);display:block}
+    footer{position:relative;z-index:1;margin-top:28px;padding-top:16px;border-top:1px dashed rgba(140,94,60,.2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--muted)}
+    .footer-logo{font-weight:900;color:var(--earth)}
+    .spark{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;animation:sparkFly .6s ease-out forwards}
+    @keyframes sparkFly{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)}}
   </style>
 </head>
 <body>
-  <div id="scroll-progress"></div>
-  <div id="loader">
-    <div class="loader-text">つまみぐい</div>
-    <div class="loader-dots"><span></span><span></span><span></span></div>
+  <div class="light-rays" aria-hidden="true">
+    <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
   </div>
-  <canvas id="trailCanvas" aria-hidden="true"></canvas>
-  <div id="cursor-ring"></div>
-  <div id="cursor-dot"></div>
-  <div class="blob-bg" aria-hidden="true">
-    <div class="blob blob-a"></div><div class="blob blob-b"></div>
-    <div class="blob blob-c"></div><div class="blob blob-d"></div>
+  <div class="floaties" aria-hidden="true">
+    <div class="floaty">🌿</div><div class="floaty">✦</div><div class="floaty">🍊</div>
+    <div class="floaty">🌱</div><div class="floaty">☁️</div><div class="floaty">🍃</div>
   </div>
-  <canvas id="particleCanvas" aria-hidden="true"></canvas>
-
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="brand-icon" aria-hidden="true">🍡</div>
+        <div class="brand-mark">🍡</div>
         <span>つまみぐい</span>
       </div>
       <nav>
-        <a class="pill" href="#pop"><span class="pill-inner">📌 Pop図鑑</span></a>
-        <a class="pill" href="#sweets"><span class="pill-inner">🍰 Sweets</span></a>
-        <a class="pill" href="#labs"><span class="pill-inner">🧪 Labs</span></a>
-        <a class="pill" href="#about"><span class="pill-inner">🌿 About</span></a>
+        <a class="nav-pill" href="#words">言葉</a>
+        <a class="nav-pill" href="#sweets">スイーツ</a>
+        <a class="nav-pill" href="#diary">日記</a>
+        <a class="nav-pill" href="#labs">Labs</a>
+        <a class="nav-pill" href="#about">About</a>
       </nav>
     </header>
-
     <div class="hero">
-      <div class="sticker sticker-a" style="--rot:-8deg" aria-hidden="true">🌱</div>
-      <div class="sticker sticker-b" style="--rot:6deg"  aria-hidden="true">✨</div>
-      <div class="sticker sticker-c" style="--rot:3deg"  aria-hidden="true">🍊</div>
-      <div class="hero-inner">
-        <div class="kicker"><span class="kicker-dot"></span>いったん置いといて、ひと口だけ寄り道。</div>
-        <h1>
-          <em id="scramble-target">一拍の</em>余白を、<br>
-          <span class="h1-line2">ぎゅうぎゅうな毎日にこっそり置く。</span>
-        </h1>
-        <p class="lead">
-          解決しなくていい。<b class="wobble-word">消えなくていい。</b><br>
-          ちょっとだけ、<b class="wobble-word">頭の外に出てみる</b>場所。<br>
-          言葉・発見・スイーツ・遊びを、ひと口ずつ。
-        </p>
-        <div class="cta-row">
-          <div class="mag-wrap"><a class="btn-main" href="#pop">🍡 ひとつまみする</a></div>
-          <div class="mag-wrap"><button class="btn-sub" id="shuffleBtn" type="button">🔀 ランダムに並べ替える</button></div>
-        </div>
+      <div class="hero-tag"><span class="blink"></span>いったん置いといて、ひと口だけ寄り道。</div>
+      <h1 class="hero-title">
+        ぎゅうぎゅうな毎日に、<br>
+        <span class="accent">一拍の余白</span>を。
+        <span class="sub">解決しなくていい。消えなくていい。</span>
+      </h1>
+      <p class="hero-lead">
+        <strong>言葉・スイーツ・エンタメ・日記。</strong><br>
+        ひと口サイズで、ちょっとだけ頭の外に出てみる場所。<br>
+        答えは押し付けない。余白は残す。
+      </p>
+      <div class="hero-btns">
+        <a class="btn-warm" href="#words">🍡 ひとつまみする</a>
+        <button class="btn-soft" id="shuffleBtn" type="button">🔀 並べ替える</button>
       </div>
     </div>
-
-    <div class="ticker-wrap" aria-hidden="true">
-      <div class="ticker-track" id="ticker">
-        <span class="ticker-item">一拍の余白 <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">ひと口だけ <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">置いといていい <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">寄り道が正解 <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">解決しなくていい <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">息を整える <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">軽いのに、ちゃんと <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">余白を残す <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">一拍の余白 <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">ひと口だけ <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">置いといていい <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">寄り道が正解 <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">解決しなくていい <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">息を整える <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">軽いのに、ちゃんと <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">余白を残す <span class="ticker-sep">✦</span></span>
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee">
+        <span class="marquee-item">一拍の余白</span><span class="marquee-item">ひと口だけ</span>
+        <span class="marquee-item">置いといていい</span><span class="marquee-item">解決しなくていい</span>
+        <span class="marquee-item">息を整える</span><span class="marquee-item">余白を残す</span>
+        <span class="marquee-item">寄り道が正解</span><span class="marquee-item">軽いのに、ちゃんと</span>
+        <span class="marquee-item">一拍の余白</span><span class="marquee-item">ひと口だけ</span>
+        <span class="marquee-item">置いといていい</span><span class="marquee-item">解決しなくていい</span>
+        <span class="marquee-item">息を整える</span><span class="marquee-item">余白を残す</span>
+        <span class="marquee-item">寄り道が正解</span><span class="marquee-item">軽いのに、ちゃんと</span>
       </div>
     </div>
-
-    <div class="band">
-      <p class="band-q">"悩みを消すより、<br>一拍だけ置ける間がほしい。"</p>
-      <p class="band-p">予定・タスク・通知で埋まった毎日に、ちいさな空白をつくる。</p>
+    <div class="concept">
+      <p class="concept-q">悩みを消すより、<br>"いったん置ける一拍"が欲しい。</p>
+      <p class="concept-p">予定・タスク・通知で埋まった毎日に、ちいさな空白をこっそり置く。</p>
     </div>
-
-    <section class="grid" id="pop" style="margin-top:28px;">
-      <div class="card card-sun span-6 hidden-card" data-kind="pop">
-        <div class="card-head">
-          <h2 class="card-title"><span class="card-emoji">📌</span> Pop図鑑</h2>
-          <span class="card-tag">words / 発見</span>
-        </div>
-        <p class="card-desc">「あ、この言い回し好き」「その発想ズルい」——<br>気づいたらすぐ保存しておく場所。</p>
-        <ul class="pop-list" id="popList">
-          <li class="pop-item"><span class="pop-dot pop-dot-sun"></span><div class="pop-text"><b>one</b>を見ると0がよぎる。<span class="pop-sub">noneに似てるから。</span></div></li>
-          <li class="pop-item"><span class="pop-dot pop-dot-mint"></span><div class="pop-text"><b>"行きたい"の6文字</b>が言えない。<span class="pop-sub">キャラって便利な言い訳。</span></div></li>
-          <li class="pop-item"><span class="pop-dot pop-dot-moss"></span><div class="pop-text"><b>硬いグミ</b>は、冬に食うと鋼。<span class="pop-sub">温めると急に優しい。</span></div></li>
+    <section class="grid" id="words">
+      <div class="card card-sun col-6">
+        <div class="card-head"><h2 class="card-title"><span class="card-emoji">📌</span>好きな言葉</h2><span class="card-badge">words</span></div>
+        <p class="card-desc">「あ、この言い回し好き」をすぐ保存する場所。</p>
+        <ul class="item-list" id="wordList">
+          <li class="item"><span class="dot dot-sun"></span><div class="item-text"><b>一拍おく</b><span class="item-sub">答えを急がない余裕が、いい言葉をつくる。</span></div></li>
+          <li class="item"><span class="dot dot-orange"></span><div class="item-text"><b>ちょうどいい</b><span class="item-sub">過不足なさって、地味に難しい。</span></div></li>
+          <li class="item"><span class="dot dot-mint"></span><div class="item-text"><b>余白</b><span class="item-sub">何もない部分が、実は一番大事だったりする。</span></div></li>
         </ul>
-        <button class="add-btn" id="addPopBtn">＋ ひとつ追加</button>
+        <button class="add-btn" id="addWordBtn">＋ 追加</button>
       </div>
-
-      <div class="card card-mint span-6 hidden-card" data-kind="sweets" id="sweets">
-        <div class="card-head">
-          <h2 class="card-title"><span class="card-emoji">🍰</span> Sweets Log</h2>
-          <span class="card-tag">eat / memo</span>
-        </div>
-        <p class="card-desc">写真＋一言＋タグでOK。<br>甘いものは記録しておくと、後で救われる。</p>
-        <ul class="pop-list" id="sweetsList">
-          <li class="pop-item"><span class="pop-dot pop-dot-mint"></span><div class="pop-text"><b>チーズケーキ</b>：酸味が勝つタイプ。<span class="pop-sub">#カフェ　#しっとり</span></div></li>
-          <li class="pop-item"><span class="pop-dot pop-dot-sage"></span><div class="pop-text"><b>生ドーナツ</b>：軽いのに背徳。<span class="pop-sub">#ふわ　#罪</span></div></li>
+      <div class="card card-mint col-6" id="sweets">
+        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🍰</span>スイーツログ</h2><span class="card-badge">eat / memo</span></div>
+        <p class="card-desc">食べたもの、一言だけ。タグで気分を残す。</p>
+        <ul class="item-list" id="sweetsList">
+          <li class="item"><span class="dot dot-mint"></span><div class="item-text"><b>チーズケーキ</b>：酸味が勝つタイプ。<span class="item-sub">#カフェ　#しっとり</span></div></li>
+          <li class="item"><span class="dot dot-green"></span><div class="item-text"><b>生ドーナツ</b>：軽いのに背徳。<span class="item-sub">#ふわ　#罪</span></div></li>
+          <li class="item"><span class="dot dot-sun"></span><div class="item-text"><b>わらびもち</b>：きなこの量が正義。<span class="item-sub">#和菓子　#夏</span></div></li>
         </ul>
-        <button class="add-btn" id="addSweetsBtn">＋ ひとつ追加</button>
+        <button class="add-btn" id="addSweetsBtn">＋ 追加</button>
       </div>
-
-      <div class="card card-tangy span-4 hidden-card" data-kind="about">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🌿</span> 3つの問い</h2></div>
-        <ul class="pop-list">
-          <li class="pop-item"><span class="pop-dot pop-dot-sun"></span><div class="pop-text">一拍 をつくれてる？<span class="pop-sub">読後に息が入る？</span></div></li>
-          <li class="pop-item"><span class="pop-dot pop-dot-mint"></span><div class="pop-text">ひと口 になってる？<span class="pop-sub">重くない？短い？</span></div></li>
-          <li class="pop-item"><span class="pop-dot pop-dot-moss"></span><div class="pop-text">余白 を残してる？<span class="pop-sub">押し付けてない？</span></div></li>
+      <div class="card card-warm col-8" id="diary">
+        <div class="card-head"><h2 class="card-title"><span class="card-emoji">📓</span>日記</h2><span class="card-badge">diary</span></div>
+        <p class="card-desc">ちゃんとしなくていい。ひと言でも残せたら十分。</p>
+        <div class="diary-entry"><div class="diary-date">2026.02.28</div>今日は空がやわらかかった。特に何もなかったけど、それがよかったのかもしれない。</div>
+        <div class="diary-entry"><div class="diary-date">2026.02.26</div>コーヒーが冷める前に飲めた。小さな勝利。</div>
+        <button class="add-btn" id="addDiaryBtn">＋ 書く</button>
+      </div>
+      <div class="card card-green col-4">
+        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🎬</span>エンタメ</h2><span class="card-badge">watch / read</span></div>
+        <ul class="item-list" id="entList">
+          <li class="item"><span class="dot dot-green"></span><div class="item-text"><b>映画タイトル</b><span class="item-sub">ラストが静かでよかった。</span></div></li>
+          <li class="item"><span class="dot dot-mint"></span><div class="item-text"><b>最近読んだ本</b><span class="item-sub">言葉の密度がちょうどいい。</span></div></li>
         </ul>
+        <button class="add-btn" id="addEntBtn">＋ 追加</button>
       </div>
-
-      <div class="card card-moss span-8 hidden-card" data-kind="labs" id="labs">
-        <div class="card-head">
-          <h2 class="card-title"><span class="card-emoji">🧪</span> Labs（実験場）</h2>
-          <span class="card-tag">css / js</span>
-        </div>
-        <p class="card-desc">ここだけは何してもOKゾーン。クリックして遊んでみて。</p>
-        <div class="lab-box">
-          <p class="lab-title">✦ キャンバスに触れると粒が散る</p>
-          <canvas id="sparkCanvas"></canvas>
+      <div class="card card-green col-6" id="labs">
+        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🧪</span>Labs</h2><span class="card-badge">css / js 実験</span></div>
+        <p class="card-desc">CSSアニメーションを勉強して、ここで発表する。触って遊んでみて。</p>
+        <div class="lab-canvas-wrap"><canvas id="labCanvas"></canvas><p class="lab-hint">マウスを動かすと粒が散る ✦</p></div>
+      </div>
+      <div class="card card-orange col-6">
+        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🌿</span>3つの問い</h2><span class="card-badge">判断基準</span></div>
+        <p class="card-desc">追加するとき、必ずこれに通す。</p>
+        <div class="rules">
+          <div class="rule"><b>一拍</b>をつくれてる？<span>読後に息が入る？</span></div>
+          <div class="rule"><b>ひと口</b>になってる？<span>重くない？短い？</span></div>
+          <div class="rule"><b>余白</b>を残してる？<span>押し付けてない？</span></div>
         </div>
       </div>
-
-      <div class="card card-sage span-12 hidden-card" id="about">
-        <div class="card-head">
-          <h2 class="card-title"><span class="card-emoji">🌸</span> About</h2>
-          <span class="card-tag">profile</span>
-        </div>
-        <p class="card-desc">あなたについて一言。言葉 / 発見 / Webの仕掛けが好き。</p>
-        <div class="about-grid">
-          <div class="about-item"><b>名前</b>葉</div>
-          <div class="about-item"><b>テーマ</b>言葉 / 発見 / Webの仕掛け</div>
-          <div class="about-item"><b>SNS</b>X / note / GitHub（後で）</div>
-          <div class="about-item"><b>連絡</b>xxx@xxx（後で）</div>
+      <div class="card card-sun col-12" id="about">
+        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🌸</span>About</h2><span class="card-badge">profile</span></div>
+        <p class="card-desc">葉。言葉と発見とWebの仕掛けが好き。<br>ぎゅうぎゅうな毎日に、ちいさな空白を置こうとしている。</p>
+        <div class="about-chips">
+          <span class="chip">言葉</span><span class="chip">発見</span><span class="chip">スイーツ</span>
+          <span class="chip">CSS実験</span><span class="chip">余白</span>
+          <span class="chip">X（後で）</span><span class="chip">note（後で）</span><span class="chip">GitHub</span>
         </div>
       </div>
     </section>
-
     <footer>
-      <span>© <span id="y"></span> <span class="footer-brand">つまみぐい</span></span>
+      <span>© <span id="yr"></span> <span class="footer-logo">つまみぐい</span></span>
       <span>ぎゅうぎゅうな毎日に、一拍の余白を。</span>
     </footer>
   </div>
-
   <script>
-  function hideLoader() { document.getElementById("loader").classList.add("hidden"); }
-  setTimeout(hideLoader, 1400);
-  window.addEventListener("load", () => setTimeout(hideLoader, 900));
-
-  document.getElementById("y").textContent = new Date().getFullYear();
-
-  const progressBar = document.getElementById("scroll-progress");
-  window.addEventListener("scroll", () => {
-    const total = document.documentElement.scrollHeight - window.innerHeight;
-    progressBar.style.width = (window.scrollY / total * 100) + "%";
-  });
-
-  const ring = document.getElementById("cursor-ring");
-  const dot  = document.getElementById("cursor-dot");
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
-  document.querySelectorAll("a, button, .pop-item, .add-btn, .pill").forEach(el => {
-    el.addEventListener("mouseenter", () => ring.classList.add("hover"));
-    el.addEventListener("mouseleave", () => ring.classList.remove("hover"));
-  });
-  document.addEventListener("mousedown", () => ring.classList.add("click"));
-  document.addEventListener("mouseup",   () => ring.classList.remove("click"));
-  function moveCursor() {
-    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-    ring.style.left = rx + "px"; ring.style.top = ry + "px";
-    dot.style.left  = mx + "px"; dot.style.top  = my + "px";
-    requestAnimationFrame(moveCursor);
-  }
-  moveCursor();
-
-  const trailCanvas = document.getElementById("trailCanvas");
-  const tCtx = trailCanvas.getContext("2d");
-  trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight;
-  window.addEventListener("resize", () => { trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight; });
-  const TRAIL_COLORS = ["#FEC66C","#FC9343","#7DCFB6","#D0D67B","#89B88A"];
-  let trailPoints = [];
-  document.addEventListener("mousemove", e => {
-    trailPoints.push({ x: e.clientX, y: e.clientY, life: 1, color: TRAIL_COLORS[Math.floor(Math.random()*TRAIL_COLORS.length)] });
-    if (trailPoints.length > 28) trailPoints.shift();
-  });
-  function animateTrail() {
-    tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-    trailPoints.forEach(p => {
-      p.life -= 0.04; if (p.life <= 0) return;
-      tCtx.save(); tCtx.globalAlpha = p.life * 0.4; tCtx.fillStyle = p.color;
-      tCtx.beginPath(); tCtx.arc(p.x, p.y, p.life * 4, 0, Math.PI*2); tCtx.fill(); tCtx.restore();
-    });
-    trailPoints = trailPoints.filter(p => p.life > 0);
-    requestAnimationFrame(animateTrail);
-  }
-  animateTrail();
-
-  const scrambleEl = document.getElementById("scramble-target");
-  const scrambleOrig = scrambleEl.textContent;
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789あいうえおかきくけこさしすせそたちつてと";
-  function scramble(el, original, duration = 900) {
-    let frame = 0; const total = Math.ceil(duration / 16);
-    function tick() {
-      const progress = frame / total; let out = "";
-      for (let i = 0; i < original.length; i++) {
-        out += i < Math.floor(progress * original.length * 1.5) ? original[i] : chars[Math.floor(Math.random() * chars.length)];
+    document.getElementById("yr").textContent = new Date().getFullYear();
+    const COLORS = ["#F5C842","#F0874A","#6ECFB5","#7BAF7A","#FDE9A0"];
+    document.addEventListener("click", e => {
+      for (let i = 0; i < 8; i++) {
+        const el = document.createElement("div");
+        el.className = "spark";
+        const size = 6 + Math.random() * 6;
+        const angle = (i / 8) * Math.PI * 2;
+        const dist = 24 + Math.random() * 28;
+        el.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;width:${size}px;height:${size}px;background:${COLORS[i%COLORS.length]};--tx:${(Math.cos(angle)*dist).toFixed(0)}px;--ty:${(Math.sin(angle)*dist).toFixed(0)}px;`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 650);
       }
-      el.textContent = out; frame++;
-      if (frame <= total) requestAnimationFrame(tick); else el.textContent = original;
+    });
+    const canvas = document.getElementById("labCanvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    function spawnParticles(x, y, n = 5) {
+      for (let i = 0; i < n; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 2.5 + .5;
+        particles.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed-1, r: Math.random()*5+2, color: COLORS[Math.floor(Math.random()*COLORS.length)], life: 1 });
+      }
     }
-    tick();
-  }
-  setTimeout(() => scramble(scrambleEl, scrambleOrig), 1400);
-  scrambleEl.addEventListener("mouseenter", () => scramble(scrambleEl, scrambleOrig, 600));
-
-  document.querySelectorAll(".mag-wrap").forEach(wrap => {
-    const btn = wrap.firstElementChild;
-    wrap.addEventListener("mousemove", e => {
-      const rect = wrap.getBoundingClientRect();
-      const dx = (e.clientX - rect.left - rect.width/2) * 0.35;
-      const dy = (e.clientY - rect.top  - rect.height/2) * 0.35;
-      btn.style.transform = `translate(${dx}px, ${dy}px)`;
-    });
-    wrap.addEventListener("mouseleave", () => {
-      btn.style.transform = "translate(0,0)";
-      btn.style.transition = "transform .5s cubic-bezier(.34,1.56,.64,1)";
-      setTimeout(() => btn.style.transition = "", 500);
-    });
-  });
-
-  document.querySelectorAll(".pill").forEach(pill => {
-    pill.addEventListener("mousemove", e => {
-      const rect = pill.getBoundingClientRect();
-      const dx = (e.clientX - rect.left - rect.width/2)  * 0.28;
-      const dy = (e.clientY - rect.top  - rect.height/2) * 0.28;
-      pill.style.transform = `translate(${dx}px, ${dy}px) scale(1.06)`;
-    });
-    pill.addEventListener("mouseleave", () => {
-      pill.style.transform = "";
-      pill.style.transition = "transform .4s cubic-bezier(.34,1.56,.64,1)";
-      setTimeout(() => pill.style.transition = "", 400);
-    });
-  });
-
-  document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("mousemove", e => {
-      const rect = card.getBoundingClientRect();
-      const relX = (e.clientX - rect.left) / rect.width  - 0.5;
-      const relY = (e.clientY - rect.top)  / rect.height - 0.5;
-      card.style.transform = `perspective(800px) rotateX(${-relY*10}deg) rotateY(${relX*14}deg) translateZ(6px)`;
-      card.style.boxShadow = `${-relX*14*1.2}px ${relY*(-10)*1.2+18}px 40px rgba(61,43,31,.18)`;
-    });
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = ""; card.style.boxShadow = "";
-      card.style.transition = "transform .5s cubic-bezier(.34,1.56,.64,1), box-shadow .5s ease";
-      setTimeout(() => card.style.transition = "box-shadow .3s ease", 500);
-    });
-  });
-
-  const revealObs = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const card = entry.target;
-      card.style.animationDelay = Array.from(card.parentElement.children).indexOf(card) * 0.08 + "s";
-      card.classList.remove("hidden-card"); card.classList.add("reveal-card");
-      revealObs.unobserve(card);
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll(".hidden-card").forEach(c => revealObs.observe(c));
-
-  const pCanvas = document.getElementById("particleCanvas");
-  const pCtx = pCanvas.getContext("2d");
-  let particles = [];
-  const COLORS = ["#FEC66C","#FC9343","#7DCFB6","#D0D67B","#89B88A","#AF7551"];
-  function resizePC() { pCanvas.width = window.innerWidth; pCanvas.height = window.innerHeight; }
-  resizePC(); window.addEventListener("resize", resizePC);
-  function mkParticle() {
-    return { x: Math.random()*pCanvas.width, y: Math.random()*pCanvas.height+pCanvas.height,
-      r: Math.random()*4+1.5, dx: (Math.random()-.5)*.5, dy: -(Math.random()*.7+.25),
-      alpha: Math.random()*.45+.1, color: COLORS[Math.floor(Math.random()*COLORS.length)],
-      shape: Math.random()>.55?"star":"circle", rot: 0, rotSpeed: (Math.random()-.5)*.04 };
-  }
-  for (let i = 0; i < 60; i++) particles.push(mkParticle());
-  function drawStar(ctx, x, y, r, alpha, color, rot) {
-    ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color;
-    ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
-    for (let i = 0; i < 5; i++) {
-      ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*r, -Math.sin((18+i*72)*Math.PI/180)*r);
-      ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*r*.42, -Math.sin((54+i*72)*Math.PI/180)*r*.42);
+    canvas.addEventListener("mousemove", e => { const r = canvas.getBoundingClientRect(); spawnParticles(e.clientX-r.left, e.clientY-r.top, 3); });
+    canvas.addEventListener("click", e => { const r = canvas.getBoundingClientRect(); spawnParticles(e.clientX-r.left, e.clientY-r.top, 12); });
+    function animateCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = particles.filter(p => p.life > 0);
+      particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; p.vy+=.06; p.life-=.022; ctx.save(); ctx.globalAlpha=p.life; ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2); ctx.fill(); ctx.restore(); });
+      requestAnimationFrame(animateCanvas);
     }
-    ctx.closePath(); ctx.fill(); ctx.restore();
-  }
-  function animateParticles() {
-    pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
-    particles.forEach(p => {
-      p.x += p.dx; p.y += p.dy; p.rot += p.rotSpeed;
-      if (p.y < -12) { p.y = pCanvas.height+12; p.x = Math.random()*pCanvas.width; }
-      if (p.x < -12) p.x = pCanvas.width+12;
-      if (p.x > pCanvas.width+12) p.x = -12;
-      if (p.shape === "star") drawStar(pCtx, p.x, p.y, p.r, p.alpha, p.color, p.rot);
-      else { pCtx.save(); pCtx.globalAlpha=p.alpha; pCtx.fillStyle=p.color; pCtx.beginPath(); pCtx.arc(p.x,p.y,p.r,0,Math.PI*2); pCtx.fill(); pCtx.restore(); }
+    animateCanvas();
+    const wordSamples = [["ぬるい","温度がちょうどいい。強くない。それがいい。"],[""ちょい足し"","一行で温度が変わる。"],["間（ま）","音楽も会話も、休符があって成立する。"]];
+    const sweetsSamples = [["プリン","固めが正義。#固め　#王道"],["フィナンシェ","バターで勝ち。#焼き菓子"],["たい焼き","端っこまで餡があるやつ。#あんこ"]];
+    const entSamples = [["最近観た映画","余韻が続く系。"],["最近読んだ漫画","台詞が少ないのがいい。"]];
+    const dotClasses = ["dot-sun","dot-orange","dot-mint","dot-green"];
+    function addItem(listEl, title, desc, isDiary = false) {
+      const li = document.createElement(isDiary ? "div" : "li");
+      if (isDiary) {
+        const d = new Date();
+        const ds = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+        li.className = "diary-entry";
+        li.innerHTML = `<div class="diary-date">${ds}</div>${title}`;
+      } else {
+        li.className = "item";
+        const dc = dotClasses[Math.floor(Math.random()*dotClasses.length)];
+        li.innerHTML = `<span class="dot ${dc}"></span><div class="item-text"><b>${title}</b><span class="item-sub">${desc}</span></div>`;
+      }
+      li.style.opacity = "0"; li.style.transform = "translateY(8px)";
+      listEl.prepend(li);
+      requestAnimationFrame(() => { li.style.transition = "all .35s cubic-bezier(.34,1.56,.64,1)"; li.style.opacity = "1"; li.style.transform = "translateY(0)"; });
+    }
+    document.getElementById("addWordBtn").addEventListener("click", () => { const s = wordSamples[Math.floor(Math.random()*wordSamples.length)]; addItem(document.getElementById("wordList"), s[0], s[1]); });
+    document.getElementById("addSweetsBtn").addEventListener("click", () => { const s = sweetsSamples[Math.floor(Math.random()*sweetsSamples.length)]; addItem(document.getElementById("sweetsList"), s[0], s[1]); });
+    document.getElementById("addEntBtn").addEventListener("click", () => { const s = entSamples[Math.floor(Math.random()*entSamples.length)]; addItem(document.getElementById("entList"), s[0], s[1]); });
+    document.getElementById("addDiaryBtn").addEventListener("click", () => { const msgs = ["今日もなんとかなった。","小さいことをちゃんと楽しめた。","まあいっか、で乗り切った。"]; addItem(document.querySelector(".card-warm"), msgs[Math.floor(Math.random()*msgs.length)], "", true); });
+    document.getElementById("shuffleBtn").addEventListener("click", () => {
+      const grid = document.querySelector(".grid");
+      const cards = Array.from(grid.children);
+      cards.sort(() => Math.random() - .5);
+      cards.forEach(c => { c.style.opacity="0"; c.style.transform="scale(.95)"; c.style.transition="all .25s ease"; setTimeout(() => { grid.appendChild(c); c.style.opacity="1"; c.style.transform="scale(1)"; }, 200+Math.random()*100); });
     });
-    requestAnimationFrame(animateParticles);
-  }
-  animateParticles();
-
-  const burstColors = ["#FEC66C","#FC9343","#7DCFB6","#D0D67B","#89B88A","#ff6b9d","#c084fc"];
-  const EMOJIS = ["✨","🌱","🍡","🍊","💛","🌿","⭐","🎉"];
-  document.addEventListener("click", e => {
-    const burst = document.createElement("div");
-    burst.className = "burst"; burst.style.left = e.clientX+"px"; burst.style.top = e.clientY+"px";
-    document.body.appendChild(burst);
-    for (let i = 0; i < 14; i++) {
-      const d = document.createElement("div"); d.className = "burst-dot";
-      const angle = (i/14)*Math.PI*2; const dist = 28+Math.random()*40; const size = 5+Math.random()*8;
-      d.style.width = size+"px"; d.style.height = size+"px";
-      d.style.setProperty("--tx", Math.cos(angle)*dist+"px");
-      d.style.setProperty("--ty", Math.sin(angle)*dist+"px");
-      d.style.background = burstColors[i%burstColors.length];
-      d.style.borderRadius = Math.random()>.4?"50%":"3px";
-      burst.appendChild(d);
-    }
-    setTimeout(() => burst.remove(), 900);
-    if (Math.random()>.55) {
-      const ef = document.createElement("div"); ef.className = "emoji-float";
-      ef.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-      ef.style.left = (e.clientX-11)+"px"; ef.style.top = (e.clientY-11)+"px";
-      document.body.appendChild(ef); setTimeout(() => ef.remove(), 1300);
-    }
-  });
-
-  const sc = document.getElementById("sparkCanvas");
-  const sctx = sc.getContext("2d");
-  sc.width = sc.offsetWidth; sc.height = sc.offsetHeight;
-  let sparks = [];
-  function spawnSpark(x, y, amount=6) {
-    for (let i = 0; i < amount; i++) {
-      const angle = Math.random()*Math.PI*2; const speed = Math.random()*3.5+1;
-      sparks.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed-1.2,
-        life: 1, color: COLORS[Math.floor(Math.random()*COLORS.length)], r: Math.random()*5+2 });
-    }
-  }
-  sc.addEventListener("mousemove", e => { const r=sc.getBoundingClientRect(); spawnSpark(e.clientX-r.left, e.clientY-r.top); });
-  sc.addEventListener("click",     e => { const r=sc.getBoundingClientRect(); for(let i=0;i<5;i++) spawnSpark(e.clientX-r.left, e.clientY-r.top, 8); });
-  function animateSparks() {
-    sctx.clearRect(0, 0, sc.width, sc.height);
-    sparks = sparks.filter(s => s.life > 0);
-    sparks.forEach(s => {
-      s.x+=s.vx; s.y+=s.vy; s.vy+=.09; s.life-=.028;
-      sctx.save(); sctx.globalAlpha=s.life; sctx.fillStyle=s.color;
-      sctx.beginPath(); sctx.arc(s.x,s.y,s.r*s.life,0,Math.PI*2); sctx.fill(); sctx.restore();
-    });
-    requestAnimationFrame(animateSparks);
-  }
-  animateSparks();
-
-  const popSamples = [["語彙の勝ち","短い言葉の方が強いときがある。"],[""ちょい足し"","一行で温度が変わる。"],["言い切り","迷いが減る。"],["余白","押し付けない言い方が一番届く。"]];
-  const sweetsSamples = [["プリン","固めが好き。#固め　#王道"],["フィナンシェ","バターの香りで勝ち。#香り"],["わらびもち","きなこの量は多いほど正義。#和菓子"]];
-  const dotClasses = ["pop-dot-sun","pop-dot-mint","pop-dot-moss","pop-dot-sage"];
-  function addItem(listEl, title, desc) {
-    const li = document.createElement("li"); li.className = "pop-item";
-    li.style.opacity = "0"; li.style.transform = "translateY(10px) scale(.95)";
-    const dc = dotClasses[Math.floor(Math.random()*dotClasses.length)];
-    li.innerHTML = `<span class="pop-dot ${dc}"></span><div class="pop-text"><b>${title}</b>：${desc}</div>`;
-    listEl.prepend(li);
-    requestAnimationFrame(() => { li.style.transition="all .4s cubic-bezier(.34,1.56,.64,1)"; li.style.opacity="1"; li.style.transform="none"; });
-  }
-  document.getElementById("addPopBtn").addEventListener("click", () => { const s=popSamples[Math.floor(Math.random()*popSamples.length)]; addItem(document.getElementById("popList"),s[0],s[1]); });
-  document.getElementById("addSweetsBtn").addEventListener("click", () => { const s=sweetsSamples[Math.floor(Math.random()*sweetsSamples.length)]; addItem(document.getElementById("sweetsList"),s[0],s[1]); });
-
-  document.getElementById("shuffleBtn").addEventListener("click", () => {
-    const grid = document.querySelector(".grid"); const cards = Array.from(grid.querySelectorAll(".card"));
-    cards.forEach(c => { c.style.transition="opacity .15s ease, transform .15s ease"; c.style.opacity="0"; c.style.transform="scale(.94)"; });
-    setTimeout(() => { cards.sort(()=>Math.random()-.5); cards.forEach(c => { grid.appendChild(c); c.style.opacity="1"; c.style.transform=""; }); }, 180);
-  });
-
-  const stickers = document.querySelectorAll(".sticker");
-  document.addEventListener("mousemove", e => {
-    const cx = window.innerWidth/2; const cy = window.innerHeight/2;
-    const dx = (e.clientX-cx)/cx; const dy = (e.clientY-cy)/cy;
-    stickers.forEach((s,i) => { const d=(i+1)*8; s.style.transform=`translate(${dx*d}px,${dy*d}px) rotate(${[-8,6,3][i]}deg)`; });
-  });
-
-  window.addEventListener("resize", () => { sc.width=sc.offsetWidth; sc.height=sc.offsetHeight; });
-
-  const tickerEl = document.getElementById("ticker");
-  tickerEl.parentElement.addEventListener("mouseenter", () => tickerEl.style.animationDuration="40s");
-  tickerEl.parentElement.addEventListener("mouseleave", () => tickerEl.style.animationDuration="20s");
   </script>
 </body>
 </html>
