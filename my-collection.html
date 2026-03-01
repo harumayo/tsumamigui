@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Collection Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Serif JP',serif}
+
+/* ─── VIEWPORT ─── */
+#app{position:relative;width:100vw;height:100vh;overflow:hidden}
+
+/* ─── SECTIONS ─── */
+.section{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:38px;
+  transition:transform 1.05s cubic-bezier(0.86,0,0.07,1);
+  will-change:transform;
+}
+.section[data-state="above"]{transform:translateY(-100vh)}
+.section[data-state="active"]{transform:translateY(0)}
+.section[data-state="below"]{transform:translateY(100vh)}
+
+/* Section backgrounds */
+.s-kotoba{background:radial-gradient(ellipse at 60% 40%,#f0e8d5 0%,#e2d4ba 55%,#d5c7a8 100%)}
+.s-sweets {background:radial-gradient(ellipse at 40% 60%,#fef4f8 0%,#f8dcea 55%,#f0c8de 100%)}
+.s-entame {background:radial-gradient(ellipse at 55% 45%,#edf0f8 0%,#d5ddf2 55%,#c0cce8 100%)}
+
+/* ─── SECTION HEADER ─── */
+.section-header{text-align:center;user-select:none}
+.section-ja{font-size:50px;font-weight:700;letter-spacing:.18em;color:rgba(0,0,0,.6);line-height:1}
+.section-en{font-size:11px;letter-spacing:.45em;color:rgba(0,0,0,.3);margin-top:7px;font-weight:300}
+
+/* ─── CARDS ROW ─── */
+.cards-row{display:flex;gap:18px;align-items:flex-end}
+
+/* Fanned initial rotation */
+.cards-row .card:nth-child(1){--rot:-4.5deg}
+.cards-row .card:nth-child(2){--rot:-2deg}
+.cards-row .card:nth-child(3){--rot:0.5deg}
+.cards-row .card:nth-child(4){--rot:2.5deg}
+.cards-row .card:nth-child(5){--rot:5deg}
+
+/* ─── CARD ─── */
+.card{
+  width:155px;height:238px;
+  background:#fffefa;
+  border-radius:11px;
+  border:1.5px solid rgba(0,0,0,.11);
+  box-shadow:2px 5px 18px rgba(0,0,0,.09),0 1px 3px rgba(0,0,0,.05);
+  position:relative;cursor:pointer;
+  transform:rotate(var(--rot,0deg));
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .38s ease;
+  overflow:hidden;
+}
+.card:hover{
+  transform:rotate(0deg) translateY(-20px) scale(1.05) !important;
+  box-shadow:4px 22px 44px rgba(0,0,0,.15),0 2px 8px rgba(0,0,0,.07);
+  z-index:20;
+}
+
+/* Paper texture overlay */
+.card::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;border-radius:11px;
+}
+
+/* ─── CARD CORNERS (like playing cards) ─── */
+.corner{
+  position:absolute;font-family:'Caveat',cursive;
+  font-size:12.5px;font-weight:700;line-height:1.25;
+  text-align:center;color:rgba(0,0,0,.4);z-index:2;
+}
+.corner.tl{top:7px;left:9px}
+.corner.br{bottom:7px;right:9px;transform:rotate(180deg)}
+
+/* ─── CARD ART ─── */
+.card-art{
+  height:62%;display:flex;align-items:center;justify-content:center;
+  padding:12px 10px 5px;position:relative;z-index:2;
+}
+.card-art svg{width:100%;height:100%;max-width:115px;max-height:128px}
+
+/* ─── CARD INFO ─── */
+.card-info{
+  height:38%;border-top:1px solid rgba(0,0,0,.07);
+  padding:9px 12px 8px;display:flex;flex-direction:column;
+  justify-content:center;gap:3px;position:relative;z-index:2;
+}
+.card-name{font-size:11.5px;font-weight:700;color:rgba(0,0,0,.72);line-height:1.45}
+.card-sub{font-size:9px;color:rgba(0,0,0,.36);letter-spacing:.06em}
+
+/* ─── CARD ENTER ANIMATION ─── */
+.card.card-in{animation:cardDeal .52s ease both}
+.card.card-in:nth-child(1){animation-delay:.04s}
+.card.card-in:nth-child(2){animation-delay:.12s}
+.card.card-in:nth-child(3){animation-delay:.20s}
+.card.card-in:nth-child(4){animation-delay:.28s}
+.card.card-in:nth-child(5){animation-delay:.36s}
+
+@keyframes cardDeal{
+  from{opacity:0;transform:rotate(var(--rot,0deg)) translateY(35px) scale(.88)}
+  to{opacity:1;transform:rotate(var(--rot,0deg)) translateY(0) scale(1)}
+}
+
+/* ─── NAV DOTS ─── */
+.nav{
+  position:fixed;right:24px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:11px;z-index:100;
+}
+.nav-btn{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(0,0,0,.17);border:1.5px solid rgba(0,0,0,.25);
+  cursor:pointer;transition:all .3s ease;
+}
+.nav-btn.active{background:rgba(0,0,0,.55);transform:scale(1.4)}
+
+/* ─── SCROLL HINT ─── */
+.scroll-hint{
+  position:fixed;bottom:26px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:rgba(0,0,0,.28);font-size:10.5px;letter-spacing:.28em;
+  z-index:100;transition:opacity .6s ease;pointer-events:none;
+  animation:hintPulse 2.8s ease-in-out infinite;
+}
+.scroll-hint::after{content:'↓';font-size:17px;line-height:1}
+@keyframes hintPulse{
+  0%,100%{opacity:.3;transform:translateX(-50%) translateY(0)}
+  50%{opacity:.65;transform:translateX(-50%) translateY(5px)}
+}
+
+/* ─── SECTION LABEL (top-left fixed) ─── */
+.section-count{
+  position:fixed;left:26px;top:50%;transform:translateY(-50%);
+  font-size:11px;letter-spacing:.3em;color:rgba(0,0,0,.25);
+  writing-mode:vertical-rl;z-index:100;user-select:none;
+}
+</style>
+</head>
+<body>
+
+<!-- Shared SVG filter defs -->
+<svg width="0" height="0" style="position:absolute;top:-9999px">
+  <defs>
+    <filter id="rough" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.038" numOctaves="4" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="roughSm" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="12" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div id="app">
+
+  <!-- ═══════════ SECTION 0: 言葉 ═══════════ -->
+  <div class="section s-kotoba" data-index="0" data-state="active">
+    <div class="section-header">
+      <div class="section-ja">言葉</div>
+      <div class="section-en">WORDS &amp; QUOTES</div>
+    </div>
+    <div class="cards-row">
+
+      <!-- 1: 山・旅 -->
+      <div class="card">
+        <div class="corner tl">言<br>1</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <polygon points="50,14 88,82 12,82" fill="#d5cbb6" stroke="#7a6b52" stroke-width="2.8" stroke-linejoin="round"/>
+              <polygon points="50,14 64,44 36,44" fill="#f5f2ec" stroke="#7a6b52" stroke-width="2"/>
+              <ellipse cx="50" cy="87" rx="40" ry="7" fill="#c6b89a" stroke="#7a6b52" stroke-width="1.8"/>
+              <circle cx="78" cy="26" r="10" fill="#f6d96e" stroke="#7a6b52" stroke-width="2.2"/>
+              <ellipse cx="22" cy="28" rx="13" ry="8" fill="#f8f6f2" stroke="#7a6b52" stroke-width="1.6"/>
+              <ellipse cx="30" cy="24" rx="9" ry="7" fill="#f8f6f2" stroke="#7a6b52" stroke-width="1.6"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">旅は最良の教育</div>
+          <div class="card-sub">Mark Twain</div>
+        </div>
+        <div class="corner br">言<br>1</div>
+      </div>
+
+      <!-- 2: 電球・ひらめき -->
+      <div class="card">
+        <div class="corner tl">言<br>2</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <path d="M34,37 Q34,18 50,17 Q66,18 66,37 Q66,52 56,61 L56,74 L44,74 L44,61 Q34,52 34,37Z"
+                    fill="#fef5c4" stroke="#7a6b52" stroke-width="2.8" stroke-linejoin="round"/>
+              <path d="M44,55 L44,46 L50,50 L56,46 L56,55" stroke="#f0a030" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+              <rect x="43" y="74" width="14" height="4" rx="2" fill="#7a6b52" stroke="#7a6b52" stroke-width="1"/>
+              <rect x="43" y="80" width="14" height="4" rx="2" fill="#7a6b52" stroke="#7a6b52" stroke-width="1"/>
+              <rect x="44" y="86" width="12" height="4" rx="2" fill="#7a6b52"/>
+              <line x1="50" y1="9" x2="50" y2="5" stroke="#f5c842" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="69" y1="17" x2="72" y2="13" stroke="#f5c842" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="77" y1="36" x2="82" y2="36" stroke="#f5c842" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="31" y1="17" x2="28" y2="13" stroke="#f5c842" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="23" y1="36" x2="18" y2="36" stroke="#f5c842" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">想像力は知識より<br>大切だ</div>
+          <div class="card-sub">Albert Einstein</div>
+        </div>
+        <div class="corner br">言<br>2</div>
+      </div>
+
+      <!-- 3: 心・鼓動 -->
+      <div class="card">
+        <div class="corner tl">言<br>3</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <path d="M50,82 C18,62 8,37 24,26 C35,18 46,24 50,36 C54,24 65,18 76,26 C92,37 82,62 50,82Z"
+                    fill="#f5bac8" stroke="#9e5070" stroke-width="2.8" stroke-linejoin="round"/>
+              <polyline points="22,52 30,52 35,39 42,65 48,44 54,56 59,52 78,52"
+                        stroke="white" stroke-width="2.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">明日は明日の風が吹く</div>
+          <div class="card-sub">日本のことわざ</div>
+        </div>
+        <div class="corner br">言<br>3</div>
+      </div>
+
+      <!-- 4: 星・夢 -->
+      <div class="card">
+        <div class="corner tl">言<br>4</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <polygon points="50,10 55,32 77,32 60,46 67,68 50,54 33,68 40,46 23,32 45,32"
+                       fill="#fde88a" stroke="#c4900a" stroke-width="2.8" stroke-linejoin="round"/>
+              <polygon points="83,18 85,26 93,26 87,31 89,39 83,34 77,39 79,31 73,26 81,26"
+                       fill="#fde88a" stroke="#c4900a" stroke-width="1.6" stroke-linejoin="round"/>
+              <polygon points="18,56 19.5,62 26,62 21,65.5 22.5,72 18,68.5 13.5,72 15,65.5 10,62 16.5,62"
+                       fill="#fde88a" stroke="#c4900a" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M8,88 Q50,80 92,88" stroke="#c4900a" stroke-width="1.6" fill="none"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">自分の星に従え</div>
+          <div class="card-sub">Dante Alighieri</div>
+        </div>
+        <div class="corner br">言<br>4</div>
+      </div>
+
+      <!-- 5: 花・禅 -->
+      <div class="card">
+        <div class="corner tl">言<br>5</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <path d="M50,92 Q48,72 50,56" stroke="#5a8a4a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+              <path d="M50,74 Q33,66 30,52 Q41,58 50,68Z" fill="#7ab868" stroke="#5a8a4a" stroke-width="1.8"/>
+              <path d="M50,60 Q67,52 70,38 Q59,46 50,58Z" fill="#7ab868" stroke="#5a8a4a" stroke-width="1.8"/>
+              <ellipse cx="50" cy="35" rx="8" ry="16" fill="#f5a0c0" stroke="#c06080" stroke-width="2.2" transform="rotate(0 50 35)"/>
+              <ellipse cx="50" cy="35" rx="8" ry="16" fill="#f5a0c0" stroke="#c06080" stroke-width="2.2" transform="rotate(60 50 35)"/>
+              <ellipse cx="50" cy="35" rx="8" ry="16" fill="#f5a0c0" stroke="#c06080" stroke-width="2.2" transform="rotate(120 50 35)"/>
+              <circle cx="50" cy="35" r="9" fill="#fde88a" stroke="#c4900a" stroke-width="2.2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">花は咲くことを<br>知らず咲く</div>
+          <div class="card-sub">禅のことば</div>
+        </div>
+        <div class="corner br">言<br>5</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 1: スイーツ ═══════════ -->
+  <div class="section s-sweets" data-index="1" data-state="below">
+    <div class="section-header">
+      <div class="section-ja">スイーツ</div>
+      <div class="section-en">SWEETS &amp; TREATS</div>
+    </div>
+    <div class="cards-row">
+
+      <!-- 1: ショートケーキ -->
+      <div class="card">
+        <div class="corner tl">菓<br>1</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <ellipse cx="50" cy="97" rx="42" ry="7" fill="#e8dcc8" stroke="#a89070" stroke-width="1.8"/>
+              <polygon points="18,90 82,90 70,46 30,46" fill="#f9d2c2" stroke="#c07050" stroke-width="2.8" stroke-linejoin="round"/>
+              <polygon points="18,90 82,90 82,76 18,76" fill="#fff8f0" stroke="#c07050" stroke-width="1.6"/>
+              <rect x="30" y="35" width="40" height="13" rx="4" fill="#f9d2c2" stroke="#c07050" stroke-width="2.2"/>
+              <path d="M30,35 Q40,24 50,32 Q60,24 70,35" fill="#fff8f0" stroke="#c07050" stroke-width="2"/>
+              <rect x="47" y="14" width="6" height="22" rx="2.5" fill="#f5a850" stroke="#d08030" stroke-width="1.2"/>
+              <path d="M50,10 Q55,5 52,12 Q57,7 54,14 Q50,9 46,14 Q43,7 48,12 Q45,5 50,10Z" fill="#ff8020"/>
+              <circle cx="50" cy="28" r="8" fill="#e84040" stroke="#901010" stroke-width="1.8"/>
+              <line x1="50" y1="20" x2="50" y2="17" stroke="#5a8a4a" stroke-width="2.2" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">ショートケーキ</div>
+          <div class="card-sub">Strawberry Shortcake</div>
+        </div>
+        <div class="corner br">菓<br>1</div>
+      </div>
+
+      <!-- 2: マカロン -->
+      <div class="card">
+        <div class="corner tl">菓<br>2</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <!-- Back macaron (blue) -->
+              <ellipse cx="50" cy="40" rx="35" ry="13" fill="#c0e2f0" stroke="#6090a8" stroke-width="2.2"/>
+              <rect x="15" y="36" width="70" height="9" fill="#c0e2f0"/>
+              <ellipse cx="50" cy="55" rx="35" ry="13" fill="#c0e2f0" stroke="#6090a8" stroke-width="2.2"/>
+              <!-- Filling -->
+              <rect x="15" y="52" width="70" height="8" fill="#fffef5"/>
+              <!-- Middle macaron (pink) -->
+              <ellipse cx="50" cy="62" rx="35" ry="13" fill="#f8c8e0" stroke="#c07090" stroke-width="2.2"/>
+              <rect x="15" y="58" width="70" height="9" fill="#f8c8e0"/>
+              <ellipse cx="50" cy="76" rx="35" ry="13" fill="#f8c8e0" stroke="#c07090" stroke-width="2.2"/>
+              <!-- Filling -->
+              <rect x="15" y="73" width="70" height="8" fill="#fffef5"/>
+              <!-- Front macaron (yellow) -->
+              <ellipse cx="50" cy="81" rx="35" ry="13" fill="#fde8a0" stroke="#b09030" stroke-width="2.2"/>
+              <rect x="15" y="77" width="70" height="9" fill="#fde8a0"/>
+              <ellipse cx="50" cy="95" rx="35" ry="13" fill="#fde8a0" stroke="#b09030" stroke-width="2.2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">マカロン</div>
+          <div class="card-sub">Macaron</div>
+        </div>
+        <div class="corner br">菓<br>2</div>
+      </div>
+
+      <!-- 3: パフェ -->
+      <div class="card">
+        <div class="corner tl">菓<br>3</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <!-- Glass outline -->
+              <path d="M32,20 L26,92 L74,92 L68,20 Z" fill="none" stroke="#a0b8d0" stroke-width="2.8" stroke-linejoin="round"/>
+              <!-- Ice cream scoop -->
+              <path d="M37,28 Q50,12 63,28 Q63,40 50,42 Q37,40 37,28Z" fill="#fde8a0" stroke="#c4900a" stroke-width="2.2"/>
+              <!-- Cherry -->
+              <circle cx="50" cy="15" r="8" fill="#e84040" stroke="#901010" stroke-width="1.8"/>
+              <path d="M50,7 Q54,2 59,4" stroke="#5a8a4a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <!-- Cream -->
+              <rect x="35" y="42" width="30" height="11" rx="3" fill="#fffef5" stroke="#d0c0b0" stroke-width="1.5"/>
+              <!-- Fruit layer -->
+              <rect x="33" y="53" width="34" height="11" rx="2" fill="#f8c8e0" stroke="#c07090" stroke-width="1.5"/>
+              <!-- Blue jelly -->
+              <rect x="31" y="64" width="38" height="11" rx="2" fill="#c8e4f0" stroke="#7090a0" stroke-width="1.5"/>
+              <!-- Granola base -->
+              <rect x="29" y="75" width="42" height="14" rx="2" fill="#d4c0a0" stroke="#a08060" stroke-width="1.8"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">パフェ</div>
+          <div class="card-sub">Parfait</div>
+        </div>
+        <div class="corner br">菓<br>3</div>
+      </div>
+
+      <!-- 4: ドーナツ -->
+      <div class="card">
+        <div class="corner tl">菓<br>4</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <circle cx="50" cy="58" r="38" fill="#f4ca8a" stroke="#b07030" stroke-width="2.8"/>
+              <circle cx="50" cy="58" r="16" fill="#f5f0e8" stroke="#b07030" stroke-width="2.2"/>
+              <!-- Icing blob -->
+              <path d="M14,44 Q17,18 50,17 Q83,18 86,44 Q76,36 50,35 Q24,36 14,44Z" fill="#f5a0c0" stroke="#c07090" stroke-width="2"/>
+              <!-- Sprinkles -->
+              <rect x="28" y="22" width="9" height="3.5" rx="1.8" fill="#b060d0" transform="rotate(-22 28 22)"/>
+              <rect x="54" y="19" width="9" height="3.5" rx="1.8" fill="#60b0e0" transform="rotate(15 54 19)"/>
+              <rect x="41" y="30" width="8" height="3.5" rx="1.8" fill="#f0d060" transform="rotate(-10 41 30)"/>
+              <rect x="65" y="27" width="8" height="3.5" rx="1.8" fill="#e06060" transform="rotate(28 65 27)"/>
+              <rect x="23" y="32" width="7" height="3" rx="1.5" fill="#60d090" transform="rotate(-32 23 32)"/>
+              <rect x="72" y="35" width="7" height="3" rx="1.5" fill="#f0a050" transform="rotate(20 72 35)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">ドーナツ</div>
+          <div class="card-sub">Strawberry Glazed</div>
+        </div>
+        <div class="corner br">菓<br>4</div>
+      </div>
+
+      <!-- 5: プリン -->
+      <div class="card">
+        <div class="corner tl">菓<br>5</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <ellipse cx="50" cy="96" rx="40" ry="8" fill="#e8dcc8" stroke="#a89070" stroke-width="1.8"/>
+              <!-- Caramel puddle -->
+              <path d="M24,74 Q20,65 22,54 Q30,78 50,80 Q70,78 78,54 Q80,65 76,74 Q68,94 50,92 Q32,94 24,74Z"
+                    fill="#c8702a" stroke="#904020" stroke-width="1.5"/>
+              <!-- Body -->
+              <path d="M28,77 Q26,52 28,40 Q33,24 50,23 Q67,24 72,40 Q74,52 72,77 Q66,88 50,88 Q34,88 28,77Z"
+                    fill="#f5da90" stroke="#c4900a" stroke-width="2.8" stroke-linejoin="round"/>
+              <!-- Cream -->
+              <path d="M39,28 Q44,17 50,21 Q56,14 60,24 Q52,30 41,30Z" fill="white" stroke="#d0c0a0" stroke-width="1.8"/>
+              <!-- Cherry -->
+              <circle cx="50" cy="15" r="7.5" fill="#e84040" stroke="#901010" stroke-width="1.8"/>
+              <path d="M50,7.5 Q54,3 59,5" stroke="#5a8a4a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">プリン</div>
+          <div class="card-sub">Crème Caramel</div>
+        </div>
+        <div class="corner br">菓<br>5</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════ SECTION 2: エンタメ ═══════════ -->
+  <div class="section s-entame" data-index="2" data-state="below">
+    <div class="section-header">
+      <div class="section-ja">エンタメ</div>
+      <div class="section-en">ENTERTAINMENT</div>
+    </div>
+    <div class="cards-row">
+
+      <!-- 1: 映画 -->
+      <div class="card">
+        <div class="corner tl">娯<br>1</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <defs>
+              <clipPath id="topClip">
+                <rect x="14" y="20" width="72" height="16" rx="4"/>
+              </clipPath>
+            </defs>
+            <g filter="url(#rough)">
+              <rect x="14" y="34" width="72" height="62" rx="4" fill="#28283a" stroke="#5a6a8a" stroke-width="2.8"/>
+              <rect x="14" y="20" width="72" height="16" rx="4" fill="#38384a" stroke="#5a6a8a" stroke-width="2.8"/>
+              <!-- Stripes on clapboard -->
+              <g clip-path="url(#topClip)">
+                <line x1="14" y1="36" x2="30" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="30" y1="36" x2="46" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="46" y1="36" x2="62" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="62" y1="36" x2="78" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="78" y1="36" x2="90" y2="20" stroke="#f5c842" stroke-width="6"/>
+              </g>
+              <line x1="20" y1="50" x2="80" y2="50" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <line x1="20" y1="61" x2="80" y2="61" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <line x1="20" y1="72" x2="80" y2="72" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <!-- Play -->
+              <polygon points="40,84 40,56 70,70" fill="#f5c842" stroke="#c4900a" stroke-width="2.2" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">映画</div>
+          <div class="card-sub">Cinema &amp; Film</div>
+        </div>
+        <div class="corner br">娯<br>1</div>
+      </div>
+
+      <!-- 2: アニメ -->
+      <div class="card">
+        <div class="corner tl">娯<br>2</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <!-- Head -->
+              <path d="M20,52 Q20,20 50,18 Q80,20 80,52 Q80,78 66,82 Q61,92 50,92 Q39,92 34,82 Q20,78 20,52Z"
+                    fill="#fde8c8" stroke="#c09070" stroke-width="2.8" stroke-linejoin="round"/>
+              <!-- Hair -->
+              <path d="M20,52 Q16,30 28,21 Q34,14 50,13 Q66,14 72,21 Q84,30 80,52 Q74,34 66,28 Q56,18 50,17 Q44,18 34,28 Q26,34 20,52Z"
+                    fill="#3c2618" stroke="#1e0e04" stroke-width="2"/>
+              <!-- Eyes whites -->
+              <ellipse cx="37" cy="54" rx="9" ry="11" fill="white" stroke="#c09070" stroke-width="1.5"/>
+              <ellipse cx="63" cy="54" rx="9" ry="11" fill="white" stroke="#c09070" stroke-width="1.5"/>
+              <!-- Iris -->
+              <circle cx="37" cy="55" r="7" fill="#5878e8"/>
+              <circle cx="63" cy="55" r="7" fill="#5878e8"/>
+              <circle cx="36" cy="53" r="6" fill="#2848c0"/>
+              <circle cx="62" cy="53" r="6" fill="#2848c0"/>
+              <!-- Highlight -->
+              <circle cx="34" cy="51" r="2.5" fill="white"/>
+              <circle cx="60" cy="51" r="2.5" fill="white"/>
+              <!-- Mouth -->
+              <path d="M42,70 Q50,77 58,70" stroke="#c09070" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <!-- Blush -->
+              <ellipse cx="28" cy="64" rx="9" ry="5" fill="#f5a0a0" opacity=".45"/>
+              <ellipse cx="72" cy="64" rx="9" ry="5" fill="#f5a0a0" opacity=".45"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">アニメ</div>
+          <div class="card-sub">Anime &amp; Animation</div>
+        </div>
+        <div class="corner br">娯<br>2</div>
+      </div>
+
+      <!-- 3: マンガ -->
+      <div class="card">
+        <div class="corner tl">娯<br>3</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <defs>
+              <clipPath id="mangaClip">
+                <rect x="12" y="12" width="76" height="85" rx="3"/>
+              </clipPath>
+            </defs>
+            <g filter="url(#rough)">
+              <rect x="12" y="12" width="76" height="85" rx="3" fill="white" stroke="#2a2a2a" stroke-width="2.8"/>
+              <line x1="12" y1="52" x2="88" y2="52" stroke="#2a2a2a" stroke-width="2.8"/>
+              <line x1="56" y1="52" x2="56" y2="97" stroke="#2a2a2a" stroke-width="2.8"/>
+              <!-- Speed lines top panel -->
+              <g clip-path="url(#mangaClip)">
+                <line x1="50" y1="32" x2="12" y2="12" stroke="#d8d8d8" stroke-width="1.5"/>
+                <line x1="50" y1="32" x2="12" y2="32" stroke="#d8d8d8" stroke-width="1.5"/>
+                <line x1="50" y1="32" x2="14" y2="48" stroke="#d8d8d8" stroke-width="1.5"/>
+                <line x1="50" y1="32" x2="88" y2="12" stroke="#d8d8d8" stroke-width="1.5"/>
+                <line x1="50" y1="32" x2="88" y2="28" stroke="#d8d8d8" stroke-width="1.5"/>
+                <line x1="50" y1="32" x2="82" y2="48" stroke="#d8d8d8" stroke-width="1.5"/>
+              </g>
+              <!-- Character head top -->
+              <circle cx="50" cy="33" r="13" fill="#fde8c8" stroke="#2a2a2a" stroke-width="2.2"/>
+              <!-- Speech bubble bottom left -->
+              <ellipse cx="34" cy="70" rx="18" ry="13" fill="white" stroke="#2a2a2a" stroke-width="1.8"/>
+              <polygon points="38,81 26,88 34,83" fill="white" stroke="#2a2a2a" stroke-width="1.5" stroke-linejoin="round"/>
+              <text x="34" y="73" text-anchor="middle" font-size="10" fill="#2a2a2a" font-family="Georgia">！ ！</text>
+              <!-- Action panel bottom right -->
+              <polygon points="64,55 88,68 64,80" fill="#f5c842" stroke="#c4900a" stroke-width="2.2" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">マンガ</div>
+          <div class="card-sub">Manga &amp; Comics</div>
+        </div>
+        <div class="corner br">娯<br>3</div>
+      </div>
+
+      <!-- 4: 音楽 -->
+      <div class="card">
+        <div class="corner tl">娯<br>4</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <!-- Big music note -->
+              <path d="M42,18 L42,74 Q42,88 30,88 Q18,88 18,77 Q18,66 30,66 Q36,66 42,70 L42,32 L78,22 L78,62 Q78,76 66,76 Q54,76 54,65 Q54,54 66,54 Q72,54 78,58 L78,22 Z"
+                    fill="#5a5a7a" stroke="#3a3a5a" stroke-width="2.8" stroke-linejoin="round"/>
+              <!-- Decorative notes -->
+              <text x="12" y="34" font-size="18" fill="#9898ba" opacity=".65" font-family="Georgia">♪</text>
+              <text x="74" y="96" font-size="14" fill="#9898ba" opacity=".65" font-family="Georgia">♩</text>
+              <text x="8" y="96" font-size="11" fill="#9898ba" opacity=".5" font-family="Georgia">♫</text>
+              <text x="78" y="38" font-size="11" fill="#9898ba" opacity=".5" font-family="Georgia">♬</text>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">音楽</div>
+          <div class="card-sub">Music &amp; Sounds</div>
+        </div>
+        <div class="corner br">娯<br>4</div>
+      </div>
+
+      <!-- 5: ゲーム -->
+      <div class="card">
+        <div class="corner tl">娯<br>5</div>
+        <div class="card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <!-- Controller body -->
+              <path d="M16,48 Q14,35 24,32 L40,30 Q50,28 60,30 L76,32 Q86,35 84,48 L82,74 Q80,84 72,85 Q64,86 60,76 L40,76 Q36,86 28,85 Q20,84 18,74 Z"
+                    fill="#4a4a5a" stroke="#2a2a38" stroke-width="2.8" stroke-linejoin="round"/>
+              <!-- D-pad -->
+              <rect x="22" y="51" width="22" height="8" rx="2" fill="#6a6a7a" stroke="#4a4a5a" stroke-width="1"/>
+              <rect x="28" y="44" width="8" height="22" rx="2" fill="#6a6a7a" stroke="#4a4a5a" stroke-width="1"/>
+              <!-- Action buttons -->
+              <circle cx="68" cy="49" r="6" fill="#e07090" stroke="#a03060" stroke-width="1.5"/>
+              <circle cx="79" cy="57" r="6" fill="#70c070" stroke="#309030" stroke-width="1.5"/>
+              <circle cx="68" cy="64" r="6" fill="#7090e0" stroke="#3050b0" stroke-width="1.5"/>
+              <circle cx="57" cy="57" r="6" fill="#e0d070" stroke="#a09020" stroke-width="1.5"/>
+              <!-- Center button -->
+              <circle cx="50" cy="55" r="7" fill="#5a5a6a" stroke="#3a3a4a" stroke-width="1.8"/>
+              <!-- Bumpers -->
+              <path d="M16,47 Q20,39 32,36" stroke="#6a6a7a" stroke-width="5" fill="none" stroke-linecap="round"/>
+              <path d="M84,47 Q80,39 68,36" stroke="#6a6a7a" stroke-width="5" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-info">
+          <div class="card-name">ゲーム</div>
+          <div class="card-sub">Video Games</div>
+        </div>
+        <div class="corner br">娯<br>5</div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<!-- Navigation dots -->
+<nav class="nav" aria-label="セクション移動">
+  <div class="nav-btn active" data-to="0" title="言葉"></div>
+  <div class="nav-btn" data-to="1" title="スイーツ"></div>
+  <div class="nav-btn" data-to="2" title="エンタメ"></div>
+</nav>
+
+<div class="scroll-hint">SCROLL</div>
+
+<script>
+(function(){
+  const sections = Array.from(document.querySelectorAll('.section'));
+  const navBtns  = Array.from(document.querySelectorAll('.nav-btn'));
+  const hint     = document.querySelector('.scroll-hint');
+  let current    = 0;
+  let busy       = false;
+
+  /* ── go to section ── */
+  function goTo(idx){
+    if(busy || idx === current || idx < 0 || idx >= sections.length) return;
+    busy = true;
+    current = idx;
+
+    sections.forEach((s, i) => {
+      s.dataset.state = i < current ? 'above' : i > current ? 'below' : 'active';
+    });
+
+    navBtns.forEach((b, i) => b.classList.toggle('active', i === current));
+    if(current > 0) hint.style.opacity = '0';
+
+    // Re-trigger card animation
+    const activeCards = sections[current].querySelectorAll('.card');
+    activeCards.forEach(c => {
+      c.classList.remove('card-in');
+      void c.offsetWidth; // reflow trick
+      c.classList.add('card-in');
+    });
+
+    setTimeout(() => { busy = false; }, 1050);
+  }
+
+  /* Initial card animation for section 0 */
+  sections[0].querySelectorAll('.card').forEach((c, i) => {
+    setTimeout(() => c.classList.add('card-in'), 100 + i * 80);
+  });
+
+  /* ── Wheel ── */
+  let lastWheel = 0;
+  window.addEventListener('wheel', e => {
+    const now = Date.now();
+    if(now - lastWheel < 850) return;
+    lastWheel = now;
+    if(e.deltaY > 0) goTo(current + 1);
+    else             goTo(current - 1);
+  }, {passive: true});
+
+  /* ── Touch ── */
+  let ty = 0;
+  window.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, {passive: true});
+  window.addEventListener('touchend',   e => {
+    const d = ty - e.changedTouches[0].clientY;
+    if(Math.abs(d) > 48){
+      if(d > 0) goTo(current + 1);
+      else      goTo(current - 1);
+    }
+  }, {passive: true});
+
+  /* ── Keyboard ── */
+  window.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown' || e.key === 'PageDown') goTo(current + 1);
+    if(e.key === 'ArrowUp'   || e.key === 'PageUp'  ) goTo(current - 1);
+  });
+
+  /* ── Nav dots ── */
+  navBtns.forEach(b => b.addEventListener('click', () => goTo(+b.dataset.to)));
+})();
+</script>
+
+</body>
+</html>
