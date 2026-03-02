@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品 — つまみぐい</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Caveat:wght@500;700&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════ */
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --cream:   #f7f2e8;
+  --cream2:  #ede5d4;
+  --warm:    #d6c9b0;
+  --ink:     #2e2818;
+  --ink-lt:  #6b5d48;
+  --ink-xs:  #a89880;
+  --accent:  #c8956a;
+  --sage:    #8aaa88;
+  --dusty:   #b0a0d0;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Serif JP', serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════════════
+   HEADER (fixed) — 共通
+══════════════════════════════════════ */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  padding: 0 36px;
+  background: rgba(247,242,232,.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(214,201,176,.5);
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--ink);
+  text-decoration: none;
+  margin-right: auto;
+  font-family: 'Noto Serif JP', serif;
+}
+.logo span {
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: .3em;
+  color: var(--ink-xs);
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.nav { display: flex; align-items: center; gap: 2px; }
+.nav-item {
+  position: relative;
+  font-size: 12px;
+  letter-spacing: .1em;
+  color: var(--ink-lt);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color .2s, background .2s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  user-select: none;
+}
+.nav-item:hover { color: var(--ink); background: rgba(0,0,0,.04); }
+.nav-item.active { color: var(--accent); }
+.nav-item .chevron { font-size: 8px; opacity: .5; }
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--cream);
+  border: 1px solid var(--warm);
+  border-radius: 10px;
+  box-shadow: 0 6px 28px rgba(46,40,24,.1);
+  padding: 6px 0;
+  min-width: 150px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity .2s, transform .2s;
+}
+.nav-item:hover .dropdown {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+.dd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  font-size: 12px;
+  color: var(--ink-lt);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.dd-item:hover { background: var(--cream2); color: var(--ink); }
+.dd-icon { font-size: 14px; }
+
+.search-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--warm);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--ink-lt);
+  transition: all .2s;
+  margin-left: 6px;
+}
+.search-btn:hover { background: var(--cream2); color: var(--ink); border-color: var(--ink-xs); }
+
+/* ══════════════════════════════════════
+   PAGE LAYOUT
+══════════════════════════════════════ */
+.page {
+  padding-top: 58px;
+  min-height: 100vh;
+}
+
+/* ── PAGE HERO ── */
+.page-hero {
+  position: relative;
+  padding: 52px 48px 36px;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 50%, rgba(200,149,106,.1) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(176,160,208,.07) 0%, transparent 55%);
+  pointer-events: none;
+}
+.page-hero-inner { position: relative; max-width: 1200px; margin: 0 auto; }
+
+.page-eyebrow {
+  font-size: 10px;
+  letter-spacing: .5em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+.page-title {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+.page-title-en {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(14px, 2.2vw, 20px);
+  color: var(--accent);
+  letter-spacing: .15em;
+  margin-bottom: 18px;
+}
+.page-desc {
+  font-size: 13px;
+  color: var(--ink-xs);
+  line-height: 1.8;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  max-width: 480px;
+}
+
+/* ══════════════════════════════════════
+   CONTROLS BAR
+══════════════════════════════════════ */
+.controls {
+  position: sticky;
+  top: 58px;
+  z-index: 100;
+  background: rgba(247,242,232,.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(214,201,176,.4);
+  padding: 12px 48px;
+}
+.controls-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Search */
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 320px;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-xs);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  padding: 8px 14px 8px 36px;
+  border: 1.5px solid var(--warm);
+  border-radius: 22px;
+  background: var(--cream);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 12px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.search-input::placeholder { color: var(--ink-xs); }
+.search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(200,149,106,.12);
+}
+
+/* Filter pills */
+.filter-wrap {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.pill {
+  font-size: 11px;
+  letter-spacing: .05em;
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--warm);
+  background: transparent;
+  color: var(--ink-lt);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.pill:hover { border-color: var(--ink-xs); color: var(--ink); }
+.pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.pill[data-cat="漫画"].active   { background: var(--sage);  border-color: var(--sage); }
+.pill[data-cat="アニメ"].active { background: var(--dusty); border-color: var(--dusty); }
+.pill[data-cat="ドラマ・本"].active { background: #b8957a; border-color: #b8957a; }
+
+/* View toggle */
+.view-toggle {
+  display: flex;
+  border: 1.5px solid var(--warm);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.vt-btn {
+  padding: 6px 11px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--ink-xs);
+  font-size: 14px;
+  transition: background .2s, color .2s;
+}
+.vt-btn.active { background: var(--ink); color: #fff; }
+
+/* ══════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════ */
+.main { max-width: 1200px; margin: 0 auto; padding: 36px 48px 80px; }
+
+/* Section heading */
+.section-row {
+  margin-bottom: 36px;
+  transition: opacity .3s;
+}
+.section-row.hidden { display: none; }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--cream2);
+}
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--ink);
+}
+.section-icon { font-size: 18px; }
+.section-count {
+  font-size: 11px;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  margin-left: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.section-count:hover { color: var(--accent); }
+
+/* ── GRID VIEW ── */
+.card-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+}
+
+/* Netflix horizontal scroll (default) */
+.card-row.scroll-mode {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding-bottom: 12px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--warm) transparent;
+}
+.card-row.scroll-mode::-webkit-scrollbar { height: 4px; }
+.card-row.scroll-mode::-webkit-scrollbar-track { background: transparent; }
+.card-row.scroll-mode::-webkit-scrollbar-thumb { background: var(--warm); border-radius: 2px; }
+
+.card-row.scroll-mode .work-card {
+  flex: 0 0 160px;
+  scroll-snap-align: start;
+}
+
+/* ── LIST VIEW ── */
+.list-view .section-row .card-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.list-view .work-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  border-radius: 10px;
+  border-bottom: 1px solid var(--cream2);
+  padding: 14px 8px;
+}
+.list-view .work-card:last-child { border-bottom: none; }
+.list-view .card-thumb {
+  width: 70px;
+  height: 100px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+.list-view .card-body {
+  padding: 0 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.list-view .card-title { font-size: 14px; margin-bottom: 4px; }
+.list-view .card-meta  { flex-direction: row; gap: 12px; margin-top: 6px; }
+.list-view .card-comment { font-size: 12px; max-width: 480px; -webkit-line-clamp: 2; }
+.list-view .card-hover-hint { display: none; }
+
+/* ══════════════════════════════════════
+   WORK CARD
+══════════════════════════════════════ */
+.work-card {
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--cream2);
+  transition: transform .25s, box-shadow .25s;
+  position: relative;
+}
+.work-card:hover {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 14px 32px rgba(46,40,24,.13);
+}
+.work-card:hover .card-hover-hint { opacity: 1; }
+
+/* Poster thumbnail */
+.card-thumb {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+  background: var(--warm);
+  position: relative;
+  overflow: hidden;
+}
+.card-thumb-placeholder {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: linear-gradient(135deg, var(--cream2) 0%, var(--warm) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.card-thumb-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='r'%3E%3CfeTurbulence baseFrequency='0.06' numOctaves='3' result='noise'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='noise' scale='2'/%3E%3C/filter%3E%3Ccircle cx='30' cy='30' r='22' fill='none' stroke='%23d6c9b0' stroke-width='1.5' filter='url(%23r)'/%3E%3C/svg%3E") center/60px repeat;
+  opacity: .35;
+}
+.placeholder-icon {
+  font-size: 32px;
+  position: relative;
+  z-index: 1;
+  opacity: .5;
+}
+.placeholder-label {
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover hint */
+.card-hover-hint {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(247,242,232,.9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity .2s;
+}
+
+/* Rating badge */
+.card-rating-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(46,40,24,.7);
+  color: #fff;
+  font-size: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: .04em;
+  backdrop-filter: blur(4px);
+}
+
+/* Card body */
+.card-body {
+  padding: 12px 12px 14px;
+}
+.card-cat-tag {
+  font-size: 9px;
+  letter-spacing: .18em;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  color: var(--ink-xs);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-comment {
+  font-size: 11px;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.card-year {
+  font-size: 10px;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+}
+.card-genre {
+  font-size: 9px;
+  background: var(--cream);
+  border: 1px solid var(--warm);
+  color: var(--ink-lt);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.stars {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: -.5px;
+}
+
+/* ══════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════ */
+.empty-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  gap: 12px;
+  text-align: center;
+}
+.empty-state.visible { display: flex; }
+.empty-icon { font-size: 48px; opacity: .4; }
+.empty-msg { font-size: 14px; }
+.empty-sub { font-size: 12px; opacity: .7; }
+
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(46,40,24,.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--cream);
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(46,40,24,.22);
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px) scale(.97);
+  transition: transform .3s;
+}
+.modal-overlay.open .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  gap: 24px;
+  padding: 28px 28px 0;
+}
+.modal-thumb {
+  width: 130px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  align-self: flex-start;
+}
+.modal-thumb img,
+.modal-thumb .card-thumb-placeholder {
+  width: 130px;
+  aspect-ratio: 2/3;
+  border-radius: 12px;
+}
+.modal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.modal-cat {
+  font-size: 10px;
+  letter-spacing: .3em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+}
+.modal-title {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.modal-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+}
+.modal-year { font-size: 12px; color: var(--ink-xs); font-family: 'Noto Sans JP', sans-serif; }
+.modal-genre {
+  font-size: 11px;
+  background: var(--cream2);
+  border: 1px solid var(--warm);
+  color: var(--ink-lt);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.modal-stars {
+  font-size: 17px;
+  color: var(--accent);
+  letter-spacing: -.5px;
+}
+.modal-body {
+  padding: 20px 28px 28px;
+}
+.modal-section-label {
+  font-size: 10px;
+  letter-spacing: .3em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.modal-comment {
+  font-size: 14px;
+  color: var(--ink-lt);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  line-height: 1.9;
+}
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--warm);
+  background: var(--cream);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-lt);
+  transition: all .2s;
+}
+.modal-close:hover { background: var(--cream2); color: var(--ink); }
+
+/* ══════════════════════════════════════
+   SEARCH OVERLAY
+══════════════════════════════════════ */
+.search-overlay {
+  display: none; /* controlled by controls bar */
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .page-hero     { padding: 40px 24px 28px; }
+  .controls      { padding: 10px 24px; }
+  .main          { padding: 24px 24px 60px; }
+  .header        { padding: 0 20px; }
+  .logo span     { display: none; }
+  .nav-item:not(.nav-pages) { display: none; }
+  .modal-header  { flex-direction: column; align-items: center; }
+  .modal-thumb   { width: 110px; }
+  .modal-title   { text-align: center; }
+  .modal-meta    { justify-content: center; }
+}
+@media (max-width: 600px) {
+  .section-title { font-size: 14px; }
+  .card-row.scroll-mode .work-card { flex: 0 0 140px; }
+  .filter-wrap   { gap: 5px; }
+  .pill          { font-size: 10px; padding: 4px 11px; }
+}
+
+/* ══════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════ */
+.work-card { opacity: 0; transform: translateY(16px); }
+.work-card.visible {
+  animation: fadeUp .5s ease forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <a href="index.html" class="logo">つまみぐい <span>a personal collection</span></a>
+  <nav class="nav">
+    <a href="index.html" class="nav-item">TOP</a>
+    <a href="works.html" class="nav-item active nav-pages">
+      作品 <span class="chevron">▾</span>
+      <div class="dropdown">
+        <div class="dd-item" onclick="filterCat('映画')"><span class="dd-icon">🎬</span>映画</div>
+        <div class="dd-item" onclick="filterCat('漫画')"><span class="dd-icon">📚</span>漫画</div>
+        <div class="dd-item" onclick="filterCat('アニメ')"><span class="dd-icon">✨</span>アニメ</div>
+        <div class="dd-item" onclick="filterCat('ドラマ・本')"><span class="dd-icon">📖</span>ドラマ・本</div>
+      </div>
+    </a>
+    <a href="#" class="nav-item">スイーツ</a>
+    <a href="#" class="nav-item">日記</a>
+    <a href="#" class="nav-item">言葉</a>
+    <a href="#" class="nav-item">プロフィール</a>
+  </nav>
+  <button class="search-btn" onclick="focusSearch()" title="検索">🔍</button>
+</header>
+
+<!-- ══ PAGE HERO ══ -->
+<div class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">COLLECTION</p>
+      <h1 class="page-title">作品</h1>
+      <p class="page-title-en">movies &amp; books &amp; more</p>
+      <p class="page-desc">映画、漫画、アニメ、ドラマ、本——<br>心に残ったものを少しずつ集めています。</p>
+    </div>
+  </div>
+
+  <!-- ══ CONTROLS ══ -->
+  <div class="controls" id="controls">
+    <div class="controls-inner">
+      <!-- Search -->
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input id="searchInput" class="search-input" type="search" placeholder="タイトルで探す…" oninput="onSearch(this.value)">
+      </div>
+
+      <!-- Category pills -->
+      <div class="filter-wrap" id="filterWrap">
+        <button class="pill active" data-cat="all"    onclick="filterCat('all')">すべて</button>
+        <button class="pill"        data-cat="映画"   onclick="filterCat('映画')">🎬 映画</button>
+        <button class="pill"        data-cat="漫画"   onclick="filterCat('漫画')">📚 漫画</button>
+        <button class="pill"        data-cat="アニメ" onclick="filterCat('アニメ')">✨ アニメ</button>
+        <button class="pill"        data-cat="ドラマ・本" onclick="filterCat('ドラマ・本')">📖 ドラマ・本</button>
+      </div>
+
+      <!-- View toggle -->
+      <div class="view-toggle">
+        <button class="vt-btn active" id="vtGrid" onclick="setView('grid')" title="グリッド表示">⊞</button>
+        <button class="vt-btn"        id="vtList" onclick="setView('list')" title="一覧表示">☰</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main" id="main">
+
+    <!-- 映画 -->
+    <section class="section-row" id="sec-映画" data-cat="映画">
+      <div class="section-head">
+        <span class="section-icon">🎬</span>
+        <h2 class="section-title">映画</h2>
+        <span class="section-count" onclick="toggleScroll('映画')">
+          横スクロール <span id="scroll-icon-映画">⇆</span>
+        </span>
+      </div>
+      <div class="card-row scroll-mode" id="row-映画">
+        <!-- カード：ここに追加していく -->
+        <!-- サンプルカード ▼ -->
+        <div class="work-card" data-title="ムーンライト" data-cat="映画" data-comment="静かな夜の海のような映画。言葉ではなく、光と影で語られる少年の物語。何度でも観たい。" data-rating="5" data-genre="ドラマ" data-year="2016" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">🎬</div>
+            <div class="placeholder-label">MOONLIGHT</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">映画</div>
+            <div class="card-title">ムーンライト</div>
+            <div class="card-comment">静かな夜の海のような映画。言葉ではなく、光と影で語られる少年の物語。</div>
+            <div class="card-meta">
+              <span class="card-year">2016</span>
+              <span class="card-genre">ドラマ</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="パーフェクト・デイズ" data-cat="映画" data-comment="「今ここにある小さな幸せ」を描いた傑作。役所広司の背中だけで泣ける。" data-rating="5" data-genre="ドラマ" data-year="2023" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">🎬</div>
+            <div class="placeholder-label">PERFECT DAYS</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">映画</div>
+            <div class="card-title">パーフェクト・デイズ</div>
+            <div class="card-comment">「今ここにある小さな幸せ」を描いた傑作。役所広司の背中だけで泣ける。</div>
+            <div class="card-meta">
+              <span class="card-year">2023</span>
+              <span class="card-genre">ドラマ</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="mid90s" data-cat="映画" data-comment="夏の終わりみたいな青春映画。ジョナ・ヒルが撮ったとは思えない繊細さ。" data-rating="4" data-genre="青春" data-year="2018" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">🎬</div>
+            <div class="placeholder-label">MID90s</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">映画</div>
+            <div class="card-title">mid90s</div>
+            <div class="card-comment">夏の終わりみたいな青春映画。繊細で、痛くて、愛おしい。</div>
+            <div class="card-meta">
+              <span class="card-year">2018</span>
+              <span class="card-genre">青春</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="ドライブ・マイ・カー" data-cat="映画" data-comment="喪失と言葉と沈黙。3時間があっという間だった。ハルキの原作とも違う深みがある。" data-rating="5" data-genre="ドラマ" data-year="2021" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">🎬</div>
+            <div class="placeholder-label">DRIVE MY CAR</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">映画</div>
+            <div class="card-title">ドライブ・マイ・カー</div>
+            <div class="card-comment">喪失と言葉と沈黙。3時間があっという間だった。</div>
+            <div class="card-meta">
+              <span class="card-year">2021</span>
+              <span class="card-genre">ドラマ</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="花束みたいな恋をした" data-cat="映画" data-comment="好きなものが同じだった頃の記憶。切なすぎて直視できないシーンがいくつもある。" data-rating="4" data-genre="恋愛" data-year="2021" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">🎬</div>
+            <div class="placeholder-label">HANATABA</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">映画</div>
+            <div class="card-title">花束みたいな恋をした</div>
+            <div class="card-comment">好きなものが同じだった頃の記憶。切なすぎる。</div>
+            <div class="card-meta">
+              <span class="card-year">2021</span>
+              <span class="card-genre">恋愛</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="あなたを追いかけて" data-cat="映画" data-comment="イランの映画。家族の形と選択の重さについて、静かに問いかけてくる。" data-rating="4" data-genre="ドラマ" data-year="2020" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">🎬</div>
+            <div class="placeholder-label">FILM</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">映画</div>
+            <div class="card-title">あなたを追いかけて</div>
+            <div class="card-comment">家族の形と選択の重さについて、静かに問いかけてくる。</div>
+            <div class="card-meta">
+              <span class="card-year">2020</span>
+              <span class="card-genre">ドラマ</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+        <!-- サンプルカード ▲ -->
+        <!-- ＋ ここにカードを追加 -->
+      </div>
+    </section>
+
+    <!-- 漫画 -->
+    <section class="section-row" id="sec-漫画" data-cat="漫画">
+      <div class="section-head">
+        <span class="section-icon">📚</span>
+        <h2 class="section-title">漫画</h2>
+        <span class="section-count" onclick="toggleScroll('漫画')">
+          横スクロール <span id="scroll-icon-漫画">⇆</span>
+        </span>
+      </div>
+      <div class="card-row scroll-mode" id="row-漫画">
+        <div class="work-card" data-title="チ。地球の運動について" data-cat="漫画" data-comment="何かを信じることの意味を、命をかけて追う人たちの物語。読後にしばらく立ち上がれなかった。" data-rating="5" data-genre="歴史・哲学" data-year="2020" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📚</div>
+            <div class="placeholder-label">チ。</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">漫画</div>
+            <div class="card-title">チ。地球の運動について</div>
+            <div class="card-comment">命をかけて「知ること」を追う人たちの物語。</div>
+            <div class="card-meta">
+              <span class="card-year">2020</span>
+              <span class="card-genre">歴史・哲学</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="違国日記" data-cat="漫画" data-comment="「わかりあえない」ことを前提にした関係が、こんなにあたたかく描けるのか。槙生ちゃんが好きすぎる。" data-rating="5" data-genre="日常・家族" data-year="2017" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📚</div>
+            <div class="placeholder-label">違国日記</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">漫画</div>
+            <div class="card-title">違国日記</div>
+            <div class="card-comment">「わかりあえない」を前提にした関係の温かさ。</div>
+            <div class="card-meta">
+              <span class="card-year">2017</span>
+              <span class="card-genre">日常・家族</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="ブルーピリオド" data-cat="漫画" data-comment="「好き」を仕事にすることの怖さと喜び。美大受験という特殊な舞台なのに、普遍的すぎる。" data-rating="5" data-genre="青春・アート" data-year="2017" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📚</div>
+            <div class="placeholder-label">BLUE PERIOD</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">漫画</div>
+            <div class="card-title">ブルーピリオド</div>
+            <div class="card-comment">「好き」を仕事にすることの怖さと喜び。</div>
+            <div class="card-meta">
+              <span class="card-year">2017</span>
+              <span class="card-genre">青春・アート</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="山と食欲と私" data-cat="漫画" data-comment="山ごはんが毎回おいしそうすぎる。ひとり登山の自由さが伝わってきて読むたびに山に行きたくなる。" data-rating="4" data-genre="アウトドア・グルメ" data-year="2015" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📚</div>
+            <div class="placeholder-label">山と食欲</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">漫画</div>
+            <div class="card-title">山と食欲と私</div>
+            <div class="card-comment">山ごはんが毎回おいしそうすぎる。読むたびに山に行きたくなる。</div>
+            <div class="card-meta">
+              <span class="card-year">2015</span>
+              <span class="card-genre">アウトドア</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="パタリロ！" data-cat="漫画" data-comment="少女漫画の風格で描くSFコメディ。長すぎてどこから読んでもいい。パタリロの名言がやたら刺さる。" data-rating="4" data-genre="コメディ・SF" data-year="1978" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📚</div>
+            <div class="placeholder-label">PATALLIRO</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">漫画</div>
+            <div class="card-title">パタリロ！</div>
+            <div class="card-comment">長すぎてどこから読んでもいい名作。名言がやたら刺さる。</div>
+            <div class="card-meta">
+              <span class="card-year">1978〜</span>
+              <span class="card-genre">コメディ</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- アニメ -->
+    <section class="section-row" id="sec-アニメ" data-cat="アニメ">
+      <div class="section-head">
+        <span class="section-icon">✨</span>
+        <h2 class="section-title">アニメ</h2>
+        <span class="section-count" onclick="toggleScroll('アニメ')">
+          横スクロール <span id="scroll-icon-アニメ">⇆</span>
+        </span>
+      </div>
+      <div class="card-row scroll-mode" id="row-アニメ">
+        <div class="work-card" data-title="スキップとローファー" data-cat="アニメ" data-comment="こんなにやさしい世界があってほしい。みつみちゃんの無邪気さに何度も救われた。" data-rating="5" data-genre="青春・日常" data-year="2023" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">✨</div>
+            <div class="placeholder-label">SKIP&LOAFER</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">アニメ</div>
+            <div class="card-title">スキップとローファー</div>
+            <div class="card-comment">こんなにやさしい世界があってほしい。みつみちゃんに何度も救われた。</div>
+            <div class="card-meta">
+              <span class="card-year">2023</span>
+              <span class="card-genre">青春・日常</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="映像研には手を出すな！" data-cat="アニメ" data-comment="「最強の世界」を作ること、その熱量を見ていると自分も何か作りたくなる。" data-rating="5" data-genre="青春・アート" data-year="2020" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">✨</div>
+            <div class="placeholder-label">映像研</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">アニメ</div>
+            <div class="card-title">映像研には手を出すな！</div>
+            <div class="card-comment">「最強の世界」を作る熱量に感化される。見るたびに何か作りたくなる。</div>
+            <div class="card-meta">
+              <span class="card-year">2020</span>
+              <span class="card-genre">青春・アート</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="氷菓" data-cat="アニメ" data-comment="「省エネ」の奉太郎が少しずつ変わっていく。ミステリーよりも日常の空気感が好き。" data-rating="4" data-genre="ミステリー・日常" data-year="2012" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">✨</div>
+            <div class="placeholder-label">HYOUKA</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">アニメ</div>
+            <div class="card-title">氷菓</div>
+            <div class="card-comment">「省エネ」の奉太郎が少しずつ変わっていく。日常の空気感が好き。</div>
+            <div class="card-meta">
+              <span class="card-year">2012</span>
+              <span class="card-genre">ミステリー</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="宇宙よりも遠い場所" data-cat="アニメ" data-comment="南極に行く！という目標だけで4人があそこまでできるの、まじですごい。最終話で号泣。" data-rating="5" data-genre="青春・冒険" data-year="2018" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">✨</div>
+            <div class="placeholder-label">YORIMOI</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">アニメ</div>
+            <div class="card-title">宇宙よりも遠い場所</div>
+            <div class="card-comment">「南極に行く！」だけでここまで行ける人間の強さ。最終話で号泣。</div>
+            <div class="card-meta">
+              <span class="card-year">2018</span>
+              <span class="card-genre">青春・冒険</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="ゆるキャン△" data-cat="アニメ" data-comment="ひとりキャンプの静けさとグループの楽しさが両方ある。見るだけで心があったかくなる。" data-rating="4" data-genre="アウトドア・日常" data-year="2018" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">✨</div>
+            <div class="placeholder-label">YURU CAMP</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">アニメ</div>
+            <div class="card-title">ゆるキャン△</div>
+            <div class="card-comment">見るだけで心があったかくなる。ひとりの静けさとみんなの楽しさ。</div>
+            <div class="card-meta">
+              <span class="card-year">2018</span>
+              <span class="card-genre">日常</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ドラマ・本 -->
+    <section class="section-row" id="sec-ドラマ・本" data-cat="ドラマ・本">
+      <div class="section-head">
+        <span class="section-icon">📖</span>
+        <h2 class="section-title">ドラマ・本</h2>
+        <span class="section-count" onclick="toggleScroll('ドラマ・本')">
+          横スクロール <span id="scroll-icon-ドラマ・本">⇆</span>
+        </span>
+      </div>
+      <div class="card-row scroll-mode" id="row-ドラマ・本">
+        <div class="work-card" data-title="カルテット" data-cat="ドラマ・本" data-comment="台詞が一つひとつ宝石みたい。4人の関係性があんなにも複雑でやさしくて切ない。" data-rating="5" data-genre="ドラマ" data-year="2017" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📺</div>
+            <div class="placeholder-label">QUARTET</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">ドラマ</div>
+            <div class="card-title">カルテット</div>
+            <div class="card-comment">台詞が一つひとつ宝石みたい。4人の関係性があんなにも複雑でやさしくて切ない。</div>
+            <div class="card-meta">
+              <span class="card-year">2017</span>
+              <span class="card-genre">ドラマ</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="あなたのことはそれほど" data-cat="ドラマ・本" data-comment="不倫ドラマだけど「愛すること」の業みたいなものをヒリヒリ感じた。主題歌も好き。" data-rating="4" data-genre="ドラマ・恋愛" data-year="2017" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📺</div>
+            <div class="placeholder-label">DRAMA</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">ドラマ</div>
+            <div class="card-title">あなたのことはそれほど</div>
+            <div class="card-comment">「愛すること」の業みたいなものをヒリヒリ感じた。</div>
+            <div class="card-meta">
+              <span class="card-year">2017</span>
+              <span class="card-genre">恋愛</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="コンビニ人間" data-cat="ドラマ・本" data-comment="「普通」って何なんだろうとずっと考えてた。古倉さんの一人称が心地よすぎる。" data-rating="5" data-genre="小説" data-year="2016" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📗</div>
+            <div class="placeholder-label">CONVENIENCE STORE</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">小説</div>
+            <div class="card-title">コンビニ人間</div>
+            <div class="card-comment">「普通」って何なんだろうとずっと考えてた。古倉さんの一人称が心地よすぎる。</div>
+            <div class="card-meta">
+              <span class="card-year">2016</span>
+              <span class="card-genre">小説</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="かか" data-cat="ドラマ・本" data-comment="宇佐見りんの文体が頭の中でずっと響いてる。母と娘の関係を読むのが怖かった。" data-rating="4" data-genre="小説" data-year="2019" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📗</div>
+            <div class="placeholder-label">KAKA</div>
+          </div>
+          <div class="card-rating-badge">★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">小説</div>
+            <div class="card-title">かか</div>
+            <div class="card-comment">宇佐見りんの文体が頭の中でずっと響いてる。母と娘の関係を読むのが怖かった。</div>
+            <div class="card-meta">
+              <span class="card-year">2019</span>
+              <span class="card-genre">小説</span>
+              <span class="stars">★★★★</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-card" data-title="博士の愛した数式" data-cat="ドラマ・本" data-comment="80分しか記憶が続かない博士と、数式の美しさ。やさしさってこういうことだと思う。" data-rating="5" data-genre="小説" data-year="2003" onclick="openModal(this)">
+          <div class="card-thumb-placeholder">
+            <div class="placeholder-icon">📗</div>
+            <div class="placeholder-label">THE PROFESSOR</div>
+          </div>
+          <div class="card-rating-badge">★★★★★</div>
+          <div class="card-hover-hint">＋</div>
+          <div class="card-body">
+            <div class="card-cat-tag">小説</div>
+            <div class="card-title">博士の愛した数式</div>
+            <div class="card-comment">80分しか記憶が続かない博士と数式の美しさ。やさしさってこういうことだと思う。</div>
+            <div class="card-meta">
+              <span class="card-year">2003</span>
+              <span class="card-genre">小説</span>
+              <span class="stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🔍</div>
+      <p class="empty-msg">見つかりませんでした</p>
+      <p class="empty-sub">別のキーワードで試してみてください</p>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div class="modal-thumb" id="modalThumb"></div>
+      <div class="modal-info">
+        <div class="modal-cat" id="modalCat"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-meta">
+          <span class="modal-year" id="modalYear"></span>
+          <span class="modal-genre" id="modalGenre"></span>
+        </div>
+        <div class="modal-stars" id="modalStars"></div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section-label">— ひとこと</div>
+      <p class="modal-comment" id="modalComment"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   VIEW TOGGLE
+══════════════════════════════════════ */
+let currentView = 'grid';  // 'grid' | 'list'
+
+function setView(v) {
+  currentView = v;
+  const main = document.getElementById('main');
+  const vtGrid = document.getElementById('vtGrid');
+  const vtList = document.getElementById('vtList');
+  const rows   = document.querySelectorAll('.card-row');
+
+  if (v === 'list') {
+    main.classList.add('list-view');
+    vtList.classList.add('active');
+    vtGrid.classList.remove('active');
+    rows.forEach(r => r.classList.remove('scroll-mode'));
+  } else {
+    main.classList.remove('list-view');
+    vtGrid.classList.add('active');
+    vtList.classList.remove('active');
+    rows.forEach(r => {
+      const cat = r.id.replace('row-', '');
+      if (scrollStates[cat] !== false) r.classList.add('scroll-mode');
+    });
+  }
+}
+
+/* ══════════════════════════════════════
+   SCROLL TOGGLE (section-level)
+══════════════════════════════════════ */
+const scrollStates = {};
+
+function toggleScroll(cat) {
+  if (currentView === 'list') return;
+  const row = document.getElementById('row-' + cat);
+  const icon = document.getElementById('scroll-icon-' + cat);
+  const isScroll = row.classList.contains('scroll-mode');
+  if (isScroll) {
+    row.classList.remove('scroll-mode');
+    icon.textContent = '⊞';
+    scrollStates[cat] = false;
+  } else {
+    row.classList.add('scroll-mode');
+    icon.textContent = '⇆';
+    scrollStates[cat] = true;
+  }
+}
+
+/* ══════════════════════════════════════
+   FILTER BY CATEGORY
+══════════════════════════════════════ */
+let currentCat = 'all';
+
+function filterCat(cat) {
+  currentCat = cat;
+  const sections = document.querySelectorAll('.section-row');
+  const pills = document.querySelectorAll('.pill');
+
+  // Update pills
+  pills.forEach(p => {
+    p.classList.toggle('active', p.dataset.cat === cat || (cat === 'all' && p.dataset.cat === 'all'));
+  });
+
+  // Show/hide sections
+  sections.forEach(s => {
+    const show = cat === 'all' || s.dataset.cat === cat;
+    s.classList.toggle('hidden', !show);
+  });
+
+  // Re-apply search filter if active
+  const q = document.getElementById('searchInput').value;
+  if (q) onSearch(q);
+
+  updateEmpty();
+}
+
+/* ══════════════════════════════════════
+   SEARCH
+══════════════════════════════════════ */
+function onSearch(q) {
+  const lower = q.toLowerCase().trim();
+  const cards = document.querySelectorAll('.work-card');
+
+  cards.forEach(card => {
+    if (!lower) {
+      card.style.display = '';
+      return;
+    }
+    const title   = (card.dataset.title   || '').toLowerCase();
+    const comment = (card.dataset.comment || '').toLowerCase();
+    const genre   = (card.dataset.genre   || '').toLowerCase();
+    const match   = title.includes(lower) || comment.includes(lower) || genre.includes(lower);
+    card.style.display = match ? '' : 'none';
+  });
+
+  updateEmpty();
+}
+
+function focusSearch() {
+  document.getElementById('searchInput').focus();
+  document.getElementById('searchInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function updateEmpty() {
+  const visible = document.querySelectorAll('.work-card:not([style*="display: none"])');
+  const empty   = document.getElementById('emptyState');
+  empty.classList.toggle('visible', visible.length === 0);
+}
+
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+function openModal(card) {
+  const overlay = document.getElementById('modalOverlay');
+  const title   = card.dataset.title;
+  const cat     = card.dataset.cat;
+  const comment = card.dataset.comment;
+  const rating  = parseInt(card.dataset.rating, 10);
+  const genre   = card.dataset.genre;
+  const year    = card.dataset.year;
+
+  document.getElementById('modalTitle').textContent   = title;
+  document.getElementById('modalCat').textContent     = cat;
+  document.getElementById('modalYear').textContent    = year;
+  document.getElementById('modalGenre').textContent   = genre;
+  document.getElementById('modalComment').textContent = comment;
+  document.getElementById('modalStars').textContent   = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+
+  // Thumb
+  const imgEl = card.querySelector('img.card-thumb');
+  const thumbWrap = document.getElementById('modalThumb');
+  thumbWrap.innerHTML = '';
+  if (imgEl) {
+    const img = document.createElement('img');
+    img.src = imgEl.src;
+    img.style.cssText = 'width:130px;aspect-ratio:2/3;object-fit:cover;border-radius:12px;';
+    thumbWrap.appendChild(img);
+  } else {
+    // Placeholder
+    const ph = document.createElement('div');
+    ph.className = 'card-thumb-placeholder';
+    ph.style.cssText = 'width:130px;border-radius:12px;';
+    const ic = document.createElement('div');
+    ic.className = 'placeholder-icon';
+    ic.textContent = cat === '映画' ? '🎬' : cat === '漫画' ? '📚' : cat === 'アニメ' ? '✨' : '📖';
+    const lb = document.createElement('div');
+    lb.className = 'placeholder-label';
+    lb.textContent = title.substring(0, 10);
+    ph.appendChild(ic);
+    ph.appendChild(lb);
+    thumbWrap.appendChild(ph);
+  }
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ══════════════════════════════════════
+   INTERSECTION OBSERVER (fade-up)
+══════════════════════════════════════ */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const card = entry.target;
+      // Stagger delay within the row
+      const siblings = [...card.parentElement.children];
+      const idx = siblings.indexOf(card);
+      card.style.animationDelay = (idx * 0.06) + 's';
+      card.classList.add('visible');
+      io.unobserve(card);
+    }
+  });
+}, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+
+document.querySelectorAll('.work-card').forEach(c => io.observe(c));
+</script>
+
+</body>
+</html>
