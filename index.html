@@ -1,311 +1,870 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>つまみぐい — ひと口だけ寄り道。</title>
-  <meta name="description" content="ぎゅうぎゅうな毎日に、一拍の余白を。" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Shippori+Mincho:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --sun:#F5C842;--sun-soft:#FDE9A0;--orange:#F0874A;
-      --mint:#6ECFB5;--mint-soft:#C2EDE4;--green:#7BAF7A;
-      --cream:#FEFAE8;--warm:#FDF3DC;--paper:#FAF0D0;
-      --brick:#C4845A;--earth:#8C5E3C;--ink:#3A2A1E;--muted:#8A7060;
-      --line:rgba(140,94,60,.14);
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:'Zen Maru Gothic','Hiragino Maru Gothic Pro',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
-    a{color:inherit;text-decoration:none}
-    body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 700px 500px at 15% 0%,rgba(245,200,66,.28) 0%,transparent 65%),radial-gradient(ellipse 600px 400px at 85% 5%,rgba(110,207,181,.22) 0%,transparent 60%),radial-gradient(ellipse 400px 600px at 70% 80%,rgba(123,175,122,.15) 0%,transparent 55%),radial-gradient(ellipse 300px 300px at 10% 85%,rgba(240,135,74,.12) 0%,transparent 50%)}
-    .light-rays{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
-    .ray{position:absolute;top:-10%;width:60px;height:130%;background:linear-gradient(180deg,rgba(255,230,100,.09) 0%,transparent 100%);transform-origin:top center;animation:rayFloat 8s ease-in-out infinite alternate}
-    .ray:nth-child(1){left:8%;transform:rotate(12deg);animation-duration:9s}
-    .ray:nth-child(2){left:18%;transform:rotate(8deg);animation-duration:11s;animation-delay:-2s;width:40px}
-    .ray:nth-child(3){left:30%;transform:rotate(14deg);animation-duration:10s;animation-delay:-4s;width:80px}
-    .ray:nth-child(4){left:50%;transform:rotate(6deg);animation-duration:13s;animation-delay:-1s;width:50px}
-    .ray:nth-child(5){left:65%;transform:rotate(10deg);animation-duration:8s;animation-delay:-3s;width:35px}
-    @keyframes rayFloat{from{opacity:.6}to{opacity:1;transform:translateX(10px)}}
-    .floaties{position:fixed;inset:0;z-index:0;pointer-events:none}
-    .floaty{position:absolute;font-size:22px;opacity:.35;animation:floatyDrift 12s ease-in-out infinite alternate}
-    .floaty:nth-child(1){top:8%;left:5%;font-size:18px;animation-duration:10s}
-    .floaty:nth-child(2){top:15%;right:8%;font-size:24px;animation-duration:14s;animation-delay:-3s}
-    .floaty:nth-child(3){top:45%;left:3%;font-size:16px;animation-duration:11s;animation-delay:-6s}
-    .floaty:nth-child(4){top:60%;right:5%;font-size:20px;animation-duration:9s;animation-delay:-2s}
-    .floaty:nth-child(5){top:80%;left:8%;font-size:14px;animation-duration:13s;animation-delay:-5s}
-    .floaty:nth-child(6){top:25%;right:15%;font-size:16px;animation-duration:12s;animation-delay:-1s}
-    @keyframes floatyDrift{from{transform:translateY(0) rotate(-5deg)}to{transform:translateY(-18px) rotate(6deg)}}
-    .wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:16px 16px 80px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;background:rgba(253,243,220,.85);backdrop-filter:blur(12px);border:1.5px solid rgba(245,200,66,.45);border-radius:999px;box-shadow:0 4px 20px rgba(140,94,60,.1),inset 0 1px 0 rgba(255,255,255,.8);position:sticky;top:12px;z-index:10;animation:dropIn .8s cubic-bezier(.22,1,.36,1) both}
-    @keyframes dropIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:15px}
-    .brand-mark{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--sun),var(--orange));display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 3px 10px rgba(240,135,74,.35);animation:wobble 5s ease-in-out infinite}
-    @keyframes wobble{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
-    nav{display:flex;gap:6px}
-    .nav-pill{padding:7px 13px;border-radius:999px;font-size:13px;font-weight:700;border:1.5px solid var(--line);background:rgba(255,255,255,.55);color:var(--muted);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
-    .nav-pill:hover{background:rgba(255,255,255,.95);border-color:var(--orange);color:var(--ink);transform:translateY(-2px) scale(1.04);box-shadow:0 4px 12px rgba(240,135,74,.2)}
-    .hero{padding:50px 8px 24px;animation:riseUp .9s cubic-bezier(.22,1,.36,1) .15s both}
-    @keyframes riseUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .hero-tag{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:999px;background:rgba(110,207,181,.18);border:1px solid rgba(110,207,181,.4);font-size:12px;font-weight:700;letter-spacing:.12em;color:#3A9A84;margin-bottom:16px}
-    .blink{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:blink 2s ease-in-out infinite}
-    @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
-    .hero-title{font-family:'Shippori Mincho','Zen Maru Gothic',serif;font-size:clamp(36px,6vw,64px);line-height:1.15;font-weight:700;margin-bottom:14px}
-    .hero-title .accent{color:var(--orange)}
-    .hero-title .sub{display:block;font-size:clamp(16px,2.5vw,22px);font-weight:400;color:var(--muted);margin-top:6px;font-family:'Zen Maru Gothic',sans-serif}
-    .hero-lead{font-size:14px;line-height:2;color:var(--muted);max-width:48ch;margin-bottom:22px}
-    .hero-lead strong{color:var(--ink);font-weight:700}
-    .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
-    .btn-warm{display:inline-flex;align-items:center;gap:7px;padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,var(--sun) 0%,var(--orange) 100%);color:var(--ink);font-weight:900;font-size:14px;border:none;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(240,135,74,.3),inset 0 1px 0 rgba(255,255,255,.4);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
-    .btn-warm:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 24px rgba(240,135,74,.4)}
-    .btn-soft{display:inline-flex;align-items:center;gap:7px;padding:12px 18px;border-radius:14px;background:rgba(255,255,255,.65);color:var(--muted);font-weight:700;font-size:13px;border:1.5px solid var(--line);cursor:pointer;font-family:inherit;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
-    .btn-soft:hover{background:rgba(255,255,255,.95);border-color:var(--mint);color:var(--ink);transform:translateY(-2px)}
-    .marquee-wrap{overflow:hidden;margin:22px 0;padding:9px 0;border-top:1px dashed rgba(140,94,60,.2);border-bottom:1px dashed rgba(140,94,60,.2)}
-    .marquee{display:flex;width:max-content;animation:marquee 20s linear infinite}
-    .marquee-item{white-space:nowrap;padding:0 24px;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);display:flex;align-items:center;gap:8px}
-    .marquee-item::after{content:"✿";color:var(--orange);font-size:10px}
-    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    .concept{margin:0 0 22px;padding:24px 28px;border-radius:22px;background:linear-gradient(135deg,rgba(245,200,66,.15) 0%,rgba(110,207,181,.12) 100%);border:1.5px solid rgba(245,200,66,.35);text-align:center;animation:riseUp .9s cubic-bezier(.22,1,.36,1) .3s both}
-    .concept-q{font-family:'Shippori Mincho',serif;font-size:clamp(17px,2.5vw,24px);font-weight:500;color:var(--earth);line-height:1.6;margin-bottom:8px}
-    .concept-p{font-size:13px;color:var(--muted);line-height:1.9}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}
-    .col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
-    @media(max-width:780px){.col-6,.col-4,.col-8{grid-column:span 12}}
-    .card{border-radius:20px;border:1.5px solid rgba(255,255,255,.75);padding:18px 18px 16px;position:relative;overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;animation:cardPop .65s cubic-bezier(.22,1,.36,1) both}
-    .card:hover{transform:translateY(-5px) rotate(.3deg);box-shadow:0 16px 40px rgba(58,42,30,.14)}
-    .card:nth-child(even):hover{transform:translateY(-5px) rotate(-.3deg)}
-    .card-sun{background:linear-gradient(145deg,#FFFBE8 0%,#FEF0BB 100%);box-shadow:0 6px 24px rgba(245,200,66,.18)}
-    .card-mint{background:linear-gradient(145deg,#EAFAF5 0%,#D2F4EC 100%);box-shadow:0 6px 24px rgba(110,207,181,.18)}
-    .card-green{background:linear-gradient(145deg,#F0F8EF 0%,#DDEEDD 100%);box-shadow:0 6px 24px rgba(123,175,122,.16)}
-    .card-orange{background:linear-gradient(145deg,#FFF4EC 0%,#FFE5D0 100%);box-shadow:0 6px 24px rgba(240,135,74,.16)}
-    .card-warm{background:linear-gradient(145deg,#FEFAE8 0%,#FAF0D0 100%);box-shadow:0 6px 24px rgba(196,132,90,.14)}
-    @keyframes cardPop{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-    .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.12s}.card:nth-child(3){animation-delay:.18s}.card:nth-child(4){animation-delay:.24s}.card:nth-child(5){animation-delay:.30s}.card:nth-child(6){animation-delay:.36s}
-    .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
-    .card-title{font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px}
-    .card-emoji{font-size:20px;line-height:1}
-    .card-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid rgba(140,94,60,.14);color:var(--muted);white-space:nowrap}
-    .card-desc{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:12px}
-    .item-list{list-style:none;display:flex;flex-direction:column;gap:7px}
-    .item{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.9);transition:all .2s ease;cursor:default}
-    .item:hover{background:rgba(255,255,255,.92);transform:translateX(3px)}
-    .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:7px}
-    .dot-sun{background:var(--sun);box-shadow:0 0 8px rgba(245,200,66,.6)}
-    .dot-orange{background:var(--orange);box-shadow:0 0 8px rgba(240,135,74,.6)}
-    .dot-mint{background:var(--mint);box-shadow:0 0 8px rgba(110,207,181,.6)}
-    .dot-green{background:var(--green);box-shadow:0 0 8px rgba(123,175,122,.6)}
-    .item-text{font-size:13px;line-height:1.7}
-    .item-text b{font-weight:900}
-    .item-sub{display:block;font-size:11px;color:var(--muted);margin-top:1px}
-    .add-btn{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:7px 12px;border-radius:10px;background:rgba(255,255,255,.65);border:1.5px dashed rgba(140,94,60,.25);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
-    .add-btn:hover{background:rgba(255,255,255,.95);border-color:var(--orange);color:var(--ink);transform:scale(1.04)}
-    .lab-canvas-wrap{margin-top:10px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.45);border:1px dashed rgba(123,175,122,.45)}
-    #labCanvas{display:block;width:100%;height:130px;cursor:crosshair}
-    .lab-hint{font-size:11px;color:var(--muted);text-align:center;padding:6px 0 8px}
-    .diary-entry{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.9);margin-bottom:8px;font-size:13px;line-height:1.8}
-    .diary-date{font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:700}
-    .about-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-    .chip{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(255,255,255,.65);border:1.5px solid rgba(255,255,255,.9);color:var(--muted);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
-    .chip:hover{transform:translateY(-2px) scale(1.06);background:rgba(255,255,255,.95);color:var(--ink)}
-    .rules{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-    .rule{padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.55);border-left:3px solid var(--orange);font-size:13px;line-height:1.6}
-    .rule b{font-weight:900;color:var(--earth)}
-    .rule span{font-size:11px;color:var(--muted);display:block}
-    footer{position:relative;z-index:1;margin-top:28px;padding-top:16px;border-top:1px dashed rgba(140,94,60,.2);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--muted)}
-    .footer-logo{font-weight:900;color:var(--earth)}
-    .spark{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;animation:sparkFly .6s ease-out forwards}
-    @keyframes sparkFly{from{opacity:1;transform:translate(0,0) scale(1)}to{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>つまみぐい</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Caveat:wght@500;700&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════ */
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --cream:   #f7f2e8;
+  --cream2:  #ede5d4;
+  --warm:    #d6c9b0;
+  --ink:     #2e2818;
+  --ink-lt:  #6b5d48;
+  --ink-xs:  #a89880;
+  --accent:  #c8956a;   /* terracotta */
+  --sage:    #8aaa88;
+  --dusty:   #b0a0d0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Serif JP', serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════
+   HEADER (fixed)
+══════════════════════════════════════ */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  padding: 0 36px;
+  background: rgba(247,242,232,.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(214,201,176,.5);
+  z-index: 1000;
+  transition: background .3s ease;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--ink);
+  text-decoration: none;
+  margin-right: auto;
+  font-family: 'Noto Serif JP', serif;
+}
+.logo span {
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: .3em;
+  color: var(--ink-xs);
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-item {
+  position: relative;
+  font-size: 12px;
+  letter-spacing: .1em;
+  color: var(--ink-lt);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color .2s, background .2s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  user-select: none;
+}
+.nav-item:hover { color: var(--ink); background: rgba(0,0,0,.04); }
+.nav-item .chevron { font-size: 8px; opacity: .5; }
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--cream);
+  border: 1px solid var(--warm);
+  border-radius: 10px;
+  box-shadow: 0 6px 28px rgba(46,40,24,.1);
+  padding: 6px 0;
+  min-width: 150px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity .2s, transform .2s;
+}
+.nav-item:hover .dropdown {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+.dd-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  font-size: 12px;
+  color: var(--ink-lt);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.dd-item:hover { background: var(--cream2); color: var(--ink); }
+.dd-icon { font-size: 14px; }
+
+/* Search button */
+.search-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--warm);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--ink-lt);
+  transition: all .2s;
+  margin-left: 6px;
+}
+.search-btn:hover { background: var(--cream2); color: var(--ink); border-color: var(--ink-xs); }
+
+/* ══════════════════════════════════════
+   HERO SECTION
+══════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 58px;
+}
+
+/* Subtle background texture */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(200,149,106,.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 30%, rgba(138,170,136,.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(247,242,232,0) 0%, var(--cream2) 100%);
+  pointer-events: none;
+}
+
+/* Decorative dots */
+.hero-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--warm);
+  opacity: .25;
+}
+
+/* ── HERO INNER: centered column ── */
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ── TOP: text block ── */
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  max-width: 680px;
+}
+
+.hero-eyebrow {
+  font-size: 10.5px;
+  letter-spacing: .45em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+}
+
+.hero-title {
+  font-size: clamp(64px, 11vw, 110px);
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.hero-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--ink-lt);
+  line-height: 1.9;
+  letter-spacing: .06em;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 28px;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 40px;
+  font-size: 12.5px;
+  letter-spacing: .18em;
+  text-decoration: none;
+  width: fit-content;
+  margin-top: 8px;
+  transition: background .25s, transform .25s, box-shadow .25s;
+  box-shadow: 0 4px 20px rgba(46,40,24,.15);
+}
+.hero-cta:hover {
+  background: var(--ink-lt);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(46,40,24,.2);
+}
+.hero-cta::after {
+  content: '→';
+  transition: transform .2s;
+}
+.hero-cta:hover::after { transform: translateX(4px); }
+
+/* ── BOTTOM: floating cards (full-width horizontal spread) ── */
+.hero-cards {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  height: 280px;
+  margin-top: 48px;
+  flex-shrink: 0;
+}
+
+.f-card {
+  position: absolute;
+  width: 148px;
+  height: 228px;
+  background: #fffefa;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0,0,0,.09);
+  box-shadow: 3px 6px 22px rgba(46,40,24,.1), 0 1px 3px rgba(46,40,24,.05);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s ease;
+  animation: floatCard var(--dur, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Spread horizontally across full width */
+.f-card:nth-child(1) {
+  left: 0%;    top: 36px;
+  --rot: -10deg; --dur: 4.2s; --delay: 0s;
+}
+.f-card:nth-child(2) {
+  left: calc(25% - 37px); top: 10px;
+  --rot: -4deg;  --dur: 3.8s; --delay: .6s;
+}
+.f-card:nth-child(3) {
+  left: calc(50% - 74px); top: 28px;
+  --rot: 0deg;   --dur: 4.5s; --delay: 1.1s;
+}
+.f-card:nth-child(4) {
+  right: calc(25% - 37px); top: 8px;
+  --rot: 5deg;   --dur: 3.6s; --delay: .3s;
+}
+.f-card:nth-child(5) {
+  right: 0%;   top: 34px;
+  --rot: 11deg;  --dur: 4.8s; --delay: .9s;
+}
+
+.f-card { transform: rotate(var(--rot)); }
+.f-card:hover {
+  transform: rotate(0deg) translateY(-16px) scale(1.06) !important;
+  box-shadow: 5px 18px 40px rgba(46,40,24,.18);
+  z-index: 10;
+  animation-play-state: paused;
+}
+
+@keyframes floatCard {
+  0%,100% { transform: rotate(var(--rot)) translateY(0px); }
+  50%      { transform: rotate(var(--rot)) translateY(-10px); }
+}
+
+/* Card internals */
+.f-card-art {
+  height: 63%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 12px 10px 6px;
+}
+.f-card-art svg { width: 100%; height: 100%; max-width: 108px; max-height: 124px; }
+.f-card-info {
+  height: 37%;
+  border-top: 1px solid rgba(0,0,0,.06);
+  padding: 9px 11px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 4px;
+}
+.f-card-name { font-size: 11px; font-weight: 700; color: rgba(46,40,24,.78); line-height: 1.4; }
+.f-card-sub  { font-size: 9px; color: rgba(46,40,24,.36); }
+
+/* Corner markers */
+.f-corner {
+  position: absolute;
+  font-family: 'Caveat', cursive;
+  font-size: 11.5px; font-weight: 700;
+  color: rgba(46,40,24,.3);
+  line-height: 1.2; text-align: center;
+}
+.f-corner.tl { top: 6px; left: 8px; }
+.f-corner.br { bottom: 6px; right: 8px; transform: rotate(180deg); }
+
+/* Paper micro-texture */
+.f-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; border-radius: 12px;
+}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  color: var(--ink-xs);
+  font-size: 9.5px;
+  letter-spacing: .3em;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  animation: scrollHint 2.5s ease-in-out infinite;
+  cursor: pointer;
+  z-index: 2;
+}
+.scroll-hint .bar {
+  width: 1.5px; height: 36px;
+  background: linear-gradient(to bottom, var(--ink-xs), transparent);
+  border-radius: 1px;
+  animation: scrollBar 2.5s ease-in-out infinite;
+}
+@keyframes scrollHint {
+  0%,100% { opacity: .4; transform: translateX(-50%) translateY(0); }
+  50%      { opacity: .8; transform: translateX(-50%) translateY(6px); }
+}
+@keyframes scrollBar {
+  0%    { transform: scaleY(0); transform-origin: top; opacity: 0; }
+  30%   { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  70%   { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100%  { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+/* ══════════════════════════════════════
+   TEASER SECTION
+══════════════════════════════════════ */
+.teaser {
+  padding: 100px 60px 120px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.teaser-head {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.teaser-eyebrow {
+  font-size: 10px;
+  letter-spacing: .45em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+}
+.teaser-title {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: .18em;
+  color: var(--ink);
+  margin-top: 10px;
+}
+
+.teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.teaser-card {
+  background: #fffefa;
+  border-radius: 14px;
+  border: 1.5px solid rgba(214,201,176,.6);
+  padding: 28px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+  box-shadow: 0 2px 12px rgba(46,40,24,.06);
+  opacity: 0;
+  transform: translateY(30px);
+}
+.teaser-card.visible {
+  animation: fadeUp .65s ease both;
+}
+.teaser-card:nth-child(1).visible { animation-delay: .05s; }
+.teaser-card:nth-child(2).visible { animation-delay: .15s; }
+.teaser-card:nth-child(3).visible { animation-delay: .25s; }
+.teaser-card:nth-child(4).visible { animation-delay: .35s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.teaser-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 36px rgba(46,40,24,.12);
+}
+
+.teaser-icon {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.teaser-icon.c1 { background: rgba(200,149,106,.14); }
+.teaser-icon.c2 { background: rgba(138,170,136,.14); }
+.teaser-icon.c3 { background: rgba(176,160,208,.14); }
+.teaser-icon.c4 { background: rgba(200,180,120,.14); }
+
+.teaser-ja {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--ink);
+  line-height: 1;
+}
+.teaser-en {
+  font-size: 9.5px;
+  letter-spacing: .3em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  margin-top: 2px;
+}
+.teaser-desc {
+  font-size: 11.5px;
+  color: var(--ink-lt);
+  line-height: 1.85;
+  font-weight: 300;
+  flex: 1;
+}
+.teaser-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ink-xs);
+  letter-spacing: .12em;
+  transition: color .2s, gap .2s;
+}
+.teaser-card:hover .teaser-link {
+  color: var(--ink);
+  gap: 10px;
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+.footer {
+  border-top: 1px solid var(--warm);
+  padding: 32px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cream2);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+}
+.footer-logo {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: .1em;
+  color: var(--ink);
+}
+.footer-copy {
+  font-size: 10.5px;
+  color: var(--ink-xs);
+  letter-spacing: .1em;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+
+/* Tablet (≤900px): 2×2 teaser grid */
+@media (max-width: 900px) {
+  .teaser { padding: 72px 32px 80px; }
+  .teaser-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  .hero-inner { padding: 0 28px; }
+  .hero-cards { height: 240px; max-width: 640px; }
+  .f-card { width: 120px; height: 185px; }
+}
+
+/* Mobile (≤600px): 2×2 + compact cards */
+@media (max-width: 600px) {
+  .header { padding: 0 20px; }
+  .logo span { display: none; }
+  .nav-item:not(.nav-content) { display: none; }
+  .nav-item.nav-content { display: flex; }
+
+  .hero { padding-top: 58px; }
+  .hero-inner { padding: 0 20px; gap: 0; }
+  .hero-title { font-size: clamp(48px, 14vw, 72px); }
+  .hero-sub { font-size: 12px; }
+  .hero-cards {
+    max-width: 100%;
+    height: 200px;
+    margin-top: 32px;
+  }
+  .f-card { width: 100px; height: 154px; }
+  .f-card-art svg { max-width: 80px; max-height: 90px; }
+  .f-card-name { font-size: 9px; }
+  .f-card-sub  { font-size: 7.5px; }
+
+  .teaser { padding: 56px 16px 64px; }
+  .teaser-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .teaser-card { padding: 20px 16px 18px; gap: 10px; }
+  .teaser-ja { font-size: 18px; }
+  .teaser-desc { font-size: 11px; }
+  .teaser-icon { width: 42px; height: 42px; font-size: 18px; }
+
+  .footer { padding: 24px 20px; flex-direction: column; gap: 6px; text-align: center; }
+}
+
+/* ══════════════════════════════════════
+   SVG SHARED FILTER
+══════════════════════════════════════ */
+#svg-defs { position: absolute; width: 0; height: 0; top: -9999px; }
+</style>
 </head>
+
 <body>
-  <div class="light-rays" aria-hidden="true">
-    <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
-  </div>
-  <div class="floaties" aria-hidden="true">
-    <div class="floaty">🌿</div><div class="floaty">✦</div><div class="floaty">🍊</div>
-    <div class="floaty">🌱</div><div class="floaty">☁️</div><div class="floaty">🍃</div>
-  </div>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="brand-mark">🍡</div>
-        <span>つまみぐい</span>
+
+<!-- Shared SVG filters -->
+<svg id="svg-defs" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="rough" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.038" numOctaves="4" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <a href="#" class="logo">つまみぐい <span>my collection</span></a>
+  <nav class="nav">
+    <a href="#" class="nav-item">TOP</a>
+    <div class="nav-item nav-content">
+      コンテンツ <span class="chevron">▾</span>
+      <div class="dropdown">
+        <div class="dd-item"><span class="dd-icon">🍰</span>スイーツ</div>
+        <div class="dd-item"><span class="dd-icon">🎬</span>作品</div>
+        <div class="dd-item"><span class="dd-icon">📓</span>日記</div>
+        <div class="dd-item"><span class="dd-icon">💬</span>言葉</div>
       </div>
-      <nav>
-        <a class="nav-pill" href="#words">言葉</a>
-        <a class="nav-pill" href="#sweets">スイーツ</a>
-        <a class="nav-pill" href="#diary">日記</a>
-        <a class="nav-pill" href="#labs">Labs</a>
-        <a class="nav-pill" href="#about">About</a>
-      </nav>
-    </header>
-    <div class="hero">
-      <div class="hero-tag"><span class="blink"></span>いったん置いといて、ひと口だけ寄り道。</div>
-      <h1 class="hero-title">
-        ぎゅうぎゅうな毎日に、<br>
-        <span class="accent">一拍の余白</span>を。
-        <span class="sub">解決しなくていい。消えなくていい。</span>
-      </h1>
-      <p class="hero-lead">
-        <strong>言葉・スイーツ・エンタメ・日記。</strong><br>
-        ひと口サイズで、ちょっとだけ頭の外に出てみる場所。<br>
-        答えは押し付けない。余白は残す。
+    </div>
+    <a href="#" class="nav-item">プロフィール</a>
+    <button class="search-btn" aria-label="検索">🔍</button>
+  </nav>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+
+  <!-- Decorative background dots -->
+  <div class="hero-dots">
+    <div class="dot" style="width:180px;height:180px;top:10%;left:8%;opacity:.12"></div>
+    <div class="dot" style="width:90px;height:90px;top:65%;left:2%;opacity:.15"></div>
+    <div class="dot" style="width:60px;height:60px;top:20%;right:5%;opacity:.13"></div>
+    <div class="dot" style="width:120px;height:120px;bottom:8%;right:8%;opacity:.1"></div>
+  </div>
+
+  <div class="hero-inner">
+
+    <!-- TEXT -->
+    <div class="hero-text">
+      <div class="hero-eyebrow">— a personal collection —</div>
+      <h1 class="hero-title">つまみぐい</h1>
+      <p class="hero-sub">
+        好きなものを、すこしずつ。<br>
+        言葉、スイーツ、映画、日記——<br>
+        ときめきを集めた場所。
       </p>
-      <div class="hero-btns">
-        <a class="btn-warm" href="#words">🍡 ひとつまみする</a>
-        <button class="btn-soft" id="shuffleBtn" type="button">🔀 並べ替える</button>
-      </div>
+      <a href="#content" class="hero-cta">見てみる</a>
     </div>
-    <div class="marquee-wrap" aria-hidden="true">
-      <div class="marquee">
-        <span class="marquee-item">一拍の余白</span><span class="marquee-item">ひと口だけ</span>
-        <span class="marquee-item">置いといていい</span><span class="marquee-item">解決しなくていい</span>
-        <span class="marquee-item">息を整える</span><span class="marquee-item">余白を残す</span>
-        <span class="marquee-item">寄り道が正解</span><span class="marquee-item">軽いのに、ちゃんと</span>
-        <span class="marquee-item">一拍の余白</span><span class="marquee-item">ひと口だけ</span>
-        <span class="marquee-item">置いといていい</span><span class="marquee-item">解決しなくていい</span>
-        <span class="marquee-item">息を整える</span><span class="marquee-item">余白を残す</span>
-        <span class="marquee-item">寄り道が正解</span><span class="marquee-item">軽いのに、ちゃんと</span>
-      </div>
-    </div>
-    <div class="concept">
-      <p class="concept-q">悩みを消すより、<br>"いったん置ける一拍"が欲しい。</p>
-      <p class="concept-p">予定・タスク・通知で埋まった毎日に、ちいさな空白をこっそり置く。</p>
-    </div>
-    <section class="grid" id="words">
-      <div class="card card-sun col-6">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">📌</span>好きな言葉</h2><span class="card-badge">words</span></div>
-        <p class="card-desc">「あ、この言い回し好き」をすぐ保存する場所。</p>
-        <ul class="item-list" id="wordList">
-          <li class="item"><span class="dot dot-sun"></span><div class="item-text"><b>一拍おく</b><span class="item-sub">答えを急がない余裕が、いい言葉をつくる。</span></div></li>
-          <li class="item"><span class="dot dot-orange"></span><div class="item-text"><b>ちょうどいい</b><span class="item-sub">過不足なさって、地味に難しい。</span></div></li>
-          <li class="item"><span class="dot dot-mint"></span><div class="item-text"><b>余白</b><span class="item-sub">何もない部分が、実は一番大事だったりする。</span></div></li>
-        </ul>
-        <button class="add-btn" id="addWordBtn">＋ 追加</button>
-      </div>
-      <div class="card card-mint col-6" id="sweets">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🍰</span>スイーツログ</h2><span class="card-badge">eat / memo</span></div>
-        <p class="card-desc">食べたもの、一言だけ。タグで気分を残す。</p>
-        <ul class="item-list" id="sweetsList">
-          <li class="item"><span class="dot dot-mint"></span><div class="item-text"><b>チーズケーキ</b>：酸味が勝つタイプ。<span class="item-sub">#カフェ　#しっとり</span></div></li>
-          <li class="item"><span class="dot dot-green"></span><div class="item-text"><b>生ドーナツ</b>：軽いのに背徳。<span class="item-sub">#ふわ　#罪</span></div></li>
-          <li class="item"><span class="dot dot-sun"></span><div class="item-text"><b>わらびもち</b>：きなこの量が正義。<span class="item-sub">#和菓子　#夏</span></div></li>
-        </ul>
-        <button class="add-btn" id="addSweetsBtn">＋ 追加</button>
-      </div>
-      <div class="card card-warm col-8" id="diary">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">📓</span>日記</h2><span class="card-badge">diary</span></div>
-        <p class="card-desc">ちゃんとしなくていい。ひと言でも残せたら十分。</p>
-        <div class="diary-entry"><div class="diary-date">2026.02.28</div>今日は空がやわらかかった。特に何もなかったけど、それがよかったのかもしれない。</div>
-        <div class="diary-entry"><div class="diary-date">2026.02.26</div>コーヒーが冷める前に飲めた。小さな勝利。</div>
-        <button class="add-btn" id="addDiaryBtn">＋ 書く</button>
-      </div>
-      <div class="card card-green col-4">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🎬</span>エンタメ</h2><span class="card-badge">watch / read</span></div>
-        <ul class="item-list" id="entList">
-          <li class="item"><span class="dot dot-green"></span><div class="item-text"><b>映画タイトル</b><span class="item-sub">ラストが静かでよかった。</span></div></li>
-          <li class="item"><span class="dot dot-mint"></span><div class="item-text"><b>最近読んだ本</b><span class="item-sub">言葉の密度がちょうどいい。</span></div></li>
-        </ul>
-        <button class="add-btn" id="addEntBtn">＋ 追加</button>
-      </div>
-      <div class="card card-green col-6" id="labs">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🧪</span>Labs</h2><span class="card-badge">css / js 実験</span></div>
-        <p class="card-desc">CSSアニメーションを勉強して、ここで発表する。触って遊んでみて。</p>
-        <div class="lab-canvas-wrap"><canvas id="labCanvas"></canvas><p class="lab-hint">マウスを動かすと粒が散る ✦</p></div>
-      </div>
-      <div class="card card-orange col-6">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🌿</span>3つの問い</h2><span class="card-badge">判断基準</span></div>
-        <p class="card-desc">追加するとき、必ずこれに通す。</p>
-        <div class="rules">
-          <div class="rule"><b>一拍</b>をつくれてる？<span>読後に息が入る？</span></div>
-          <div class="rule"><b>ひと口</b>になってる？<span>重くない？短い？</span></div>
-          <div class="rule"><b>余白</b>を残してる？<span>押し付けてない？</span></div>
+
+    <!-- FLOATING CARDS -->
+    <div class="hero-cards">
+
+      <!-- Card 1: 星・言葉 -->
+      <div class="f-card">
+        <div class="f-corner tl">言<br>葉</div>
+        <div class="f-card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <polygon points="50,10 55,32 77,32 60,46 67,68 50,54 33,68 40,46 23,32 45,32"
+                       fill="#fde88a" stroke="#c4900a" stroke-width="2.8" stroke-linejoin="round"/>
+              <polygon points="83,18 85,26 93,26 87,31 89,39 83,34 77,39 79,31 73,26 81,26"
+                       fill="#fde88a" stroke="#c4900a" stroke-width="1.5" stroke-linejoin="round"/>
+              <polygon points="18,56 19.5,62 26,62 21,65.5 22.5,72 18,68.5 13.5,72 15,65.5 10,62 16.5,62"
+                       fill="#fde88a" stroke="#c4900a" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M8,88 Q50,80 92,88" stroke="#c4900a" stroke-width="1.5" fill="none"/>
+            </g>
+          </svg>
         </div>
-      </div>
-      <div class="card card-sun col-12" id="about">
-        <div class="card-head"><h2 class="card-title"><span class="card-emoji">🌸</span>About</h2><span class="card-badge">profile</span></div>
-        <p class="card-desc">葉。言葉と発見とWebの仕掛けが好き。<br>ぎゅうぎゅうな毎日に、ちいさな空白を置こうとしている。</p>
-        <div class="about-chips">
-          <span class="chip">言葉</span><span class="chip">発見</span><span class="chip">スイーツ</span>
-          <span class="chip">CSS実験</span><span class="chip">余白</span>
-          <span class="chip">X（後で）</span><span class="chip">note（後で）</span><span class="chip">GitHub</span>
+        <div class="f-card-info">
+          <div class="f-card-name">自分の星に従え</div>
+          <div class="f-card-sub">Dante Alighieri</div>
         </div>
+        <div class="f-corner br">言<br>葉</div>
       </div>
-    </section>
-    <footer>
-      <span>© <span id="yr"></span> <span class="footer-logo">つまみぐい</span></span>
-      <span>ぎゅうぎゅうな毎日に、一拍の余白を。</span>
-    </footer>
+
+      <!-- Card 2: ケーキ・スイーツ -->
+      <div class="f-card">
+        <div class="f-corner tl">菓<br>子</div>
+        <div class="f-card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <ellipse cx="50" cy="97" rx="42" ry="7" fill="#e8dcc8" stroke="#a89070" stroke-width="1.8"/>
+              <polygon points="18,90 82,90 70,46 30,46" fill="#f9d2c2" stroke="#c07050" stroke-width="2.8" stroke-linejoin="round"/>
+              <polygon points="18,90 82,90 82,76 18,76" fill="#fff8f0" stroke="#c07050" stroke-width="1.5"/>
+              <rect x="30" y="35" width="40" height="13" rx="4" fill="#f9d2c2" stroke="#c07050" stroke-width="2.2"/>
+              <path d="M30,35 Q40,24 50,32 Q60,24 70,35" fill="#fff8f0" stroke="#c07050" stroke-width="2"/>
+              <rect x="47" y="14" width="6" height="22" rx="2.5" fill="#f5a850"/>
+              <path d="M50,10 Q55,5 52,12 Q57,7 54,14 Q50,9 46,14 Q43,7 48,12 Q45,5 50,10Z" fill="#ff8020"/>
+              <circle cx="50" cy="28" r="8" fill="#e84040" stroke="#901010" stroke-width="1.8"/>
+              <line x1="50" y1="20" x2="50" y2="17" stroke="#5a8a4a" stroke-width="2.2" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="f-card-info">
+          <div class="f-card-name">ショートケーキ</div>
+          <div class="f-card-sub">Strawberry Shortcake</div>
+        </div>
+        <div class="f-corner br">菓<br>子</div>
+      </div>
+
+      <!-- Card 3: 花・日記 -->
+      <div class="f-card">
+        <div class="f-corner tl">日<br>記</div>
+        <div class="f-card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <path d="M50,92 Q48,72 50,56" stroke="#5a8a4a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+              <path d="M50,74 Q33,66 30,52 Q41,58 50,68Z" fill="#7ab868" stroke="#5a8a4a" stroke-width="1.8"/>
+              <path d="M50,60 Q67,52 70,38 Q59,46 50,58Z" fill="#7ab868" stroke="#5a8a4a" stroke-width="1.8"/>
+              <ellipse cx="50" cy="35" rx="8" ry="16" fill="#f5a0c0" stroke="#c06080" stroke-width="2.2" transform="rotate(0 50 35)"/>
+              <ellipse cx="50" cy="35" rx="8" ry="16" fill="#f5a0c0" stroke="#c06080" stroke-width="2.2" transform="rotate(60 50 35)"/>
+              <ellipse cx="50" cy="35" rx="8" ry="16" fill="#f5a0c0" stroke="#c06080" stroke-width="2.2" transform="rotate(120 50 35)"/>
+              <circle cx="50" cy="35" r="9" fill="#fde88a" stroke="#c4900a" stroke-width="2.2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="f-card-info">
+          <div class="f-card-name">花は咲くことを知らず咲く</div>
+          <div class="f-card-sub">禅のことば</div>
+        </div>
+        <div class="f-corner br">日<br>記</div>
+      </div>
+
+      <!-- Card 4: 映画 -->
+      <div class="f-card">
+        <div class="f-corner tl">作<br>品</div>
+        <div class="f-card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <defs>
+              <clipPath id="cc">
+                <rect x="14" y="20" width="72" height="16" rx="4"/>
+              </clipPath>
+            </defs>
+            <g filter="url(#rough)">
+              <rect x="14" y="34" width="72" height="62" rx="4" fill="#28283a" stroke="#5a6a8a" stroke-width="2.8"/>
+              <rect x="14" y="20" width="72" height="16" rx="4" fill="#38384a" stroke="#5a6a8a" stroke-width="2.8"/>
+              <g clip-path="url(#cc)">
+                <line x1="14" y1="36" x2="30" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="30" y1="36" x2="46" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="46" y1="36" x2="62" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="62" y1="36" x2="78" y2="20" stroke="#f5c842" stroke-width="6"/>
+                <line x1="78" y1="36" x2="90" y2="20" stroke="#f5c842" stroke-width="6"/>
+              </g>
+              <line x1="20" y1="50" x2="80" y2="50" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <line x1="20" y1="61" x2="80" y2="61" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <line x1="20" y1="72" x2="80" y2="72" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <polygon points="40,84 40,56 70,70" fill="#f5c842" stroke="#c4900a" stroke-width="2.2" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="f-card-info">
+          <div class="f-card-name">映画</div>
+          <div class="f-card-sub">Cinema &amp; Film</div>
+        </div>
+        <div class="f-corner br">作<br>品</div>
+      </div>
+
+      <!-- Card 5: プリン -->
+      <div class="f-card">
+        <div class="f-corner tl">菓<br>子</div>
+        <div class="f-card-art">
+          <svg viewBox="0 0 100 112" fill="none">
+            <g filter="url(#rough)">
+              <ellipse cx="50" cy="96" rx="40" ry="8" fill="#e8dcc8" stroke="#a89070" stroke-width="1.8"/>
+              <path d="M24,74 Q20,65 22,54 Q30,78 50,80 Q70,78 78,54 Q80,65 76,74 Q68,94 50,92 Q32,94 24,74Z"
+                    fill="#c8702a" stroke="#904020" stroke-width="1.5"/>
+              <path d="M28,77 Q26,52 28,40 Q33,24 50,23 Q67,24 72,40 Q74,52 72,77 Q66,88 50,88 Q34,88 28,77Z"
+                    fill="#f5da90" stroke="#c4900a" stroke-width="2.8" stroke-linejoin="round"/>
+              <path d="M39,28 Q44,17 50,21 Q56,14 60,24 Q52,30 41,30Z" fill="white" stroke="#d0c0a0" stroke-width="1.8"/>
+              <circle cx="50" cy="15" r="7.5" fill="#e84040" stroke="#901010" stroke-width="1.8"/>
+              <path d="M50,7.5 Q54,3 59,5" stroke="#5a8a4a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+        <div class="f-card-info">
+          <div class="f-card-name">プリン</div>
+          <div class="f-card-sub">Crème Caramel</div>
+        </div>
+        <div class="f-corner br">菓<br>子</div>
+      </div>
+
+    </div><!-- /.hero-cards -->
+  </div><!-- /.hero-inner -->
+
+  <!-- Scroll indicator -->
+  <div class="scroll-hint" onclick="document.getElementById('content').scrollIntoView({behavior:'smooth'})">
+    <span>scroll</span>
+    <div class="bar"></div>
   </div>
-  <script>
-    document.getElementById("yr").textContent = new Date().getFullYear();
-    const COLORS = ["#F5C842","#F0874A","#6ECFB5","#7BAF7A","#FDE9A0"];
-    document.addEventListener("click", e => {
-      for (let i = 0; i < 8; i++) {
-        const el = document.createElement("div");
-        el.className = "spark";
-        const size = 6 + Math.random() * 6;
-        const angle = (i / 8) * Math.PI * 2;
-        const dist = 24 + Math.random() * 28;
-        el.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;width:${size}px;height:${size}px;background:${COLORS[i%COLORS.length]};--tx:${(Math.cos(angle)*dist).toFixed(0)}px;--ty:${(Math.sin(angle)*dist).toFixed(0)}px;`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 650);
-      }
-    });
-    const canvas = document.getElementById("labCanvas");
-    const ctx = canvas.getContext("2d");
-    let particles = [];
-    function resizeCanvas() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-    function spawnParticles(x, y, n = 5) {
-      for (let i = 0; i < n; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 2.5 + .5;
-        particles.push({ x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed-1, r: Math.random()*5+2, color: COLORS[Math.floor(Math.random()*COLORS.length)], life: 1 });
-      }
+</section>
+
+<!-- ══ TEASER (below fold) ══ -->
+<section id="content">
+  <!-- Divider wave -->
+  <div style="background:var(--cream2);padding:0">
+    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%">
+      <path d="M0,30 Q360,60 720,30 Q1080,0 1440,30 L1440,60 L0,60 Z" fill="#f7f2e8"/>
+    </svg>
+  </div>
+
+  <div style="background:var(--cream2);padding-bottom:0">
+    <div class="teaser">
+      <div class="teaser-head">
+        <div class="teaser-eyebrow">— contents —</div>
+        <h2 class="teaser-title">ときめきのかけら</h2>
+      </div>
+
+      <div class="teaser-grid">
+        <!-- スイーツ -->
+        <div class="teaser-card">
+          <div class="teaser-icon c1">🍰</div>
+          <div>
+            <div class="teaser-ja">スイーツ</div>
+            <div class="teaser-en">SWEETS</div>
+          </div>
+          <p class="teaser-desc">出会ったおいしいもの。カフェで、旅先で、日常の中で。メニュー表みたいに並べた、小さな幸せの記録。</p>
+          <div class="teaser-link">見てみる <span>→</span></div>
+        </div>
+
+        <!-- 作品 -->
+        <div class="teaser-card">
+          <div class="teaser-icon c2">🎬</div>
+          <div>
+            <div class="teaser-ja">作品</div>
+            <div class="teaser-en">WORKS</div>
+          </div>
+          <p class="teaser-desc">映画、漫画、アニメ——心に残ったものたち。いつか誰かに語りたくなるような、お気に入りのコレクション。</p>
+          <div class="teaser-link">見てみる <span>→</span></div>
+        </div>
+
+        <!-- 日記 -->
+        <div class="teaser-card">
+          <div class="teaser-icon c3">📓</div>
+          <div>
+            <div class="teaser-ja">日記</div>
+            <div class="teaser-en">DIARY</div>
+          </div>
+          <p class="teaser-desc">感情・気持ち・ふとした気づき。本棚に並んだ日々をめくるように、過去の自分に会いに行く場所。</p>
+          <div class="teaser-link">見てみる <span>→</span></div>
+        </div>
+
+        <!-- 言葉 -->
+        <div class="teaser-card">
+          <div class="teaser-icon c4">💬</div>
+          <div>
+            <div class="teaser-ja">言葉</div>
+            <div class="teaser-en">WORDS</div>
+          </div>
+          <p class="teaser-desc">ふと刺さった一文、ずっと持ち歩きたい名言。カードに宿らせた、言葉たちの小さなギャラリー。</p>
+          <div class="teaser-link">見てみる <span>→</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-logo">つまみぐい</div>
+  <div class="footer-copy">© 2025 つまみぐい. All rights reserved.</div>
+</footer>
+
+<script>
+/* ── Teaser Intersection Observer ── */
+const teaserCards = document.querySelectorAll('.teaser-card');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.classList.add('visible');
     }
-    canvas.addEventListener("mousemove", e => { const r = canvas.getBoundingClientRect(); spawnParticles(e.clientX-r.left, e.clientY-r.top, 3); });
-    canvas.addEventListener("click", e => { const r = canvas.getBoundingClientRect(); spawnParticles(e.clientX-r.left, e.clientY-r.top, 12); });
-    function animateCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles = particles.filter(p => p.life > 0);
-      particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; p.vy+=.06; p.life-=.022; ctx.save(); ctx.globalAlpha=p.life; ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2); ctx.fill(); ctx.restore(); });
-      requestAnimationFrame(animateCanvas);
-    }
-    animateCanvas();
-    const wordSamples = [["ぬるい","温度がちょうどいい。強くない。それがいい。"],[""ちょい足し"","一行で温度が変わる。"],["間（ま）","音楽も会話も、休符があって成立する。"]];
-    const sweetsSamples = [["プリン","固めが正義。#固め　#王道"],["フィナンシェ","バターで勝ち。#焼き菓子"],["たい焼き","端っこまで餡があるやつ。#あんこ"]];
-    const entSamples = [["最近観た映画","余韻が続く系。"],["最近読んだ漫画","台詞が少ないのがいい。"]];
-    const dotClasses = ["dot-sun","dot-orange","dot-mint","dot-green"];
-    function addItem(listEl, title, desc, isDiary = false) {
-      const li = document.createElement(isDiary ? "div" : "li");
-      if (isDiary) {
-        const d = new Date();
-        const ds = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
-        li.className = "diary-entry";
-        li.innerHTML = `<div class="diary-date">${ds}</div>${title}`;
-      } else {
-        li.className = "item";
-        const dc = dotClasses[Math.floor(Math.random()*dotClasses.length)];
-        li.innerHTML = `<span class="dot ${dc}"></span><div class="item-text"><b>${title}</b><span class="item-sub">${desc}</span></div>`;
-      }
-      li.style.opacity = "0"; li.style.transform = "translateY(8px)";
-      listEl.prepend(li);
-      requestAnimationFrame(() => { li.style.transition = "all .35s cubic-bezier(.34,1.56,.64,1)"; li.style.opacity = "1"; li.style.transform = "translateY(0)"; });
-    }
-    document.getElementById("addWordBtn").addEventListener("click", () => { const s = wordSamples[Math.floor(Math.random()*wordSamples.length)]; addItem(document.getElementById("wordList"), s[0], s[1]); });
-    document.getElementById("addSweetsBtn").addEventListener("click", () => { const s = sweetsSamples[Math.floor(Math.random()*sweetsSamples.length)]; addItem(document.getElementById("sweetsList"), s[0], s[1]); });
-    document.getElementById("addEntBtn").addEventListener("click", () => { const s = entSamples[Math.floor(Math.random()*entSamples.length)]; addItem(document.getElementById("entList"), s[0], s[1]); });
-    document.getElementById("addDiaryBtn").addEventListener("click", () => { const msgs = ["今日もなんとかなった。","小さいことをちゃんと楽しめた。","まあいっか、で乗り切った。"]; addItem(document.querySelector(".card-warm"), msgs[Math.floor(Math.random()*msgs.length)], "", true); });
-    document.getElementById("shuffleBtn").addEventListener("click", () => {
-      const grid = document.querySelector(".grid");
-      const cards = Array.from(grid.children);
-      cards.sort(() => Math.random() - .5);
-      cards.forEach(c => { c.style.opacity="0"; c.style.transform="scale(.95)"; c.style.transition="all .25s ease"; setTimeout(() => { grid.appendChild(c); c.style.opacity="1"; c.style.transform="scale(1)"; }, 200+Math.random()*100); });
-    });
-  </script>
+  });
+}, { threshold: 0.15 });
+teaserCards.forEach(c => io.observe(c));
+
+/* ── Smooth scroll for nav links ── */
+document.querySelectorAll('a[href="#"]').forEach(a => {
+  a.addEventListener('click', e => e.preventDefault());
+});
+</script>
+
 </body>
 </html>
