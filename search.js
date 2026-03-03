@@ -351,6 +351,19 @@ const CAT_STYLE = {
       #sg-overlay { padding:60px 12px 32px; }
       #sg-input { font-size:16px; padding:15px 0; }
     }
+
+    /* Flash highlight when jumping to a card from search */
+    @keyframes sgFlash {
+      0%   { box-shadow: 0 0 0 0 rgba(200,149,106,.0),  0 8px 20px rgba(46,40,24,.18); }
+      25%  { box-shadow: 0 0 0 6px rgba(200,149,106,.55), 0 12px 32px rgba(200,149,106,.25); }
+      60%  { box-shadow: 0 0 0 4px rgba(200,149,106,.35), 0 10px 28px rgba(200,149,106,.18); }
+      100% { box-shadow: 0 0 0 0 rgba(200,149,106,.0),  0 8px 20px rgba(46,40,24,.18); }
+    }
+    .sg-flash {
+      animation: sgFlash 1.4s ease forwards !important;
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+    }
   `;
   document.head.appendChild(style);
 
@@ -432,7 +445,7 @@ function doSearch(q) {
     items.forEach(item => {
       const a = document.createElement('a');
       a.className = 'sg-item';
-      a.href = item.page;
+      a.href = item.page + '?open=' + encodeURIComponent(item.title);
       a.setAttribute('role','option');
       a.innerHTML = `
         <span class="sg-item-icon">${item.icon}</span>
@@ -524,4 +537,61 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.search-btn').forEach(btn => {
     btn.onclick = e => { e.preventDefault(); openSearch(); };
   });
+
+  /* ── Deep-link: ?open=タイトル → 該当カードへジャンプ ── */
+  const openParam = new URLSearchParams(window.location.search).get('open');
+  if (openParam) {
+    /* URL を即座にクリーン（履歴に残さない） */
+    history.replaceState(null, '', window.location.pathname);
+
+    /* ページが完全に描画されるまで少し待つ */
+    window.addEventListener('load', () => {
+      _jumpToCard(openParam);
+    });
+    /* load が既に完了していた場合の保険 */
+    if (document.readyState === 'complete') {
+      setTimeout(() => _jumpToCard(openParam), 100);
+    }
+  }
 });
+
+/**
+ * data-title / data-name / data-quote が一致する要素を探して
+ * スクロール → フラッシュ → モーダルを開く
+ */
+function _jumpToCard(title) {
+  /* 各ページで使われている data 属性を全部試す */
+  const escaped = title.replace(/"/g, '\\"');
+  const sel = [
+    `[data-title="${escaped}"]`,
+    `[data-name="${escaped}"]`,
+    `[data-quote="${escaped}"]`,
+  ].join(', ');
+
+  const el = document.querySelector(sel);
+  if (!el) return;
+
+  /* works.html: display:none で隠れているカードは一旦表示させる */
+  el.style.removeProperty('display');
+  el.style.opacity = '1';
+
+  /* diary.html: .book はデフォルトで visible だが念のため */
+  el.style.visibility = 'visible';
+
+  /* スクロール後にフラッシュ → モーダルを開く */
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  setTimeout(() => {
+    el.classList.add('sg-flash');
+
+    /* .sg-flash アニメが始まってからモーダルを開く */
+    setTimeout(() => {
+      /* onclick="openModal(this)" 形式に対応 */
+      if (typeof el.onclick === 'function') {
+        el.onclick.call(el, new MouseEvent('click'));
+      } else {
+        el.click();
+      }
+    }, 350);
+  }, 300);
+}
