@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロフィール — つまみぐい</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Caveat:wght@500;700&family=Noto+Sans+JP:wght@300;400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --cream:#f7f2e8;--cream2:#ede5d4;--warm:#d6c9b0;
+  --ink:#2e2818;--ink-lt:#6b5d48;--ink-xs:#a89880;
+  --accent:#c8956a;--sage:#8aaa88;--dusty:#b0a0d0;
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Serif JP',serif;
+  background:var(--cream);color:var(--ink);
+  overflow-x:hidden;min-height:100vh;
+}
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+.header{
+  position:fixed;top:0;left:0;right:0;height:58px;
+  display:flex;align-items:center;padding:0 36px;
+  background:rgba(247,242,232,.88);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(214,201,176,.5);z-index:1000;
+}
+.logo{font-size:20px;font-weight:700;letter-spacing:.12em;color:var(--ink);
+  text-decoration:none;margin-right:auto;font-family:'Noto Serif JP',serif;}
+.logo span{font-size:11px;font-weight:300;letter-spacing:.3em;color:var(--ink-xs);
+  margin-left:10px;vertical-align:middle;}
+.nav{display:flex;align-items:center;gap:2px;}
+.nav-item{
+  position:relative;font-size:12px;letter-spacing:.1em;color:var(--ink-lt);
+  padding:8px 14px;border-radius:6px;cursor:pointer;
+  transition:color .2s,background .2s;text-decoration:none;
+  display:flex;align-items:center;gap:3px;user-select:none;
+}
+.nav-item:hover{color:var(--ink);background:rgba(0,0,0,.04);}
+.nav-item.active{color:var(--accent);}
+.search-btn{
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--warm);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:15px;color:var(--ink-lt);
+  transition:all .2s;margin-left:6px;
+}
+.search-btn:hover{background:var(--cream2);color:var(--ink);}
+@media(max-width:900px){
+  .header{padding:0 20px;}
+  .logo span{display:none;}
+  .nav-item:not(.nav-pages){display:none;}
+}
+
+/* ══════════════════════════════════════
+   PAGE
+══════════════════════════════════════ */
+.page{padding-top:58px;}
+
+/* ══════════════════════════════════════
+   HERO — NAME PLATE
+══════════════════════════════════════ */
+.hero{
+  position:relative;
+  min-height:320px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  padding:60px 24px 48px;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 30% 50%,rgba(200,149,106,.1) 0%,transparent 55%),
+    radial-gradient(ellipse at 75% 40%,rgba(138,170,136,.08) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* big faint background text */
+.hero-bg-text{
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(80px,16vw,200px);
+  font-weight:700;
+  color:rgba(46,40,24,.04);
+  letter-spacing:.05em;
+  white-space:nowrap;
+  user-select:none;
+  top:50%;transform:translateY(-50%);
+  left:-2%;
+  line-height:1;
+}
+.hero-inner{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  text-align:center;
+}
+.hero-eyebrow{
+  font-size:10px;letter-spacing:.55em;color:var(--ink-xs);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+}
+/* Name tag */
+.name-plate{
+  border:2px solid var(--ink);
+  padding:14px 36px;
+  position:relative;
+  display:inline-block;
+}
+.name-plate::before,.name-plate::after{
+  content:'';position:absolute;
+  width:8px;height:8px;border:2px solid var(--ink);
+}
+.name-plate::before{top:-5px;left:-5px;border-right:none;border-bottom:none;}
+.name-plate::after{bottom:-5px;right:-5px;border-left:none;border-top:none;}
+.name-ja{
+  font-size:clamp(28px,5vw,48px);font-weight:700;
+  letter-spacing:.18em;color:var(--ink);
+  font-family:'Noto Serif JP',serif;
+  line-height:1;margin-bottom:4px;
+}
+.name-en{
+  font-family:'Caveat',cursive;
+  font-size:clamp(14px,2.2vw,20px);
+  color:var(--accent);letter-spacing:.25em;
+}
+.hero-tagline{
+  font-size:13px;color:var(--ink-lt);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  line-height:1.8;max-width:420px;
+  border-left:2.5px solid var(--accent);
+  padding-left:14px;text-align:left;
+}
+
+/* ══════════════════════════════════════
+   INFOGRAPHIC GRID
+══════════════════════════════════════ */
+.info-wrap{
+  max-width:960px;margin:0 auto;padding:0 32px 80px;
+}
+
+/* Section label */
+.sec-label{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:20px;margin-top:48px;
+}
+.sec-label-line{flex:1;height:1px;background:var(--warm);}
+.sec-label-text{
+  font-size:10px;letter-spacing:.45em;color:var(--ink-xs);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  white-space:nowrap;
+}
+
+/* ── PANEL (rounded rect with bolts) ── */
+.panel{
+  background:var(--cream2);
+  border:1.5px solid var(--warm);
+  border-radius:12px;
+  padding:24px 28px;
+  position:relative;
+}
+/* corner bolt dots */
+.panel::before,.panel::after,
+.panel .bolt-bl,.panel .bolt-tr{
+  content:'';
+  position:absolute;
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--warm);
+  border:1.5px solid var(--ink-xs);
+}
+.panel::before{top:8px;left:8px;}
+.panel::after{top:8px;right:8px;}
+.panel .bolt-bl{bottom:8px;left:8px;}
+.panel .bolt-tr{bottom:8px;right:8px;}
+
+/* ── ABOUT ── */
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+@media(max-width:640px){.about-grid{grid-template-columns:1fr;}}
+
+.about-text{
+  font-size:13px;color:var(--ink-lt);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  line-height:2;
+}
+.about-items{
+  display:flex;flex-direction:column;gap:10px;
+}
+.about-item{
+  display:flex;gap:12px;align-items:flex-start;
+}
+.about-item-icon{
+  font-size:18px;flex-shrink:0;line-height:1.4;
+}
+.about-item-body{}
+.about-item-label{
+  font-size:9px;letter-spacing:.3em;color:var(--ink-xs);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  margin-bottom:2px;
+}
+.about-item-val{
+  font-size:13px;color:var(--ink);
+  font-family:'Noto Sans JP',sans-serif;font-weight:400;
+}
+
+/* ── FAVORITES ── */
+.fav-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+@media(max-width:700px){.fav-grid{grid-template-columns:repeat(2,1fr);}}
+
+.fav-card{
+  text-decoration:none;
+  background:var(--cream);
+  border:1.5px solid var(--warm);
+  border-radius:10px;
+  padding:18px 14px;
+  display:flex;flex-direction:column;
+  align-items:center;gap:8px;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  cursor:pointer;
+}
+.fav-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 24px rgba(46,40,24,.1);
+  border-color:var(--accent);
+}
+.fav-icon{font-size:28px;}
+.fav-ja{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.08em;}
+.fav-en{font-size:9px;color:var(--ink-xs);font-family:'Caveat',cursive;letter-spacing:.2em;}
+.fav-arrow{font-size:10px;color:var(--accent);margin-top:2px;}
+
+/* ── SNS ── */
+.sns-grid{
+  display:flex;gap:14px;flex-wrap:wrap;
+}
+.sns-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 20px;
+  border-radius:10px;
+  border:1.5px solid var(--warm);
+  background:var(--cream);
+  text-decoration:none;
+  color:var(--ink-lt);
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:.08em;
+  transition:all .2s;
+  cursor:pointer;
+}
+.sns-btn:hover{border-color:var(--ink-xs);color:var(--ink);background:var(--cream2);}
+.sns-icon{font-size:18px;}
+.sns-name{font-size:11px;font-weight:300;color:var(--ink-xs);font-family:'Noto Sans JP',sans-serif;}
+
+/* ── CONTACT FORM ── */
+.form-grid{display:flex;flex-direction:column;gap:18px;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:560px){.form-row{grid-template-columns:1fr;}}
+
+.form-group{display:flex;flex-direction:column;gap:7px;}
+.form-label{
+  font-size:10px;letter-spacing:.3em;color:var(--ink-xs);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  display:flex;align-items:center;gap:6px;
+}
+.form-required{
+  font-size:8px;background:var(--accent);color:#fff;
+  padding:1px 5px;border-radius:4px;letter-spacing:.05em;
+}
+.form-input,.form-textarea,.form-select{
+  width:100%;
+  padding:10px 14px;
+  border:1.5px solid var(--warm);
+  border-radius:8px;
+  background:var(--cream);
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:13px;
+  color:var(--ink);
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--ink-xs);}
+.form-input:focus,.form-textarea:focus,.form-select:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(200,149,106,.12);
+}
+.form-textarea{
+  min-height:140px;resize:vertical;line-height:1.8;
+}
+.form-select{cursor:pointer;}
+
+.form-submit-wrap{
+  display:flex;justify-content:flex-end;align-items:center;gap:16px;
+}
+.form-note{
+  font-size:10px;color:var(--ink-xs);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  line-height:1.6;
+}
+.form-btn{
+  padding:12px 36px;
+  background:var(--ink);
+  color:var(--cream);
+  border:none;border-radius:8px;
+  font-family:'Noto Serif JP',serif;
+  font-size:13px;
+  letter-spacing:.15em;
+  cursor:pointer;
+  transition:background .2s,transform .2s;
+  flex-shrink:0;
+}
+.form-btn:hover{background:var(--ink-lt);transform:translateY(-1px);}
+.form-btn:active{transform:translateY(0);}
+
+/* success toast */
+.toast{
+  position:fixed;bottom:32px;right:32px;
+  background:var(--ink);color:var(--cream);
+  padding:14px 24px;border-radius:10px;
+  font-size:13px;font-family:'Noto Sans JP',sans-serif;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+  z-index:3000;
+  transform:translateY(20px);opacity:0;
+  transition:all .35s;
+  pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* ══════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════ */
+.fade-up{opacity:0;transform:translateY(18px);}
+.fade-up.visible{animation:fadeUp .55s ease forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:600px){
+  .info-wrap{padding:0 20px 60px;}
+  .panel{padding:18px 18px;}
+  .name-plate{padding:12px 24px;}
+  .form-submit-wrap{flex-direction:column;align-items:stretch;}
+  .form-btn{text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <a href="index.html" class="logo">つまみぐい <span>a personal collection</span></a>
+  <nav class="nav">
+    <a href="index.html" class="nav-item">TOP</a>
+    <a href="sweets.html" class="nav-item">スイーツ</a>
+    <a href="works.html" class="nav-item">作品</a>
+    <a href="diary.html" class="nav-item">日記</a>
+    <a href="words.html" class="nav-item">言葉</a>
+    <a href="profile.html" class="nav-item active nav-pages">プロフィール</a>
+  </nav>
+  <button class="search-btn" title="検索">🔍</button>
+</header>
+
+<div class="page">
+
+  <!-- ══ HERO ══ -->
+  <div class="hero">
+    <div class="hero-bg-text">PROFILE</div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">ABOUT ME</p>
+      <div class="name-plate">
+        <div class="name-ja">はるまよ</div>
+        <div class="name-en">harumayo</div>
+      </div>
+      <p class="hero-tagline">
+        好きなものを、すこしずつ集めている人。<br>
+        カフェ・映画・本・言葉・スイーツ、<br>
+        ときめきをつまみぐいしながら生きています。
+      </p>
+    </div>
+  </div>
+
+  <div class="info-wrap">
+
+    <!-- ══ ABOUT ══ -->
+    <div class="sec-label">
+      <div class="sec-label-line"></div>
+      <span class="sec-label-text">SELF INTRODUCTION</span>
+      <div class="sec-label-line"></div>
+    </div>
+
+    <div class="panel fade-up">
+      <div class="bolt-bl"></div><div class="bolt-tr"></div>
+      <div class="about-grid">
+        <div>
+          <p class="about-text">
+            「つまみぐい」は、日常でときめいたものをすこしずつ集めた、私だけの小さなコレクションです。<br><br>
+            映画を見て泣いた夜、カフェで出会ったケーキ、ずっと心に残っている一文——そういうものを忘れないように、ここに置いています。<br><br>
+            完璧なレビューよりも、正直な感想を。<br>
+            誰かに届けるためというより、未来の自分へのメモとして。
+          </p>
+        </div>
+        <div class="about-items">
+          <div class="about-item">
+            <div class="about-item-icon">☕</div>
+            <div class="about-item-body">
+              <div class="about-item-label">FAVORITE THING</div>
+              <div class="about-item-val">カフェ巡り・ひとり映画</div>
+            </div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-icon">📚</div>
+            <div class="about-item-body">
+              <div class="about-item-label">CURRENTLY INTO</div>
+              <div class="about-item-val">小説・漫画・アニメ</div>
+            </div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-icon">🌿</div>
+            <div class="about-item-body">
+              <div class="about-item-label">MOOD</div>
+              <div class="about-item-val">静かで、やわらかい毎日</div>
+            </div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-icon">✍️</div>
+            <div class="about-item-body">
+              <div class="about-item-label">THIS SITE</div>
+              <div class="about-item-val">好きを集めるための場所</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ COLLECTION ══ -->
+    <div class="sec-label">
+      <div class="sec-label-line"></div>
+      <span class="sec-label-text">COLLECTION</span>
+      <div class="sec-label-line"></div>
+    </div>
+
+    <div class="panel fade-up">
+      <div class="bolt-bl"></div><div class="bolt-tr"></div>
+      <div class="fav-grid">
+        <a href="sweets.html" class="fav-card">
+          <div class="fav-icon">🍰</div>
+          <div class="fav-ja">スイーツ</div>
+          <div class="fav-en">SWEETS</div>
+          <div class="fav-arrow">→</div>
+        </a>
+        <a href="works.html" class="fav-card">
+          <div class="fav-icon">🎬</div>
+          <div class="fav-ja">作品</div>
+          <div class="fav-en">WORKS</div>
+          <div class="fav-arrow">→</div>
+        </a>
+        <a href="diary.html" class="fav-card">
+          <div class="fav-icon">📓</div>
+          <div class="fav-ja">日記</div>
+          <div class="fav-en">DIARY</div>
+          <div class="fav-arrow">→</div>
+        </a>
+        <a href="words.html" class="fav-card">
+          <div class="fav-icon">💬</div>
+          <div class="fav-ja">言葉</div>
+          <div class="fav-en">WORDS</div>
+          <div class="fav-arrow">→</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ══ SNS ══ -->
+    <div class="sec-label">
+      <div class="sec-label-line"></div>
+      <span class="sec-label-text">FIND ME ON</span>
+      <div class="sec-label-line"></div>
+    </div>
+
+    <div class="panel fade-up">
+      <div class="bolt-bl"></div><div class="bolt-tr"></div>
+      <div class="sns-grid">
+
+        <a href="#" class="sns-btn" id="sns-x">
+          <span class="sns-icon">𝕏</span>
+          <span>
+            <div style="font-size:12px;color:var(--ink);">X / Twitter</div>
+            <div class="sns-name">@username</div>
+          </span>
+        </a>
+
+        <a href="#" class="sns-btn" id="sns-ig">
+          <span class="sns-icon">📸</span>
+          <span>
+            <div style="font-size:12px;color:var(--ink);">Instagram</div>
+            <div class="sns-name">@username</div>
+          </span>
+        </a>
+
+        <a href="#" class="sns-btn" id="sns-note">
+          <span class="sns-icon">📝</span>
+          <span>
+            <div style="font-size:12px;color:var(--ink);">note</div>
+            <div class="sns-name">username</div>
+          </span>
+        </a>
+
+      </div>
+      <p style="font-size:11px;color:var(--ink-xs);font-family:'Noto Sans JP',sans-serif;font-weight:300;margin-top:14px;line-height:1.7;">
+        ※ SNSのリンクは <code style="background:var(--cream);padding:1px 5px;border-radius:4px;font-size:10px;">profile.html</code> の <code style="background:var(--cream);padding:1px 5px;border-radius:4px;font-size:10px;">href="#"</code> を実際のURLに変更してください。
+      </p>
+    </div>
+
+    <!-- ══ CONTACT ══ -->
+    <div class="sec-label">
+      <div class="sec-label-line"></div>
+      <span class="sec-label-text">CONTACT</span>
+      <div class="sec-label-line"></div>
+    </div>
+
+    <div class="panel fade-up">
+      <div class="bolt-bl"></div><div class="bolt-tr"></div>
+      <p style="font-size:13px;color:var(--ink-lt);font-family:'Noto Sans JP',sans-serif;font-weight:300;line-height:1.9;margin-bottom:24px;">
+        おすすめのカフェやスイーツ、作品、言葉など——なんでもお気軽に。<br>
+        メッセージはすべて読んでいます。返信はゆっくりになることがありますが、ご了承ください。
+      </p>
+
+      <form id="contactForm" class="form-grid" onsubmit="handleSubmit(event)">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">
+              お名前
+              <span class="form-required">必須</span>
+            </label>
+            <input class="form-input" type="text" name="name" placeholder="はるまよ" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">メールアドレス <span class="form-required">必須</span></label>
+            <input class="form-input" type="email" name="email" placeholder="hello@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">件名</label>
+          <select class="form-select" name="subject">
+            <option value="">— 選んでください —</option>
+            <option value="sweets">🍰 スイーツのおすすめ</option>
+            <option value="works">🎬 作品のおすすめ</option>
+            <option value="words">💬 好きな言葉</option>
+            <option value="collab">✉️ コラボ・ご依頼</option>
+            <option value="other">💭 その他</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">メッセージ <span class="form-required">必須</span></label>
+          <textarea class="form-textarea" name="message" placeholder="気軽に話しかけてください…" required></textarea>
+        </div>
+
+        <div class="form-submit-wrap">
+          <p class="form-note">
+            ※ いただいた情報はお問い合わせへの返信にのみ使用します。<br>
+            ※ このフォームはサンプルです。実際の送信には Formspree 等の設定が必要です。
+          </p>
+          <button class="form-btn" type="submit">送 信</button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Footer space -->
+    <div style="height:40px;"></div>
+    <div style="text-align:center;font-size:11px;color:var(--ink-xs);font-family:'Noto Sans JP',sans-serif;font-weight:300;letter-spacing:.2em;">
+      © つまみぐい — made with love
+    </div>
+
+  </div><!-- /info-wrap -->
+</div><!-- /page -->
+
+<!-- Toast -->
+<div class="toast" id="toast">✉️ メッセージを受け付けました。ありがとうございます！</div>
+
+<script>
+/* ══ FORM SUBMIT (demo) ══ */
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('contactForm');
+  const btn  = form.querySelector('.form-btn');
+  btn.textContent = '送信中…';
+  btn.style.opacity = '.6';
+  setTimeout(() => {
+    form.reset();
+    btn.textContent = '送 信';
+    btn.style.opacity = '';
+    showToast();
+  }, 800);
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+/* ══ INTERSECTION OBSERVER ══ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationDelay = (i * 0.1) + 's';
+      entry.target.classList.add('visible');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
