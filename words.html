@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>言葉 — つまみぐい</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Caveat:wght@500;700&family=Noto+Sans+JP:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   RESET & TOKENS
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --cream:#f7f2e8;--cream2:#ede5d4;--warm:#d6c9b0;
+  --ink:#2e2818;--ink-lt:#6b5d48;--ink-xs:#a89880;
+  --accent:#c8956a;--sage:#8aaa88;--dusty:#b0a0d0;
+  --gold:#c8a84a;--gold-lt:#e8d090;--gold-dk:#8a6a20;
+  --card-bg:#faf6ee;--card-border:#c4a85e;
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Serif JP',serif;
+  background:var(--cream);
+  color:var(--ink);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+.header{
+  position:fixed;top:0;left:0;right:0;height:58px;
+  display:flex;align-items:center;padding:0 36px;
+  background:rgba(247,242,232,.88);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(214,201,176,.5);z-index:1000;
+}
+.logo{font-size:20px;font-weight:700;letter-spacing:.12em;color:var(--ink);
+  text-decoration:none;margin-right:auto;font-family:'Noto Serif JP',serif;}
+.logo span{font-size:11px;font-weight:300;letter-spacing:.3em;color:var(--ink-xs);
+  margin-left:10px;vertical-align:middle;}
+.nav{display:flex;align-items:center;gap:2px;}
+.nav-item{
+  position:relative;font-size:12px;letter-spacing:.1em;color:var(--ink-lt);
+  padding:8px 14px;border-radius:6px;cursor:pointer;
+  transition:color .2s,background .2s;text-decoration:none;
+  display:flex;align-items:center;gap:3px;user-select:none;
+}
+.nav-item:hover{color:var(--ink);background:rgba(0,0,0,.04);}
+.nav-item.active{color:var(--accent);}
+.nav-item .chevron{font-size:8px;opacity:.5;}
+.dropdown{
+  position:absolute;top:calc(100% + 6px);left:0;
+  background:var(--cream);border:1px solid var(--warm);
+  border-radius:10px;box-shadow:0 6px 28px rgba(46,40,24,.1);
+  padding:6px 0;min-width:150px;
+  opacity:0;pointer-events:none;transform:translateY(-6px);
+  transition:opacity .2s,transform .2s;
+}
+.nav-item:hover .dropdown{opacity:1;pointer-events:all;transform:translateY(0);}
+.dd-item{
+  display:flex;align-items:center;gap:10px;padding:9px 18px;
+  font-size:12px;color:var(--ink-lt);cursor:pointer;text-decoration:none;
+  transition:background .15s,color .15s;
+}
+.dd-item:hover{background:var(--cream2);color:var(--ink);}
+.search-btn{
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--warm);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:15px;color:var(--ink-lt);
+  transition:all .2s;margin-left:6px;
+}
+.search-btn:hover{background:var(--cream2);color:var(--ink);}
+@media(max-width:900px){
+  .header{padding:0 20px;}
+  .logo span{display:none;}
+  .nav-item:not(.nav-pages){display:none;}
+}
+
+/* ══════════════════════════════════════
+   PAGE LAYOUT
+══════════════════════════════════════ */
+.page{padding-top:58px;}
+
+/* ── PAGE HERO ── */
+.page-hero{
+  position:relative;padding:52px 48px 36px;overflow:hidden;
+  text-align:center;
+}
+.page-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 50% 80%,rgba(200,168,74,.1) 0%,transparent 55%),
+    radial-gradient(ellipse at 20% 30%,rgba(138,170,136,.06) 0%,transparent 50%);
+  pointer-events:none;
+}
+/* Ornamental top line */
+.page-hero::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold-lt) 50%,var(--gold) 70%,transparent);
+}
+.page-hero-inner{position:relative;max-width:680px;margin:0 auto;}
+.page-eyebrow{
+  font-size:10px;letter-spacing:.6em;color:var(--gold-dk);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;margin-bottom:12px;
+}
+.page-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(42px,7vw,80px);font-weight:700;
+  letter-spacing:.1em;color:var(--ink);line-height:1.1;margin-bottom:8px;
+}
+.page-ornament{
+  font-family:'IM Fell English',serif;font-style:italic;
+  font-size:18px;color:var(--gold);letter-spacing:.3em;
+  margin-bottom:16px;
+}
+.page-desc{
+  font-size:13px;color:var(--ink-xs);line-height:1.9;
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+}
+/* Horizontal ornament */
+.hero-rule{
+  display:flex;align-items:center;gap:12px;
+  margin:20px auto 0;max-width:360px;
+}
+.hero-rule-line{flex:1;height:1px;background:var(--gold);opacity:.5;}
+.hero-rule-diamond{
+  width:8px;height:8px;background:var(--gold);
+  transform:rotate(45deg);flex-shrink:0;opacity:.7;
+}
+
+/* ══════════════════════════════════════
+   CONTROLS
+══════════════════════════════════════ */
+.controls{
+  position:sticky;top:58px;z-index:100;
+  background:rgba(247,242,232,.96);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(214,201,176,.4);
+  padding:10px 48px;
+}
+.controls-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.search-wrap{position:relative;min-width:180px;max-width:260px;flex:1;}
+.search-wrap svg{position:absolute;left:12px;top:50%;
+  transform:translateY(-50%);color:var(--ink-xs);pointer-events:none;}
+.search-input{
+  width:100%;padding:7px 14px 7px 34px;
+  border:1.5px solid var(--warm);border-radius:20px;
+  background:var(--cream);font-family:'Noto Sans JP',sans-serif;
+  font-size:12px;color:var(--ink);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.search-input::placeholder{color:var(--ink-xs);}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(200,149,106,.12);}
+.filter-wrap{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.pill{
+  font-size:11px;letter-spacing:.04em;font-family:'Noto Sans JP',sans-serif;
+  padding:4px 13px;border-radius:18px;border:1.5px solid var(--warm);
+  background:transparent;color:var(--ink-lt);cursor:pointer;
+  transition:all .2s;white-space:nowrap;
+}
+.pill:hover{border-color:var(--ink-xs);color:var(--ink);}
+.pill.active{background:var(--gold-dk);border-color:var(--gold-dk);color:#fff;}
+
+/* ══════════════════════════════════════
+   CARD GRID
+══════════════════════════════════════ */
+.main{
+  max-width:1200px;margin:0 auto;
+  padding:44px 48px 80px;
+}
+
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:32px 28px;
+}
+
+/* ══════════════════════════════════════
+   PLAYING CARD
+══════════════════════════════════════ */
+.word-card{
+  position:relative;
+  cursor:pointer;
+  /* Playing card proportions: 63×88mm ≈ 2.5:3.5 */
+  aspect-ratio:5/7;
+  background:var(--card-bg);
+  border-radius:12px;
+  border:2px solid var(--card-border);
+  box-shadow:
+    0 2px 0 #f0e8d0,
+    0 4px 0 var(--warm),
+    0 8px 20px rgba(46,40,24,.18),
+    inset 0 0 0 6px transparent;
+  transition:transform .25s, box-shadow .25s;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:18px 16px;
+  /* Stacked card effect */
+  transform-style:preserve-3d;
+}
+.word-card:hover{
+  transform:translateY(-8px) rotate(1deg);
+  box-shadow:
+    0 2px 0 #f0e8d0,
+    0 4px 0 var(--warm),
+    0 20px 40px rgba(46,40,24,.22),
+    inset 0 0 0 6px transparent;
+}
+
+/* Outer ornamental border (inset) */
+.word-card::before{
+  content:'';
+  position:absolute;inset:8px;
+  border:1px solid var(--card-border);
+  border-radius:7px;
+  opacity:.5;
+  pointer-events:none;
+}
+
+/* Corner suit marks */
+.card-corner{
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:13px;
+  color:var(--gold-dk);
+  line-height:1.1;
+  display:flex;flex-direction:column;align-items:center;
+  gap:1px;
+}
+.card-corner.tl{top:10px;left:11px;}
+.card-corner.br{bottom:10px;right:11px;transform:rotate(180deg);}
+.card-corner-sym{font-size:10px;color:var(--gold);}
+
+/* Center ornament */
+.card-center-ornament{
+  width:100%;
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+.card-center-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-lt));}
+.card-center-line.r{background:linear-gradient(90deg,var(--gold-lt),transparent);}
+.card-center-diamond{
+  width:6px;height:6px;
+  background:var(--gold);
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+
+/* Quote text */
+.card-quote{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(12px,1.4vw,14px);
+  font-weight:400;
+  color:var(--ink);
+  line-height:1.9;
+  text-align:center;
+  letter-spacing:.06em;
+  margin-bottom:14px;
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Attribution */
+.card-attr-wrap{
+  display:flex;align-items:center;gap:8px;width:100%;
+}
+.card-attr-line{flex:1;height:1px;background:var(--gold-lt);}
+.card-attr{
+  font-size:9px;
+  letter-spacing:.2em;
+  color:var(--gold-dk);
+  font-family:'Noto Sans JP',sans-serif;
+  font-weight:300;
+  text-align:center;
+  white-space:nowrap;
+}
+
+/* Category tag */
+.card-tag{
+  position:absolute;
+  top:10px;right:10px;
+  font-size:8px;letter-spacing:.15em;
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--gold-dk);color:#fff;
+  padding:2px 7px;border-radius:8px;
+  opacity:.8;
+}
+
+/* Card suit icon (top-left corner letter) */
+.card-suit{font-size:10px;}
+
+/* ══════════════════════════════════════
+   SUITE SYMBOLS (decorative SVG on card face)
+══════════════════════════════════════ */
+.card-face-icon{
+  font-size:22px;
+  color:var(--gold);
+  margin-bottom:8px;
+  line-height:1;
+  opacity:.6;
+}
+
+/* ══════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════ */
+.empty-state{
+  display:none;flex-direction:column;align-items:center;
+  justify-content:center;padding:80px 20px;
+  color:var(--ink-xs);font-family:'Noto Sans JP',sans-serif;
+  gap:12px;text-align:center;
+}
+.empty-state.visible{display:flex;}
+
+/* ══════════════════════════════════════
+   MODAL — LARGE CARD VIEW
+══════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(46,40,24,.6);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  z-index:2000;display:flex;align-items:center;justify-content:center;
+  padding:24px;opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+
+.modal-card{
+  background:var(--card-bg);
+  border-radius:16px;
+  border:2.5px solid var(--card-border);
+  box-shadow:
+    0 4px 0 var(--warm),
+    0 32px 80px rgba(46,40,24,.3);
+  max-width:420px;width:100%;
+  position:relative;
+  padding:36px 32px 32px;
+  transform:translateY(20px) scale(.96) rotate(-1deg);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  display:flex;flex-direction:column;align-items:center;
+}
+.modal-overlay.open .modal-card{transform:translateY(0) scale(1) rotate(0deg);}
+
+/* Inner border */
+.modal-card::before{
+  content:'';position:absolute;inset:12px;
+  border:1px solid var(--card-border);border-radius:10px;
+  opacity:.4;pointer-events:none;
+}
+
+/* Corners */
+.modal-corner{
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:16px;color:var(--gold-dk);
+  line-height:1.1;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.modal-corner.tl{top:14px;left:16px;}
+.modal-corner.br{bottom:14px;right:16px;transform:rotate(180deg);}
+.modal-corner-sym{font-size:12px;color:var(--gold);}
+
+/* Content */
+.modal-top-rule{
+  display:flex;align-items:center;gap:10px;width:100%;margin-bottom:20px;
+}
+.modal-rule-line{flex:1;height:1px;background:var(--gold-lt);}
+.modal-rule-diamond{width:7px;height:7px;background:var(--gold);transform:rotate(45deg);flex-shrink:0;}
+
+.modal-icon{font-size:32px;color:var(--gold);margin-bottom:14px;opacity:.7;}
+
+.modal-quote{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(15px,2.5vw,19px);
+  font-weight:400;
+  color:var(--ink);
+  line-height:2;
+  text-align:center;
+  letter-spacing:.08em;
+  margin-bottom:22px;
+  max-width:340px;
+}
+.modal-quote em{
+  font-style:italic;
+  font-family:'Playfair Display',serif;
+}
+
+.modal-bottom-rule{
+  display:flex;align-items:center;gap:10px;width:100%;margin-bottom:16px;
+}
+
+.modal-attr{
+  font-size:11px;letter-spacing:.25em;
+  color:var(--gold-dk);font-family:'Noto Sans JP',sans-serif;
+  font-weight:300;text-align:center;margin-bottom:6px;
+}
+.modal-source{
+  font-size:10px;color:var(--ink-xs);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  text-align:center;letter-spacing:.1em;margin-bottom:16px;
+}
+.modal-comment{
+  font-size:12px;color:var(--ink-lt);
+  font-family:'Noto Sans JP',sans-serif;font-weight:300;
+  line-height:1.8;text-align:center;
+  background:var(--cream2);border-radius:8px;
+  padding:12px 16px;width:100%;
+  border:1px solid var(--warm);
+}
+.modal-comment-label{
+  font-size:9px;letter-spacing:.3em;color:var(--gold-dk);
+  margin-bottom:8px;display:block;
+}
+
+.modal-close{
+  position:absolute;top:12px;right:12px;
+  width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--warm);background:var(--cream);
+  cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-lt);transition:all .2s;z-index:2;
+}
+.modal-close:hover{background:var(--cream2);}
+
+/* ══════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════ */
+.word-card{opacity:0;transform:translateY(16px);}
+.word-card.visible{animation:fadeUp .5s ease forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.word-card:hover{opacity:1 !important;transform:translateY(-8px) rotate(1deg) !important;}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:900px){
+  .page-hero{padding:40px 24px 28px;}
+  .controls{padding:10px 20px;}
+  .main{padding:32px 20px 60px;}
+  .card-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:24px 16px;}
+}
+@media(max-width:500px){
+  .card-grid{grid-template-columns:repeat(2,1fr);gap:20px 12px;}
+  .modal-card{padding:28px 20px 24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <a href="index.html" class="logo">つまみぐい <span>a personal collection</span></a>
+  <nav class="nav">
+    <a href="index.html" class="nav-item">TOP</a>
+    <a href="sweets.html" class="nav-item">スイーツ</a>
+    <a href="works.html" class="nav-item">作品</a>
+    <a href="diary.html" class="nav-item">日記</a>
+    <a href="words.html" class="nav-item active nav-pages">言葉</a>
+    <a href="#" class="nav-item">プロフィール</a>
+  </nav>
+  <button class="search-btn" onclick="document.getElementById('searchInput').focus()" title="検索">🔍</button>
+</header>
+
+<div class="page">
+
+  <!-- ══ PAGE HERO ══ -->
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-eyebrow">WORDS &amp; QUOTES</p>
+      <h1 class="page-title">言葉</h1>
+      <p class="page-ornament">❧ a gallery of words ❧</p>
+      <p class="page-desc">ふと刺さった一文、ずっと持ち歩きたい言葉。<br>カードに宿らせた、小さなギャラリー。</p>
+      <div class="hero-rule">
+        <div class="hero-rule-line"></div>
+        <div class="hero-rule-diamond"></div>
+        <div class="hero-rule-line" style="background:linear-gradient(90deg,var(--gold),transparent);opacity:.5;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CONTROLS ══ -->
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="search-wrap">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input id="searchInput" class="search-input" type="search"
+               placeholder="言葉・人物で検索…" oninput="onSearch(this.value)">
+      </div>
+      <div class="filter-wrap">
+        <button class="pill active" data-cat="all"  onclick="filterCat('all')">すべて</button>
+        <button class="pill" data-cat="生き方"      onclick="filterCat('生き方')">🌿 生き方</button>
+        <button class="pill" data-cat="愛・人間関係" onclick="filterCat('愛・人間関係')">🌹 愛・人間関係</button>
+        <button class="pill" data-cat="創造・表現"  onclick="filterCat('創造・表現')">✨ 創造・表現</button>
+        <button class="pill" data-cat="孤独・内省"  onclick="filterCat('孤独・内省')">🌙 孤独・内省</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main">
+    <div class="card-grid" id="cardGrid">
+
+      <!-- ────────────────── 生き方 ────────────────── -->
+      <div class="word-card"
+           data-quote="今日という日は、残りの人生の最初の日だ。"
+           data-attr="アビー・ホフマン"
+           data-source="『Revolution for the Hell of It』"
+           data-cat="生き方"
+           data-comment="なにかを始めるのに遅すぎることはない、と思わせてくれる言葉。落ち込んだときに読み返したい。"
+           data-icon="♠"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>A</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-corner br"><span>A</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-tag">生き方</div>
+        <div class="card-face-icon">♠</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">今日という日は、残りの人生の最初の日だ。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">アビー・ホフマン</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="ゆっくり急げ。"
+           data-attr="アウグストゥス"
+           data-source="ラテン語格言"
+           data-cat="生き方"
+           data-comment="矛盾しているようで、これが一番大事な姿勢だと思う。焦るほど遠回りになることを忘れずにいたい。"
+           data-icon="♣"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>K</span><span class="card-suit card-corner-sym">♣</span></div>
+        <div class="card-corner br"><span>K</span><span class="card-suit card-corner-sym">♣</span></div>
+        <div class="card-tag">生き方</div>
+        <div class="card-face-icon">♣</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">ゆっくり急げ。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">アウグストゥス</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="人生とは、自転車に乗るようなものだ。バランスを保つには、動き続けるしかない。"
+           data-attr="アルバート・アインシュタイン"
+           data-source="息子への手紙"
+           data-cat="生き方"
+           data-comment="アインシュタインが息子への手紙に書いた言葉。物理学者らしいメタファーで、なぜか元気が出る。"
+           data-icon="♦"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>Q</span><span class="card-suit card-corner-sym" style="color:#c8956a;">♦</span></div>
+        <div class="card-corner br"><span>Q</span><span class="card-suit card-corner-sym" style="color:#c8956a;">♦</span></div>
+        <div class="card-tag">生き方</div>
+        <div class="card-face-icon" style="color:var(--accent);">♦</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">人生とは、自転車に乗るようなものだ。バランスを保つには、動き続けるしかない。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">アインシュタイン</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="すべての始まりは、小さな一歩だ。"
+           data-attr="老子"
+           data-source="『道徳経』"
+           data-cat="生き方"
+           data-comment="千里の道も一歩から。何かを始めようとして足がすくむとき、これを思い出す。"
+           data-icon="♠"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>J</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-corner br"><span>J</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-tag">生き方</div>
+        <div class="card-face-icon">♠</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">千里の道も、一歩から始まる。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">老子</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <!-- ────────────────── 愛・人間関係 ────────────────── -->
+      <div class="word-card"
+           data-quote="愛するとは、自分が見るのと同じように相手を見てあげることだ。"
+           data-attr="サン＝テグジュペリ"
+           data-source="『星の王子さま』"
+           data-cat="愛・人間関係"
+           data-comment="「大切なものは目に見えない」と並んで好きな一節。愛は視線だと思う。"
+           data-icon="♥"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>A</span><span class="card-suit card-corner-sym" style="color:#c87890;">♥</span></div>
+        <div class="card-corner br"><span>A</span><span class="card-suit card-corner-sym" style="color:#c87890;">♥</span></div>
+        <div class="card-tag">愛・人間関係</div>
+        <div class="card-face-icon" style="color:#c87890;">♥</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">愛するとは、互いに見つめ合うことではなく、二人で同じ方向を見ることだ。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">サン＝テグジュペリ</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="人は孤独になれるほど、人を愛せるようになる。"
+           data-attr="岡本太郎"
+           data-source="『自分の中に毒を持て』"
+           data-cat="愛・人間関係"
+           data-comment="岡本太郎の言葉は常にまっすぐで怖い。でもこれは本当にそうだと思う。"
+           data-icon="♥"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>K</span><span class="card-suit card-corner-sym" style="color:#c87890;">♥</span></div>
+        <div class="card-corner br"><span>K</span><span class="card-suit card-corner-sym" style="color:#c87890;">♥</span></div>
+        <div class="card-tag">愛・人間関係</div>
+        <div class="card-face-icon" style="color:#c87890;">♥</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">人は孤独になれるほど、人を愛せるようになる。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">岡本太郎</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="わかりあえないことを前提に、それでもわかろうとすること。"
+           data-attr="ヤマシタトモコ"
+           data-source="『違国日記』"
+           data-cat="愛・人間関係"
+           data-comment="違国日記で一番好きな言葉。人間関係の本質をこんなにシンプルに言い切れるのがすごい。"
+           data-icon="♥"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>Q</span><span class="card-suit card-corner-sym" style="color:#c87890;">♥</span></div>
+        <div class="card-corner br"><span>Q</span><span class="card-suit card-corner-sym" style="color:#c87890;">♥</span></div>
+        <div class="card-tag">愛・人間関係</div>
+        <div class="card-face-icon" style="color:#c87890;">♥</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">わかりあえないことを前提に、それでもわかろうとすること。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">ヤマシタトモコ</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <!-- ────────────────── 創造・表現 ────────────────── -->
+      <div class="word-card"
+           data-quote="アイデアは、組み合わせることで生まれる。"
+           data-attr="スティーブ・ジョブズ"
+           data-source="Wired magazine, 1996"
+           data-cat="創造・表現"
+           data-comment="Creativityとは既存のものをつなぐ力だという考え方。何かを作るたびに思い出す。"
+           data-icon="♦"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>A</span><span class="card-suit card-corner-sym" style="color:var(--accent);">♦</span></div>
+        <div class="card-corner br"><span>A</span><span class="card-suit card-corner-sym" style="color:var(--accent);">♦</span></div>
+        <div class="card-tag">創造・表現</div>
+        <div class="card-face-icon" style="color:var(--accent);">♦</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">Creativity is just connecting things.</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">Steve Jobs</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="まず完成させよ、それから完璧にせよ。"
+           data-attr="シェリル・サンドバーグ"
+           data-source="『LEAN IN』"
+           data-cat="創造・表現"
+           data-comment="完璧主義で手が止まるとき、これに背中を押してもらう。Done is better than perfect."
+           data-icon="♣"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>A</span><span class="card-suit card-corner-sym">♣</span></div>
+        <div class="card-corner br"><span>A</span><span class="card-suit card-corner-sym">♣</span></div>
+        <div class="card-tag">創造・表現</div>
+        <div class="card-face-icon">♣</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">Done is better than perfect.</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">Sheryl Sandberg</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="芸術は爆発だ。"
+           data-attr="岡本太郎"
+           data-source="『自分の中に毒を持て』"
+           data-cat="創造・表現"
+           data-comment="短すぎるのに全部言い切っている。岡本太郎はなぜこんなに強いのか。"
+           data-icon="♦"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>K</span><span class="card-suit card-corner-sym" style="color:var(--accent);">♦</span></div>
+        <div class="card-corner br"><span>K</span><span class="card-suit card-corner-sym" style="color:var(--accent);">♦</span></div>
+        <div class="card-tag">創造・表現</div>
+        <div class="card-face-icon" style="color:var(--accent);">♦</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">芸術は爆発だ。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">岡本太郎</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <!-- ────────────────── 孤独・内省 ────────────────── -->
+      <div class="word-card"
+           data-quote="孤独でいられることは、才能だ。"
+           data-attr="ライナー・マリア・リルケ"
+           data-source="『若き詩人への手紙』"
+           data-cat="孤独・内省"
+           data-comment="孤独を恐れていた頃に出会った言葉。孤独は欠如ではなく力だという視点が好き。"
+           data-icon="♠"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>K</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-corner br"><span>K</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-tag">孤独・内省</div>
+        <div class="card-face-icon">♠</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">孤独であることを愛することを学びなさい。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">リルケ</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="自分の内側に降りていくことを恐れてはならない。"
+           data-attr="カール・ユング"
+           data-source="『心理学と宗教』"
+           data-cat="孤独・内省"
+           data-comment="自分と向き合うことへの怖さを認めてくれる言葉。恐れることは正常だと知ること。"
+           data-icon="♠"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>Q</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-corner br"><span>Q</span><span class="card-suit card-corner-sym">♠</span></div>
+        <div class="card-tag">孤独・内省</div>
+        <div class="card-face-icon">♠</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">自分の内側に降りていくことを恐れてはならない。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">カール・ユング</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+      <div class="word-card"
+           data-quote="静けさの中にこそ、すべての答えがある。"
+           data-attr="ラルフ・ウォルドー・エマーソン"
+           data-source="Essays: First Series"
+           data-cat="孤独・内省"
+           data-comment="騒がしい日々の中で、静かにしていることが一番難しくて、一番大切だと思う。"
+           data-icon="♣"
+           onclick="openModal(this)">
+        <div class="card-corner tl"><span>Q</span><span class="card-suit card-corner-sym">♣</span></div>
+        <div class="card-corner br"><span>Q</span><span class="card-suit card-corner-sym">♣</span></div>
+        <div class="card-tag">孤独・内省</div>
+        <div class="card-face-icon">♣</div>
+        <div class="card-center-ornament">
+          <div class="card-center-line"></div>
+          <div class="card-center-diamond"></div>
+          <div class="card-center-line r"></div>
+        </div>
+        <div class="card-quote">静けさの中にこそ、すべての答えがある。</div>
+        <div class="card-attr-wrap">
+          <div class="card-attr-line"></div>
+          <div class="card-attr">エマーソン</div>
+          <div class="card-attr-line"></div>
+        </div>
+      </div>
+
+    </div><!-- /card-grid -->
+
+    <div class="empty-state" id="emptyState">
+      <div style="font-size:40px;opacity:.4;">🃏</div>
+      <p style="font-size:14px;">見つかりませんでした</p>
+      <p style="font-size:12px;opacity:.7;">別のキーワードで試してみてください</p>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal-card" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-corner tl"><span id="modalRank">A</span><span class="modal-corner-sym" id="modalSuitTL">♠</span></div>
+    <div class="modal-corner br"><span id="modalRankBR">A</span><span class="modal-corner-sym" id="modalSuitBR">♠</span></div>
+
+    <div class="modal-top-rule">
+      <div class="modal-rule-line"></div>
+      <div class="modal-rule-diamond"></div>
+      <div class="modal-rule-line" style="background:linear-gradient(90deg,var(--gold-lt),transparent);"></div>
+    </div>
+
+    <div class="modal-icon" id="modalIcon">♠</div>
+    <div class="modal-quote" id="modalQuote"></div>
+
+    <div class="modal-bottom-rule">
+      <div class="modal-rule-line"></div>
+      <div class="modal-rule-diamond"></div>
+      <div class="modal-rule-line" style="background:linear-gradient(90deg,var(--gold-lt),transparent);"></div>
+    </div>
+
+    <div class="modal-attr" id="modalAttr"></div>
+    <div class="modal-source" id="modalSource"></div>
+
+    <div class="modal-comment" id="modalCommentWrap">
+      <span class="modal-comment-label">— ひとこと</span>
+      <span id="modalComment"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ FILTER ══ */
+let currentCat = 'all';
+
+function filterCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.pill').forEach(p =>
+    p.classList.toggle('active', p.dataset.cat === cat || (cat === 'all' && p.dataset.cat === 'all'))
+  );
+  applyFilters();
+}
+
+/* ══ SEARCH ══ */
+function onSearch(q) {
+  applyFilters(q.trim().toLowerCase());
+}
+
+function applyFilters(q = document.getElementById('searchInput').value.trim().toLowerCase()) {
+  const cards = document.querySelectorAll('.word-card');
+  let visible = 0;
+  cards.forEach(card => {
+    const catMatch = currentCat === 'all' || card.dataset.cat === currentCat;
+    const qMatch   = !q || (card.dataset.quote + card.dataset.attr + card.dataset.source + card.dataset.comment)
+      .toLowerCase().includes(q);
+    const show = catMatch && qMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('emptyState').classList.toggle('visible', visible === 0);
+}
+
+/* ══ MODAL ══ */
+const suitColors = {'♠':'#2e2818','♣':'#2e2818','♥':'#c87890','♦':'#c8956a'};
+const ranks = ['A','K','Q','J','10','9','8','7','6','5','4','3','2'];
+
+function openModal(el) {
+  const icon   = el.dataset.icon || '♠';
+  const color  = suitColors[icon] || '#2e2818';
+  const rankEl = el.querySelector('.card-corner.tl');
+  const rank   = rankEl ? rankEl.childNodes[0].textContent.trim() : 'A';
+
+  document.getElementById('modalIcon').textContent   = icon;
+  document.getElementById('modalIcon').style.color   = color;
+  document.getElementById('modalRank').textContent   = rank;
+  document.getElementById('modalRankBR').textContent = rank;
+  document.getElementById('modalSuitTL').textContent = icon;
+  document.getElementById('modalSuitTL').style.color = color;
+  document.getElementById('modalSuitBR').textContent = icon;
+  document.getElementById('modalSuitBR').style.color = color;
+  document.getElementById('modalQuote').textContent  = el.dataset.quote || '';
+  document.getElementById('modalAttr').textContent   = el.dataset.attr  || '';
+  document.getElementById('modalSource').textContent = el.dataset.source || '';
+  document.getElementById('modalComment').textContent= el.dataset.comment || '';
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ══ INTERSECTION OBSERVER ══ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const siblings = [...el.parentElement.children];
+      el.style.animationDelay = (siblings.indexOf(el) * 0.07) + 's';
+      el.classList.add('visible');
+      io.unobserve(el);
+    }
+  });
+}, { rootMargin:'0px 0px -40px 0px', threshold:0.08 });
+
+document.querySelectorAll('.word-card').forEach(c => io.observe(c));
+</script>
+</body>
+</html>
