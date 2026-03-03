@@ -20,13 +20,12 @@
   --ink:     #2e2818;
   --ink-lt:  #6b5d48;
   --ink-xs:  #a89880;
-  --accent:  #c8956a;   /* terracotta */
+  --accent:  #c8956a;
   --sage:    #8aaa88;
   --dusty:   #b0a0d0;
 }
 
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'Noto Serif JP', serif;
   background: var(--cream);
@@ -35,344 +34,233 @@ body {
 }
 
 /* ══════════════════════════════════════
-   HEADER (fixed)
+   HEADER
 ══════════════════════════════════════ */
 .header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
+  position: fixed; top: 0; left: 0; right: 0;
   height: 58px;
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   padding: 0 36px;
   background: rgba(247,242,232,.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(214,201,176,.5);
   z-index: 1000;
-  transition: background .3s ease;
 }
-
 .logo {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  color: var(--ink);
-  text-decoration: none;
-  margin-right: auto;
-  font-family: 'Noto Serif JP', serif;
+  font-size: 20px; font-weight: 700;
+  letter-spacing: .12em; color: var(--ink);
+  text-decoration: none; margin-right: auto;
 }
 .logo span {
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: .3em;
-  color: var(--ink-xs);
-  margin-left: 10px;
-  vertical-align: middle;
+  font-size: 11px; font-weight: 300;
+  letter-spacing: .3em; color: var(--ink-xs);
+  margin-left: 10px; vertical-align: middle;
 }
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
+.nav { display: flex; align-items: center; gap: 2px; }
 .nav-item {
   position: relative;
-  font-size: 12px;
-  letter-spacing: .1em;
-  color: var(--ink-lt);
-  padding: 8px 14px;
-  border-radius: 6px;
+  font-size: 12px; letter-spacing: .1em; color: var(--ink-lt);
+  padding: 8px 14px; border-radius: 6px;
   cursor: pointer;
   transition: color .2s, background .2s;
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 3px;
+  display: flex; align-items: center; gap: 3px;
   user-select: none;
 }
 .nav-item:hover { color: var(--ink); background: rgba(0,0,0,.04); }
 .nav-item .chevron { font-size: 8px; opacity: .5; }
-
-/* Dropdown */
 .dropdown {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  background: var(--cream);
-  border: 1px solid var(--warm);
-  border-radius: 10px;
-  box-shadow: 0 6px 28px rgba(46,40,24,.1);
-  padding: 6px 0;
-  min-width: 150px;
-  opacity: 0;
-  pointer-events: none;
+  position: absolute; top: calc(100% + 6px); left: 0;
+  background: var(--cream); border: 1px solid var(--warm);
+  border-radius: 10px; box-shadow: 0 6px 28px rgba(46,40,24,.1);
+  padding: 6px 0; min-width: 150px;
+  opacity: 0; pointer-events: none;
   transform: translateY(-6px);
   transition: opacity .2s, transform .2s;
 }
-.nav-item:hover .dropdown {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateY(0);
-}
+.nav-item:hover .dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
 .dd-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 18px;
-  font-size: 12px;
-  color: var(--ink-lt);
-  cursor: pointer;
-  transition: background .15s, color .15s;
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 18px; font-size: 12px; color: var(--ink-lt);
+  cursor: pointer; transition: background .15s, color .15s;
+  text-decoration: none;
 }
 .dd-item:hover { background: var(--cream2); color: var(--ink); }
 .dd-icon { font-size: 14px; }
-
-/* Search button */
 .search-btn {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  border: 1.5px solid var(--warm);
-  background: transparent;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--warm); background: transparent;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: 15px;
-  color: var(--ink-lt);
-  transition: all .2s;
-  margin-left: 6px;
+  cursor: pointer; font-size: 15px; color: var(--ink-lt);
+  transition: all .2s; margin-left: 6px;
 }
 .search-btn:hover { background: var(--cream2); color: var(--ink); border-color: var(--ink-xs); }
 
 /* ══════════════════════════════════════
-   HERO SECTION
+   HERO
 ══════════════════════════════════════ */
 .hero {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
   padding-top: 58px;
+  background: var(--cream);
 }
-
-/* Subtle background texture */
+/* Dot grid texture */
 .hero::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(46,40,24,.065) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+/* Color blobs */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 30% 60%, rgba(200,149,106,.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 75% 30%, rgba(138,170,136,.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(247,242,232,0) 0%, var(--cream2) 100%);
+    radial-gradient(ellipse at 15% 72%, rgba(200,149,106,.14) 0%, transparent 45%),
+    radial-gradient(ellipse at 82% 22%, rgba(138,170,136,.12) 0%, transparent 45%),
+    radial-gradient(ellipse at 58% 88%, rgba(176,160,208,.09) 0%, transparent 40%),
+    radial-gradient(ellipse at 30% 18%, rgba(200,180,120,.10) 0%, transparent 38%);
   pointer-events: none;
 }
-
-/* Decorative dots */
-.hero-dots {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.dot {
-  position: absolute;
-  border-radius: 50%;
-  background: var(--warm);
-  opacity: .25;
-}
-
-/* ── HERO INNER: centered column ── */
 .hero-inner {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 1100px;
+  position: relative; z-index: 2;
+  width: 100%; max-width: 1100px;
   padding: 0 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0;
 }
-
-/* ── TOP: text block ── */
-.hero-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  text-align: center;
-  max-width: 680px;
+/* Stamp badge */
+.hero-stamp {
+  width: 78px; height: 78px; border-radius: 50%;
+  border: 2.5px solid var(--accent);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1px;
+  transform: rotate(14deg);
+  opacity: .65;
+  margin-bottom: 24px;
+  flex-shrink: 0;
 }
-
-.hero-eyebrow {
-  font-size: 10.5px;
-  letter-spacing: .45em;
-  color: var(--ink-xs);
+.hero-stamp-text {
   font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
+  font-size: 7px; letter-spacing: .22em;
+  color: var(--accent); text-transform: uppercase;
+  line-height: 1.3;
 }
-
+.hero-text {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 16px;
+  text-align: center; max-width: 680px;
+}
+.hero-eyebrow {
+  font-size: 10.5px; letter-spacing: .45em;
+  color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+}
 .hero-title {
   font-size: clamp(64px, 11vw, 110px);
-  font-weight: 700;
-  letter-spacing: .1em;
-  color: var(--ink);
-  line-height: 1;
+  font-weight: 700; letter-spacing: .1em;
+  color: var(--ink); line-height: 1;
 }
-
 .hero-sub {
-  font-size: 13px;
-  font-weight: 300;
-  color: var(--ink-lt);
-  line-height: 1.9;
-  letter-spacing: .06em;
+  font-size: 13px; font-weight: 300;
+  color: var(--ink-lt); line-height: 1.9; letter-spacing: .06em;
 }
-
 .hero-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 13px 28px;
-  background: var(--ink);
-  color: var(--cream);
-  border-radius: 40px;
-  font-size: 12.5px;
-  letter-spacing: .18em;
-  text-decoration: none;
-  width: fit-content;
-  margin-top: 8px;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 28px; background: var(--ink); color: var(--cream);
+  border-radius: 40px; font-size: 12.5px; letter-spacing: .18em;
+  text-decoration: none; width: fit-content; margin-top: 8px;
   transition: background .25s, transform .25s, box-shadow .25s;
   box-shadow: 0 4px 20px rgba(46,40,24,.15);
 }
-.hero-cta:hover {
-  background: var(--ink-lt);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(46,40,24,.2);
-}
-.hero-cta::after {
-  content: '→';
-  transition: transform .2s;
-}
+.hero-cta:hover { background: var(--ink-lt); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(46,40,24,.2); }
+.hero-cta::after { content: '→'; transition: transform .2s; }
 .hero-cta:hover::after { transform: translateX(4px); }
 
-/* ── BOTTOM: floating cards (full-width horizontal spread) ── */
+/* Floating cards */
 .hero-cards {
-  position: relative;
-  width: 100%;
-  max-width: 860px;
-  height: 280px;
-  margin-top: 48px;
-  flex-shrink: 0;
+  position: relative; width: 100%;
+  max-width: 860px; height: 300px;
+  margin-top: 48px; flex-shrink: 0;
 }
-
 .f-card {
-  position: absolute;
-  width: 148px;
-  height: 228px;
-  background: #fffefa;
-  border-radius: 12px;
+  position: absolute; width: 148px; height: 228px;
+  background: #fffefa; border-radius: 12px;
   border: 1.5px solid rgba(0,0,0,.09);
   box-shadow: 3px 6px 22px rgba(46,40,24,.1), 0 1px 3px rgba(46,40,24,.05);
-  overflow: hidden;
-  cursor: pointer;
+  overflow: hidden; cursor: pointer;
   transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s ease;
   animation: floatCard var(--dur, 4s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
-
-/* Spread horizontally across full width */
-.f-card:nth-child(1) {
-  left: 0%;    top: 36px;
-  --rot: -10deg; --dur: 4.2s; --delay: 0s;
-}
-.f-card:nth-child(2) {
-  left: calc(25% - 37px); top: 10px;
-  --rot: -4deg;  --dur: 3.8s; --delay: .6s;
-}
-.f-card:nth-child(3) {
-  left: calc(50% - 74px); top: 28px;
-  --rot: 0deg;   --dur: 4.5s; --delay: 1.1s;
-}
-.f-card:nth-child(4) {
-  right: calc(25% - 37px); top: 8px;
-  --rot: 5deg;   --dur: 3.6s; --delay: .3s;
-}
-.f-card:nth-child(5) {
-  right: 0%;   top: 34px;
-  --rot: 11deg;  --dur: 4.8s; --delay: .9s;
-}
-
+.f-card:nth-child(1) { left: 0%;              top: 36px; --rot: -10deg; --dur: 4.2s; --delay: 0s; }
+.f-card:nth-child(2) { left: calc(25% - 37px); top: 10px; --rot: -4deg;  --dur: 3.8s; --delay: .6s; }
+.f-card:nth-child(3) { left: calc(50% - 74px); top: 28px; --rot:  0deg;  --dur: 4.5s; --delay: 1.1s; }
+.f-card:nth-child(4) { right:calc(25% - 37px); top:  8px; --rot:  5deg;  --dur: 3.6s; --delay: .3s; }
+.f-card:nth-child(5) { right: 0%;              top: 34px; --rot: 11deg;  --dur: 4.8s; --delay: .9s; }
 .f-card { transform: rotate(var(--rot)); }
 .f-card:hover {
   transform: rotate(0deg) translateY(-16px) scale(1.06) !important;
   box-shadow: 5px 18px 40px rgba(46,40,24,.18);
-  z-index: 10;
-  animation-play-state: paused;
+  z-index: 10; animation-play-state: paused;
 }
-
 @keyframes floatCard {
   0%,100% { transform: rotate(var(--rot)) translateY(0px); }
   50%      { transform: rotate(var(--rot)) translateY(-10px); }
 }
-
-/* Card internals */
 .f-card-art {
-  height: 63%;
-  display: flex; align-items: center; justify-content: center;
-  padding: 12px 10px 6px;
+  height: 63%; display: flex; align-items: center;
+  justify-content: center; padding: 12px 10px 6px;
 }
 .f-card-art svg { width: 100%; height: 100%; max-width: 108px; max-height: 124px; }
 .f-card-info {
-  height: 37%;
-  border-top: 1px solid rgba(0,0,0,.06);
-  padding: 9px 11px;
-  display: flex; flex-direction: column;
+  height: 37%; border-top: 1px solid rgba(0,0,0,.06);
+  padding: 9px 11px; display: flex; flex-direction: column;
   justify-content: center; gap: 4px;
 }
 .f-card-name { font-size: 11px; font-weight: 700; color: rgba(46,40,24,.78); line-height: 1.4; }
 .f-card-sub  { font-size: 9px; color: rgba(46,40,24,.36); }
-
-/* Corner markers */
 .f-corner {
-  position: absolute;
-  font-family: 'Caveat', cursive;
+  position: absolute; font-family: 'Caveat', cursive;
   font-size: 11.5px; font-weight: 700;
-  color: rgba(46,40,24,.3);
-  line-height: 1.2; text-align: center;
+  color: rgba(46,40,24,.3); line-height: 1.2; text-align: center;
 }
 .f-corner.tl { top: 6px; left: 8px; }
 .f-corner.br { bottom: 6px; right: 8px; transform: rotate(180deg); }
-
-/* Paper micro-texture */
 .f-card::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none; z-index: 1; border-radius: 12px;
 }
+/* NEW badge */
+.f-new-badge {
+  position: absolute; top: 8px; right: 8px; z-index: 2;
+  background: var(--accent); color: white;
+  font-family: 'Caveat', cursive; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 5px; letter-spacing: .05em;
+}
 
-/* ── SCROLL INDICATOR ── */
+/* Scroll indicator */
 .scroll-hint {
-  position: absolute;
-  bottom: 32px; left: 50%;
+  position: absolute; bottom: 32px; left: 50%;
   transform: translateX(-50%);
   display: flex; flex-direction: column;
   align-items: center; gap: 6px;
-  color: var(--ink-xs);
-  font-size: 9.5px;
-  letter-spacing: .3em;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
+  color: var(--ink-xs); font-size: 9.5px;
+  letter-spacing: .3em; font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
   animation: scrollHint 2.5s ease-in-out infinite;
-  cursor: pointer;
-  z-index: 2;
+  cursor: pointer; z-index: 2;
 }
 .scroll-hint .bar {
   width: 1.5px; height: 36px;
   background: linear-gradient(to bottom, var(--ink-xs), transparent);
-  border-radius: 1px;
-  animation: scrollBar 2.5s ease-in-out infinite;
+  border-radius: 1px; animation: scrollBar 2.5s ease-in-out infinite;
 }
 @keyframes scrollHint {
   0%,100% { opacity: .4; transform: translateX(-50%) translateY(0); }
@@ -386,117 +274,211 @@ body {
 }
 
 /* ══════════════════════════════════════
-   TEASER SECTION
+   NEWS SECTION  (Nintendo "お知らせ" style)
 ══════════════════════════════════════ */
-.teaser {
-  padding: 100px 60px 120px;
-  max-width: 1100px;
-  margin: 0 auto;
+.news-section {
+  background: var(--cream2);
+  padding: 0;
 }
-
-.teaser-head {
-  text-align: center;
-  margin-bottom: 64px;
+.news-wave-top { display: block; width: 100%; }
+.news-inner {
+  max-width: 920px; margin: 0 auto;
+  padding: 48px 40px 64px;
+  display: flex; gap: 56px; align-items: flex-start;
 }
-.teaser-eyebrow {
-  font-size: 10px;
-  letter-spacing: .45em;
+.news-label { flex-shrink: 0; width: 112px; padding-top: 4px; }
+.news-label-sub {
+  font-size: 9px; letter-spacing: .38em;
   color: var(--ink-xs);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+  margin-bottom: 8px;
+  text-transform: uppercase;
 }
-.teaser-title {
-  font-size: 28px;
-  font-weight: 300;
-  letter-spacing: .18em;
-  color: var(--ink);
-  margin-top: 10px;
+.news-label-title {
+  font-size: 19px; font-weight: 700;
+  letter-spacing: .06em; color: var(--ink); line-height: 1.4;
 }
-
-.teaser-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+.news-list {
+  flex: 1; list-style: none;
+  border-top: 1px solid var(--warm);
 }
-
-.teaser-card {
-  background: #fffefa;
-  border-radius: 14px;
-  border: 1.5px solid rgba(214,201,176,.6);
-  padding: 28px 22px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.news-item {
+  display: flex; align-items: center; gap: 18px;
+  padding: 14px 4px; border-bottom: 1px solid var(--warm);
+  text-decoration: none; color: inherit;
+  transition: padding-left .15s;
   cursor: pointer;
+}
+.news-item:hover { padding-left: 8px; }
+.news-date {
+  font-size: 10px; color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+  letter-spacing: .06em; flex-shrink: 0; width: 76px;
+}
+.news-badge {
+  font-size: 9.5px; padding: 2px 10px; border-radius: 10px;
+  flex-shrink: 0;
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+  letter-spacing: .05em; white-space: nowrap;
+}
+.cat-works  { background: rgba(200,149,106,.15); color: #8a5a2a; border: 1px solid rgba(200,149,106,.3); }
+.cat-sweets { background: rgba(138,170,136,.15); color: #3a6a38; border: 1px solid rgba(138,170,136,.3); }
+.cat-diary  { background: rgba(176,160,208,.15); color: #5a4a8a; border: 1px solid rgba(176,160,208,.3); }
+.cat-words  { background: rgba(200,168,74,.15);  color: #7a5a10; border: 1px solid rgba(200,168,74,.3); }
+.news-title {
+  flex: 1; font-size: 13px; color: var(--ink-lt);
+  letter-spacing: .03em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.news-arrow { font-size: 11px; color: var(--ink-xs); flex-shrink: 0; transition: transform .15s; }
+.news-item:hover .news-arrow { transform: translateX(4px); }
+
+/* ══════════════════════════════════════
+   FEATURE SECTION  (Nintendo "無人島ではじまる" style)
+══════════════════════════════════════ */
+.feature-section {
+  position: relative;
+  background: #d4e8ce;    /* light sage */
+  padding: 88px 40px 96px;
+  text-align: center;
+  overflow: visible;      /* allow deco to bleed out */
+}
+.feature-wave-top,
+.feature-wave-bottom {
+  position: absolute; left: 0; right: 0;
+  display: block; pointer-events: none;
+}
+.feature-wave-top    { top: -1px; }
+.feature-wave-bottom { bottom: -1px; }
+
+/* Left/right illustrated decorations that "pop out" */
+.feat-deco {
+  position: absolute;
+  top: 50%; transform: translateY(-52%);
+  z-index: 4; pointer-events: none;
+}
+.feat-deco-l { left:  max(16px, calc(50% - 520px)); }
+.feat-deco-r { right: max(16px, calc(50% - 520px)); }
+
+.feature-inner {
+  position: relative; z-index: 3;
+  max-width: 640px; margin: 0 auto;
+}
+.feature-eyebrow {
+  font-size: 9.5px; letter-spacing: .45em;
+  color: rgba(42,60,40,.5);
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+  margin-bottom: 20px; text-transform: uppercase;
+}
+.feature-title {
+  font-size: clamp(30px, 5.5vw, 52px);
+  font-weight: 700; letter-spacing: .1em;
+  color: #243824; line-height: 1.3;
+  margin-bottom: 20px;
+}
+.feature-title em {
+  font-style: normal; color: var(--accent);
+}
+.feature-sub {
+  font-size: 13px; font-weight: 300;
+  color: rgba(36,56,36,.7); line-height: 2.0;
+  letter-spacing: .06em; margin-bottom: 36px;
+}
+.feature-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px;
+  background: #243824; color: #e4f0e0;
+  border-radius: 40px; font-size: 12px; letter-spacing: .2em;
+  text-decoration: none;
+  transition: background .2s, transform .2s;
+  box-shadow: 0 4px 20px rgba(36,56,36,.25);
+}
+.feature-cta:hover { background: #3a5c3a; transform: translateY(-2px); }
+.feature-cta::after { content: '→'; }
+
+/* ══════════════════════════════════════
+   GUIDE SECTION  (big visual cards)
+══════════════════════════════════════ */
+.guide-section {
+  background: var(--cream);
+  padding: 100px 60px 120px;
+}
+.guide-inner { max-width: 1100px; margin: 0 auto; }
+.guide-head { text-align: center; margin-bottom: 60px; }
+.guide-eyebrow {
+  font-size: 10px; letter-spacing: .45em; color: var(--ink-xs);
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
+}
+.guide-title {
+  font-size: 28px; font-weight: 300;
+  letter-spacing: .18em; color: var(--ink); margin-top: 10px;
+}
+.guide-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.guide-card {
+  background: #fffefa; border-radius: 18px;
+  border: 1.5px solid rgba(214,201,176,.6);
+  overflow: hidden; cursor: pointer;
   transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
   box-shadow: 0 2px 12px rgba(46,40,24,.06);
-  opacity: 0;
-  transform: translateY(30px);
+  opacity: 0; transform: translateY(30px);
+  text-decoration: none; color: inherit; display: block;
 }
-.teaser-card.visible {
-  animation: fadeUp .65s ease both;
-}
-.teaser-card:nth-child(1).visible { animation-delay: .05s; }
-.teaser-card:nth-child(2).visible { animation-delay: .15s; }
-.teaser-card:nth-child(3).visible { animation-delay: .25s; }
-.teaser-card:nth-child(4).visible { animation-delay: .35s; }
-
+.guide-card.visible { animation: fadeUp .65s ease both; }
+.guide-card:nth-child(1).visible { animation-delay: .05s; }
+.guide-card:nth-child(2).visible { animation-delay: .15s; }
+.guide-card:nth-child(3).visible { animation-delay: .25s; }
+.guide-card:nth-child(4).visible { animation-delay: .35s; }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.guide-card:hover { transform: translateY(-10px); box-shadow: 0 16px 48px rgba(46,40,24,.13); }
 
-.teaser-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 36px rgba(46,40,24,.12);
-}
-
-.teaser-icon {
-  width: 52px; height: 52px;
-  border-radius: 12px;
+/* Illustrated header area */
+.guide-art {
+  height: 172px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
+  position: relative; overflow: hidden;
 }
-.teaser-icon.c1 { background: rgba(200,149,106,.14); }
-.teaser-icon.c2 { background: rgba(138,170,136,.14); }
-.teaser-icon.c3 { background: rgba(176,160,208,.14); }
-.teaser-icon.c4 { background: rgba(200,180,120,.14); }
+.guide-art svg { height: 130px; width: auto; }
+.guide-card:nth-child(1) .guide-art { background: linear-gradient(135deg, rgba(200,149,106,.14) 0%, rgba(248,222,200,.22) 100%); }
+.guide-card:nth-child(2) .guide-art { background: linear-gradient(135deg, rgba(138,170,136,.14) 0%, rgba(200,230,200,.22) 100%); }
+.guide-card:nth-child(3) .guide-art { background: linear-gradient(135deg, rgba(176,160,208,.14) 0%, rgba(220,210,240,.22) 100%); }
+.guide-card:nth-child(4) .guide-art { background: linear-gradient(135deg, rgba(200,168,74,.14)  0%, rgba(250,235,180,.22) 100%); }
 
-.teaser-ja {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  color: var(--ink);
-  line-height: 1;
+/* Art hover shimmer */
+.guide-art::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.3) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform .5s ease;
 }
-.teaser-en {
-  font-size: 9.5px;
-  letter-spacing: .3em;
-  color: var(--ink-xs);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
-  margin-top: 2px;
+.guide-card:hover .guide-art::after { transform: translateX(100%); }
+
+/* Card body */
+.guide-body { padding: 20px 20px 22px; }
+.guide-icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; margin-bottom: 11px;
 }
-.teaser-desc {
-  font-size: 11.5px;
-  color: var(--ink-lt);
-  line-height: 1.85;
-  font-weight: 300;
-  flex: 1;
-}
-.teaser-link {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--ink-xs);
-  letter-spacing: .12em;
+.guide-card:nth-child(1) .guide-icon { background: rgba(200,149,106,.15); }
+.guide-card:nth-child(2) .guide-icon { background: rgba(138,170,136,.15); }
+.guide-card:nth-child(3) .guide-icon { background: rgba(176,160,208,.15); }
+.guide-card:nth-child(4) .guide-icon { background: rgba(200,180,120,.15); }
+.guide-ja { font-size: 20px; font-weight: 700; letter-spacing: .12em; color: var(--ink); }
+.guide-en { font-size: 8.5px; letter-spacing: .3em; color: var(--ink-xs); font-family: 'Noto Sans JP', sans-serif; margin-top: 2px; }
+.guide-desc { font-size: 11.5px; color: var(--ink-lt); line-height: 1.85; font-weight: 300; margin-top: 10px; }
+.guide-link {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--ink-xs);
+  letter-spacing: .12em; margin-top: 14px;
   transition: color .2s, gap .2s;
 }
-.teaser-card:hover .teaser-link {
-  color: var(--ink);
-  gap: 10px;
-}
+.guide-card:hover .guide-link { color: var(--ink); gap: 10px; }
 
 /* ══════════════════════════════════════
    FOOTER
@@ -504,81 +486,62 @@ body {
 .footer {
   border-top: 1px solid var(--warm);
   padding: 32px 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   background: var(--cream2);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
+  font-family: 'Noto Sans JP', sans-serif; font-weight: 300;
 }
 .footer-logo {
-  font-family: 'Noto Serif JP', serif;
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: .1em;
-  color: var(--ink);
+  font-family: 'Noto Serif JP', serif; font-weight: 700;
+  font-size: 16px; letter-spacing: .1em; color: var(--ink);
 }
-.footer-copy {
-  font-size: 10.5px;
-  color: var(--ink-xs);
-  letter-spacing: .1em;
-}
+.footer-copy { font-size: 10.5px; color: var(--ink-xs); letter-spacing: .1em; }
 
 /* ══════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════ */
-
-/* Tablet (≤900px): 2×2 teaser grid */
 @media (max-width: 900px) {
-  .teaser { padding: 72px 32px 80px; }
-  .teaser-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-
   .hero-inner { padding: 0 28px; }
   .hero-cards { height: 240px; max-width: 640px; }
   .f-card { width: 120px; height: 185px; }
+  .news-inner { flex-direction: column; gap: 20px; }
+  .news-label { width: auto; }
+  .feat-deco { display: none; }
+  .feature-section { padding: 64px 32px 72px; }
+  .guide-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .guide-section { padding: 72px 32px 80px; }
+  .guide-art { height: 140px; }
+  .guide-art svg { height: 105px; }
 }
-
-/* Mobile (≤600px): 2×2 + compact cards */
 @media (max-width: 600px) {
   .header { padding: 0 20px; }
   .logo span { display: none; }
   .nav-item:not(.nav-content) { display: none; }
   .nav-item.nav-content { display: flex; }
-
-  .hero { padding-top: 58px; }
-  .hero-inner { padding: 0 20px; gap: 0; }
+  .hero-inner { padding: 0 20px; }
   .hero-title { font-size: clamp(48px, 14vw, 72px); }
   .hero-sub { font-size: 12px; }
-  .hero-cards {
-    max-width: 100%;
-    height: 200px;
-    margin-top: 32px;
-  }
+  .hero-cards { max-width: 100%; height: 200px; margin-top: 32px; }
   .f-card { width: 100px; height: 154px; }
   .f-card-art svg { max-width: 80px; max-height: 90px; }
   .f-card-name { font-size: 9px; }
   .f-card-sub  { font-size: 7.5px; }
-
-  .teaser { padding: 56px 16px 64px; }
-  .teaser-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-  .teaser-card { padding: 20px 16px 18px; gap: 10px; }
-  .teaser-ja { font-size: 18px; }
-  .teaser-desc { font-size: 11px; }
-  .teaser-icon { width: 42px; height: 42px; font-size: 18px; }
-
+  .news-inner { padding: 40px 20px 52px; }
+  .news-item { gap: 10px; }
+  .news-date { width: 64px; font-size: 9px; }
+  .news-title { font-size: 12px; }
+  .feature-title { font-size: clamp(24px, 7.5vw, 36px); }
+  .guide-section { padding: 56px 16px 64px; }
+  .guide-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .guide-art { height: 110px; }
+  .guide-art svg { height: 85px; }
+  .guide-ja { font-size: 16px; }
+  .guide-body { padding: 14px 14px 16px; }
   .footer { padding: 24px 20px; flex-direction: column; gap: 6px; text-align: center; }
 }
 
-/* ══════════════════════════════════════
-   SVG SHARED FILTER
-══════════════════════════════════════ */
 #svg-defs { position: absolute; width: 0; height: 0; top: -9999px; }
 </style>
 </head>
-
 <body>
 
 <!-- Shared SVG filters -->
@@ -600,9 +563,9 @@ body {
       コンテンツ <span class="chevron">▾</span>
       <div class="dropdown">
         <a href="sweets.html" class="dd-item"><span class="dd-icon">🍰</span>スイーツ</a>
-        <a href="works.html" class="dd-item"><span class="dd-icon">🎬</span>作品</a>
-        <a href="diary.html" class="dd-item"><span class="dd-icon">📓</span>日記</a>
-        <a href="words.html" class="dd-item"><span class="dd-icon">💬</span>言葉</a>
+        <a href="works.html"  class="dd-item"><span class="dd-icon">🎬</span>作品</a>
+        <a href="diary.html"  class="dd-item"><span class="dd-icon">📓</span>日記</a>
+        <a href="words.html"  class="dd-item"><span class="dd-icon">💬</span>言葉</a>
       </div>
     </div>
     <a href="profile.html" class="nav-item">プロフィール</a>
@@ -612,18 +575,16 @@ body {
 
 <!-- ══ HERO ══ -->
 <section class="hero">
-
-  <!-- Decorative background dots -->
-  <div class="hero-dots">
-    <div class="dot" style="width:180px;height:180px;top:10%;left:8%;opacity:.12"></div>
-    <div class="dot" style="width:90px;height:90px;top:65%;left:2%;opacity:.15"></div>
-    <div class="dot" style="width:60px;height:60px;top:20%;right:5%;opacity:.13"></div>
-    <div class="dot" style="width:120px;height:120px;bottom:8%;right:8%;opacity:.1"></div>
-  </div>
-
   <div class="hero-inner">
 
-    <!-- TEXT -->
+    <!-- Stamp -->
+    <div class="hero-stamp">
+      <span class="hero-stamp-text">my</span>
+      <span class="hero-stamp-text">collection</span>
+      <span class="hero-stamp-text">✦</span>
+    </div>
+
+    <!-- Text -->
     <div class="hero-text">
       <div class="hero-eyebrow">— a personal collection —</div>
       <h1 class="hero-title">つまみぐい</h1>
@@ -635,10 +596,10 @@ body {
       <a href="#content" class="hero-cta">見てみる</a>
     </div>
 
-    <!-- FLOATING CARDS -->
+    <!-- Floating cards -->
     <div class="hero-cards">
 
-      <!-- Card 1: 星・言葉 -->
+      <!-- Card 1: 言葉 -->
       <div class="f-card">
         <div class="f-corner tl">言<br>葉</div>
         <div class="f-card-art">
@@ -661,9 +622,10 @@ body {
         <div class="f-corner br">言<br>葉</div>
       </div>
 
-      <!-- Card 2: ケーキ・スイーツ -->
+      <!-- Card 2: スイーツ -->
       <div class="f-card">
         <div class="f-corner tl">菓<br>子</div>
+        <span class="f-new-badge">NEW</span>
         <div class="f-card-art">
           <svg viewBox="0 0 100 112" fill="none">
             <g filter="url(#rough)">
@@ -673,7 +635,6 @@ body {
               <rect x="30" y="35" width="40" height="13" rx="4" fill="#f9d2c2" stroke="#c07050" stroke-width="2.2"/>
               <path d="M30,35 Q40,24 50,32 Q60,24 70,35" fill="#fff8f0" stroke="#c07050" stroke-width="2"/>
               <rect x="47" y="14" width="6" height="22" rx="2.5" fill="#f5a850"/>
-              <path d="M50,10 Q55,5 52,12 Q57,7 54,14 Q50,9 46,14 Q43,7 48,12 Q45,5 50,10Z" fill="#ff8020"/>
               <circle cx="50" cy="28" r="8" fill="#e84040" stroke="#901010" stroke-width="1.8"/>
               <line x1="50" y1="20" x2="50" y2="17" stroke="#5a8a4a" stroke-width="2.2" stroke-linecap="round"/>
             </g>
@@ -686,7 +647,7 @@ body {
         <div class="f-corner br">菓<br>子</div>
       </div>
 
-      <!-- Card 3: 花・日記 -->
+      <!-- Card 3: 日記 -->
       <div class="f-card">
         <div class="f-corner tl">日<br>記</div>
         <div class="f-card-art">
@@ -709,16 +670,12 @@ body {
         <div class="f-corner br">日<br>記</div>
       </div>
 
-      <!-- Card 4: 映画 -->
+      <!-- Card 4: 作品 -->
       <div class="f-card">
         <div class="f-corner tl">作<br>品</div>
         <div class="f-card-art">
           <svg viewBox="0 0 100 112" fill="none">
-            <defs>
-              <clipPath id="cc">
-                <rect x="14" y="20" width="72" height="16" rx="4"/>
-              </clipPath>
-            </defs>
+            <defs><clipPath id="cc"><rect x="14" y="20" width="72" height="16" rx="4"/></clipPath></defs>
             <g filter="url(#rough)">
               <rect x="14" y="34" width="72" height="62" rx="4" fill="#28283a" stroke="#5a6a8a" stroke-width="2.8"/>
               <rect x="14" y="20" width="72" height="16" rx="4" fill="#38384a" stroke="#5a6a8a" stroke-width="2.8"/>
@@ -727,7 +684,6 @@ body {
                 <line x1="30" y1="36" x2="46" y2="20" stroke="#f5c842" stroke-width="6"/>
                 <line x1="46" y1="36" x2="62" y2="20" stroke="#f5c842" stroke-width="6"/>
                 <line x1="62" y1="36" x2="78" y2="20" stroke="#f5c842" stroke-width="6"/>
-                <line x1="78" y1="36" x2="90" y2="20" stroke="#f5c842" stroke-width="6"/>
               </g>
               <line x1="20" y1="50" x2="80" y2="50" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
               <line x1="20" y1="61" x2="80" y2="61" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
@@ -737,8 +693,8 @@ body {
           </svg>
         </div>
         <div class="f-card-info">
-          <div class="f-card-name">映画</div>
-          <div class="f-card-sub">Cinema &amp; Film</div>
+          <div class="f-card-name">映画 / 漫画 / アニメ</div>
+          <div class="f-card-sub">Cinema &amp; Manga</div>
         </div>
         <div class="f-corner br">作<br>品</div>
       </div>
@@ -754,7 +710,6 @@ body {
                     fill="#c8702a" stroke="#904020" stroke-width="1.5"/>
               <path d="M28,77 Q26,52 28,40 Q33,24 50,23 Q67,24 72,40 Q74,52 72,77 Q66,88 50,88 Q34,88 28,77Z"
                     fill="#f5da90" stroke="#c4900a" stroke-width="2.8" stroke-linejoin="round"/>
-              <path d="M39,28 Q44,17 50,21 Q56,14 60,24 Q52,30 41,30Z" fill="white" stroke="#d0c0a0" stroke-width="1.8"/>
               <circle cx="50" cy="15" r="7.5" fill="#e84040" stroke="#901010" stroke-width="1.8"/>
               <path d="M50,7.5 Q54,3 59,5" stroke="#5a8a4a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
             </g>
@@ -770,77 +725,297 @@ body {
     </div><!-- /.hero-cards -->
   </div><!-- /.hero-inner -->
 
-  <!-- Scroll indicator -->
+  <!-- Scroll hint -->
   <div class="scroll-hint" onclick="document.getElementById('content').scrollIntoView({behavior:'smooth'})">
     <span>scroll</span>
     <div class="bar"></div>
   </div>
 </section>
 
-<!-- ══ TEASER (below fold) ══ -->
+
+<!-- ══ NEWS SECTION ══ -->
 <section id="content">
-  <!-- Divider wave -->
-  <div style="background:var(--cream2);padding:0">
-    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%">
-      <path d="M0,30 Q360,60 720,30 Q1080,0 1440,30 L1440,60 L0,60 Z" fill="#f7f2e8"/>
-    </svg>
-  </div>
+  <!-- Wave from hero -->
+  <svg class="news-wave-top" viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,36 Q360,72 720,36 Q1080,0 1440,36 L1440,0 L0,0 Z" fill="#f7f2e8"/>
+    <path d="M0,36 Q360,72 720,36 Q1080,0 1440,36 L1440,72 L0,72 Z" fill="#ede5d4"/>
+  </svg>
 
-  <div style="background:var(--cream2);padding-bottom:0">
-    <div class="teaser">
-      <div class="teaser-head">
-        <div class="teaser-eyebrow">— contents —</div>
-        <h2 class="teaser-title">ときめきのかけら</h2>
+  <div class="news-section">
+    <div class="news-inner">
+      <div class="news-label">
+        <div class="news-label-sub">お知らせ</div>
+        <div class="news-label-title">最近の<br>つまみぐい</div>
       </div>
-
-      <div class="teaser-grid">
-        <!-- スイーツ -->
-        <div class="teaser-card" onclick="location.href='sweets.html'" style="cursor:pointer;">
-          <div class="teaser-icon c1">🍰</div>
-          <div>
-            <div class="teaser-ja">スイーツ</div>
-            <div class="teaser-en">SWEETS</div>
-          </div>
-          <p class="teaser-desc">出会ったおいしいもの。カフェで、旅先で、日常の中で。メニュー表みたいに並べた、小さな幸せの記録。</p>
-          <div class="teaser-link">見てみる <span>→</span></div>
-        </div>
-
-        <!-- 作品 -->
-        <div class="teaser-card" onclick="location.href='works.html'" style="cursor:pointer;">
-          <div class="teaser-icon c2">🎬</div>
-          <div>
-            <div class="teaser-ja">作品</div>
-            <div class="teaser-en">WORKS</div>
-          </div>
-          <p class="teaser-desc">映画、漫画、アニメ——心に残ったものたち。いつか誰かに語りたくなるような、お気に入りのコレクション。</p>
-          <div class="teaser-link">見てみる <span>→</span></div>
-        </div>
-
-        <!-- 日記 -->
-        <div class="teaser-card" onclick="location.href='diary.html'" style="cursor:pointer;">
-          <div class="teaser-icon c3">📓</div>
-          <div>
-            <div class="teaser-ja">日記</div>
-            <div class="teaser-en">DIARY</div>
-          </div>
-          <p class="teaser-desc">感情・気持ち・ふとした気づき。本棚に並んだ日々をめくるように、過去の自分に会いに行く場所。</p>
-          <div class="teaser-link">見てみる <span>→</span></div>
-        </div>
-
-        <!-- 言葉 -->
-        <div class="teaser-card" onclick="location.href='words.html'" style="cursor:pointer;">
-          <div class="teaser-icon c4">💬</div>
-          <div>
-            <div class="teaser-ja">言葉</div>
-            <div class="teaser-en">WORDS</div>
-          </div>
-          <p class="teaser-desc">ふと刺さった一文、ずっと持ち歩きたい名言。カードに宿らせた、言葉たちの小さなギャラリー。</p>
-          <div class="teaser-link">見てみる <span>→</span></div>
-        </div>
-      </div>
+      <ul class="news-list">
+        <li>
+          <a href="works.html?open=%E8%8A%B1%E6%9D%9F%E3%81%BF%E3%81%9F%E3%81%84%E3%81%AA%E6%81%8B%E3%82%92%E3%81%97%E3%81%9F" class="news-item">
+            <span class="news-date">2025.11.15</span>
+            <span class="news-badge cat-works">作品</span>
+            <span class="news-title">花束みたいな恋をした を追加しました</span>
+            <span class="news-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="sweets.html?open=Basque%20Cheesecake" class="news-item">
+            <span class="news-date">2025.10.20</span>
+            <span class="news-badge cat-sweets">スイーツ</span>
+            <span class="news-title">Basque Cheesecake を追加しました</span>
+            <span class="news-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="diary.html?open=%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AE%E4%B8%80%E4%BA%BA%E6%97%85" class="news-item">
+            <span class="news-date">2025.09.12</span>
+            <span class="news-badge cat-diary">日記</span>
+            <span class="news-title">はじめての一人旅 を書きました</span>
+            <span class="news-arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a href="words.html?open=%E8%8A%B8%E8%A1%93%E3%81%AF%E7%88%86%E7%99%BA%E3%81%A0%E3%80%82" class="news-item">
+            <span class="news-date">2025.08.28</span>
+            <span class="news-badge cat-words">言葉</span>
+            <span class="news-title">「芸術は爆発だ。」を追加しました</span>
+            <span class="news-arrow">→</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
+
+
+<!-- ══ FEATURE SECTION ══ -->
+<section class="feature-section">
+
+  <!-- Wave top (cream2 → sage) -->
+  <svg class="feature-wave-top" viewBox="0 0 1440 72" preserveAspectRatio="none">
+    <path d="M0,36 Q360,0 720,36 Q1080,72 1440,36 L1440,0 L0,0 Z" fill="#ede5d4"/>
+    <path d="M0,36 Q360,0 720,36 Q1080,72 1440,36 L1440,72 L0,72 Z" fill="#d4e8ce"/>
+  </svg>
+
+  <!-- Left deco: stacked books -->
+  <div class="feat-deco feat-deco-l" aria-hidden="true">
+    <svg width="140" height="240" viewBox="0 0 140 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Book stack -->
+      <rect x="18" y="40"  width="36" height="120" rx="4" fill="#c8956a" stroke="#906030" stroke-width="2"/>
+      <rect x="20" y="42"  width="32" height="116" rx="3" fill="#d4a87a"/>
+      <text x="36" y="115" font-size="9" fill="white" text-anchor="middle" font-family="serif" transform="rotate(-90 36 115)" opacity=".8">つまみぐい</text>
+
+      <rect x="58" y="20"  width="30" height="140" rx="4" fill="#8aaa88" stroke="#4a7a48" stroke-width="2"/>
+      <rect x="60" y="22"  width="26" height="136" rx="3" fill="#9aba98"/>
+      <text x="73" y="105" font-size="8" fill="white" text-anchor="middle" font-family="serif" transform="rotate(-90 73 105)" opacity=".8">collection</text>
+
+      <rect x="92" y="55"  width="32" height="105" rx="4" fill="#b0a0d0" stroke="#705a9a" stroke-width="2"/>
+      <rect x="94" y="57"  width="28" height="101" rx="3" fill="#c0b0e0"/>
+
+      <!-- Bottom surface shadow -->
+      <ellipse cx="84" cy="164" rx="60" ry="8" fill="rgba(46,40,24,.1)"/>
+      <!-- Small items on top -->
+      <rect x="30" y="32"  width="24" height="10" rx="2" fill="#fde88a" stroke="#c4900a" stroke-width="1.5"/>
+      <circle cx="42" cy="26" r="6" fill="#f9a0b0" stroke="#c06080" stroke-width="1.5"/>
+      <!-- sparkles -->
+      <text x="8"   y="30" font-size="14" fill="#c8956a" opacity=".6">✦</text>
+      <text x="118" y="50" font-size="10" fill="#8aaa88" opacity=".5">✦</text>
+      <text x="20"  y="200" font-size="8"  fill="#b0a0d0" opacity=".4">✦</text>
+    </svg>
+  </div>
+
+  <!-- Right deco: collection items -->
+  <div class="feat-deco feat-deco-r" aria-hidden="true">
+    <svg width="140" height="240" viewBox="0 0 140 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Film clapperboard -->
+      <rect x="20" y="80"  width="90" height="70" rx="6" fill="#28283a" stroke="#5a6a8a" stroke-width="2.5"/>
+      <rect x="20" y="65"  width="90" height="18" rx="6" fill="#38384a" stroke="#5a6a8a" stroke-width="2.5"/>
+      <line x1="20" y1="83" x2="36" y2="65" stroke="#f5c842" stroke-width="5"/>
+      <line x1="40" y1="83" x2="56" y2="65" stroke="#f5c842" stroke-width="5"/>
+      <line x1="60" y1="83" x2="76" y2="65" stroke="#f5c842" stroke-width="5"/>
+      <line x1="80" y1="83" x2="96" y2="65" stroke="#f5c842" stroke-width="5"/>
+      <polygon points="48,108 48,90 72,99" fill="#f5c842"/>
+      <!-- Little cake -->
+      <ellipse cx="100" cy="42" rx="22" ry="5" fill="#e8dcc8" stroke="#a89070" stroke-width="1.5"/>
+      <rect x="78" y="22" width="44" height="22" rx="4" fill="#f9d2c2" stroke="#c07050" stroke-width="2"/>
+      <rect x="78" y="16" width="44" height="8"  rx="3" fill="#f5a0c0" stroke="#c06080" stroke-width="1.5"/>
+      <rect x="97" y="6"  width="6"  height="12" rx="2" fill="#f5a850"/>
+      <circle cx="100" cy="5" r="4" fill="#e84040" stroke="#901010" stroke-width="1.5"/>
+      <!-- sparkles -->
+      <text x="6"  y="65"  font-size="12" fill="#c8956a" opacity=".6">✦</text>
+      <text x="120" y="160" font-size="9"  fill="#8aaa88" opacity=".5">✦</text>
+      <text x="30" y="200" font-size="8"  fill="#b0a0d0" opacity=".4">✦</text>
+    </svg>
+  </div>
+
+  <!-- Center text -->
+  <div class="feature-inner">
+    <div class="feature-eyebrow">— what is this site? —</div>
+    <h2 class="feature-title">
+      好きなものを、<br>
+      <em>すこしずつ</em>。
+    </h2>
+    <p class="feature-sub">
+      言葉、スイーツ、映画、日記——<br>
+      日々のときめきを、たいせつに集めていく場所。
+    </p>
+    <a href="profile.html" class="feature-cta">サイトについて</a>
+  </div>
+
+  <!-- Wave bottom (sage → cream) -->
+  <svg class="feature-wave-bottom" viewBox="0 0 1440 72" preserveAspectRatio="none">
+    <path d="M0,36 Q360,72 720,36 Q1080,0 1440,36 L1440,0 L0,0 Z" fill="#d4e8ce"/>
+    <path d="M0,36 Q360,72 720,36 Q1080,0 1440,36 L1440,72 L0,72 Z" fill="#f7f2e8"/>
+  </svg>
+</section>
+
+
+<!-- ══ GUIDE SECTION ══ -->
+<section class="guide-section">
+  <div class="guide-inner">
+    <div class="guide-head">
+      <div class="guide-eyebrow">— contents —</div>
+      <h2 class="guide-title">ときめきのかけら</h2>
+    </div>
+
+    <div class="guide-grid">
+
+      <!-- スイーツ -->
+      <a href="sweets.html" class="guide-card">
+        <div class="guide-art">
+          <svg viewBox="0 0 110 130" fill="none">
+            <g filter="url(#rough)">
+              <!-- parfait glass -->
+              <path d="M38,20 L72,20 L80,100 L30,100 Z" fill="#f5e8d8" stroke="#c07050" stroke-width="2.5"/>
+              <path d="M38,20 L72,20 L69,40 L41,40 Z" fill="#fde88a" stroke="#c4900a" stroke-width="1.8"/>
+              <path d="M41,40 L69,40 L66,62 L44,62 Z" fill="#f9a0b0" stroke="#c06080" stroke-width="1.8"/>
+              <path d="M44,62 L66,62 L64,80 L46,80 Z" fill="#c8e8b8" stroke="#5a8a4a" stroke-width="1.8"/>
+              <ellipse cx="55" cy="100" rx="25" ry="5" fill="#e8dcc8" stroke="#a89070" stroke-width="1.5"/>
+              <!-- cream top -->
+              <path d="M42,22 Q55,8 68,22 Q64,28 55,26 Q46,28 42,22Z" fill="white" stroke="#d0c0a0" stroke-width="1.8"/>
+              <!-- cherry -->
+              <circle cx="55" cy="10" r="7" fill="#e84040" stroke="#901010" stroke-width="2"/>
+              <path d="M55,3 Q60,-2 66,0" stroke="#5a8a4a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <!-- macarons -->
+              <ellipse cx="22" cy="78" rx="12" ry="7" fill="#f5a0c0" stroke="#c06080" stroke-width="1.8"/>
+              <ellipse cx="22" cy="73" rx="12" ry="7" fill="#f9c0d0" stroke="#c06080" stroke-width="1.8"/>
+              <line x1="10" y1="76" x2="34" y2="76" stroke="#c06080" stroke-width="1.2"/>
+              <ellipse cx="88" cy="68" rx="11" ry="6.5" fill="#c8e8a8" stroke="#5a8a4a" stroke-width="1.8"/>
+              <ellipse cx="88" cy="63" rx="11" ry="6.5" fill="#d8f0b8" stroke="#5a8a4a" stroke-width="1.8"/>
+              <line x1="77" y1="66" x2="99" y2="66" stroke="#5a8a4a" stroke-width="1.2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="guide-body">
+          <div class="guide-icon">🍰</div>
+          <div class="guide-ja">スイーツ</div>
+          <div class="guide-en">SWEETS</div>
+          <p class="guide-desc">出会ったおいしいもの。カフェで、旅先で、日常の中で。メニュー表みたいに並べた、小さな幸せの記録。</p>
+          <div class="guide-link">見てみる <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- 作品 -->
+      <a href="works.html" class="guide-card">
+        <div class="guide-art">
+          <svg viewBox="0 0 110 130" fill="none">
+            <g filter="url(#rough)">
+              <!-- clapperboard -->
+              <rect x="18" y="48" width="74" height="58" rx="5" fill="#28283a" stroke="#5a6a8a" stroke-width="2.5"/>
+              <rect x="18" y="34" width="74" height="17" rx="5" fill="#38384a" stroke="#5a6a8a" stroke-width="2.5"/>
+              <line x1="18" y1="51" x2="35" y2="34" stroke="#f5c842" stroke-width="6.5"/>
+              <line x1="40" y1="51" x2="57" y2="34" stroke="#f5c842" stroke-width="6.5"/>
+              <line x1="62" y1="51" x2="79" y2="34" stroke="#f5c842" stroke-width="6.5"/>
+              <line x1="26" y1="68" x2="84" y2="68" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <line x1="26" y1="78" x2="84" y2="78" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+              <polygon points="40,102 40,76 70,89" fill="#f5c842" stroke="#c4900a" stroke-width="2"/>
+              <!-- manga book -->
+              <rect x="68" y="14" width="30" height="40" rx="3" fill="#f5f0e8" stroke="#a89070" stroke-width="2"/>
+              <rect x="70" y="16" width="26" height="36" rx="2" fill="#e8f0f8"/>
+              <line x1="70" y1="22" x2="96" y2="22" stroke="#c0d0e0" stroke-width="1.5"/>
+              <line x1="70" y1="28" x2="96" y2="28" stroke="#c0d0e0" stroke-width="1.5"/>
+              <line x1="70" y1="34" x2="86" y2="34" stroke="#c0d0e0" stroke-width="1.5"/>
+              <!-- star ratings -->
+              <text x="22" y="30" font-size="10" fill="#fde88a">★★★</text>
+            </g>
+          </svg>
+        </div>
+        <div class="guide-body">
+          <div class="guide-icon">🎬</div>
+          <div class="guide-ja">作品</div>
+          <div class="guide-en">WORKS</div>
+          <p class="guide-desc">映画、漫画、アニメ——心に残ったものたち。いつか誰かに語りたくなるような、お気に入りのコレクション。</p>
+          <div class="guide-link">見てみる <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- 日記 -->
+      <a href="diary.html" class="guide-card">
+        <div class="guide-art">
+          <svg viewBox="0 0 110 130" fill="none">
+            <g filter="url(#rough)">
+              <!-- shelf -->
+              <rect x="8" y="95" width="94" height="8" rx="2" fill="#8a6a3a" stroke="#5a3a18" stroke-width="1.8"/>
+              <rect x="5" y="88" width="100" height="8" rx="2" fill="#a07840" stroke="#5a3a18" stroke-width="1.5" opacity=".5"/>
+              <!-- books -->
+              <rect x="12" y="32" width="18" height="64" rx="3" fill="#e84040" stroke="#901010" stroke-width="2"/>
+              <rect x="14" y="34" width="14" height="60" rx="2" fill="#f06060"/>
+              <rect x="33" y="20" width="14" height="76" rx="3" fill="#4080e0" stroke="#205090" stroke-width="2"/>
+              <rect x="35" y="22" width="10" height="72" rx="2" fill="#60a0f0"/>
+              <rect x="50" y="38" width="16" height="58" rx="3" fill="#50b848" stroke="#207828" stroke-width="2"/>
+              <rect x="52" y="40" width="12" height="54" rx="2" fill="#70c868"/>
+              <rect x="69" y="28" width="13" height="68" rx="3" fill="#e0a000" stroke="#905800" stroke-width="2"/>
+              <rect x="71" y="30" width="9"  height="64" rx="2" fill="#f0c020"/>
+              <rect x="85" y="44" width="15" height="52" rx="3" fill="#b0a0d0" stroke="#705a9a" stroke-width="2"/>
+              <rect x="87" y="46" width="11" height="48" rx="2" fill="#c8b8e8"/>
+              <!-- small deco: bookmark ribbons -->
+              <rect x="39" y="18" width="4" height="12" rx="1" fill="#f9a0b0"/>
+              <rect x="73" y="26" width="3" height="10" rx="1" fill="#f5c842"/>
+            </g>
+          </svg>
+        </div>
+        <div class="guide-body">
+          <div class="guide-icon">📓</div>
+          <div class="guide-ja">日記</div>
+          <div class="guide-en">DIARY</div>
+          <p class="guide-desc">感情・気持ち・ふとした気づき。本棚に並んだ日々をめくるように、過去の自分に会いに行く場所。</p>
+          <div class="guide-link">見てみる <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- 言葉 -->
+      <a href="words.html" class="guide-card">
+        <div class="guide-art">
+          <svg viewBox="0 0 110 130" fill="none">
+            <g filter="url(#rough)">
+              <!-- Playing card back -->
+              <rect x="28" y="14" width="54" height="82" rx="7" fill="#faf0d8" stroke="#c4900a" stroke-width="3"/>
+              <rect x="32" y="18" width="46" height="74" rx="5" fill="#fffde8" stroke="#c4900a" stroke-width="1.5" stroke-dasharray="3 2"/>
+              <!-- Star symbol -->
+              <polygon points="55,36 57.5,46 68,46 59,52 62,62 55,56 48,62 51,52 42,46 52.5,46"
+                       fill="#fde88a" stroke="#c4900a" stroke-width="2" stroke-linejoin="round"/>
+              <!-- Quote lines -->
+              <line x1="38" y1="68" x2="72" y2="68" stroke="#d6c9b0" stroke-width="1.8"/>
+              <line x1="38" y1="74" x2="65" y2="74" stroke="#d6c9b0" stroke-width="1.8"/>
+              <!-- Corner marks -->
+              <text x="32" y="27" font-size="9" fill="#c4900a" font-family="serif">★</text>
+              <text x="70" y="87" font-size="9" fill="#c4900a" font-family="serif" transform="rotate(180 74 83)">★</text>
+              <!-- Second card peeking behind -->
+              <rect x="36" y="20" width="54" height="82" rx="7" fill="#f5e8c8" stroke="#a87828" stroke-width="2" opacity=".45"/>
+            </g>
+          </svg>
+        </div>
+        <div class="guide-body">
+          <div class="guide-icon">💬</div>
+          <div class="guide-ja">言葉</div>
+          <div class="guide-en">WORDS</div>
+          <p class="guide-desc">ふと刺さった一文、ずっと持ち歩きたい名言。カードに宿らせた、言葉たちの小さなギャラリー。</p>
+          <div class="guide-link">見てみる <span>→</span></div>
+        </div>
+      </a>
+
+    </div><!-- /.guide-grid -->
+  </div>
+</section>
+
 
 <!-- ══ FOOTER ══ -->
 <footer class="footer">
@@ -849,21 +1024,12 @@ body {
 </footer>
 
 <script>
-/* ── Teaser Intersection Observer ── */
-const teaserCards = document.querySelectorAll('.teaser-card');
+/* Guide cards IntersectionObserver */
+const guideCards = document.querySelectorAll('.guide-card');
 const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if(e.isIntersecting) {
-      e.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.15 });
-teaserCards.forEach(c => io.observe(c));
-
-/* ── Smooth scroll for nav links ── */
-document.querySelectorAll('a[href="#"]').forEach(a => {
-  a.addEventListener('click', e => e.preventDefault());
-});
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+guideCards.forEach(c => io.observe(c));
 </script>
 
 <script src="search.js"></script>

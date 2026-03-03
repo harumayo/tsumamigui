@@ -347,6 +347,14 @@ const CAT_STYLE = {
       font-family:monospace;
     }
 
+    /* Hide browser's native search clear button (× duplicate fix) */
+    #sg-input::-webkit-search-cancel-button,
+    #sg-input::-webkit-search-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+      display: none;
+    }
+
     @media(max-width:600px){
       #sg-overlay { padding:60px 12px 32px; }
       #sg-input { font-size:16px; padding:15px 0; }
