@@ -112,27 +112,57 @@ body {
 .hero::before {
   content: '';
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(46,40,24,.065) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(46,40,24,.05) 1px, transparent 1px);
   background-size: 28px 28px;
   pointer-events: none;
 }
-/* Color blobs */
-.hero::after {
+
+/* ── Hero illustration strip ── */
+.hero-art-strip {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  /* fade edges left/right */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+}
+.hero-art-img {
+  display: block;
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  object-position: center top;
+  opacity: .9;
+}
+/* Fade bottom of illustration into hero bg */
+.hero-art-strip::after {
   content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 15% 72%, rgba(200,149,106,.14) 0%, transparent 45%),
-    radial-gradient(ellipse at 82% 22%, rgba(138,170,136,.12) 0%, transparent 45%),
-    radial-gradient(ellipse at 58% 88%, rgba(176,160,208,.09) 0%, transparent 40%),
-    radial-gradient(ellipse at 30% 18%, rgba(200,180,120,.10) 0%, transparent 38%);
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 70px;
+  background: linear-gradient(to bottom, transparent, var(--cream));
   pointer-events: none;
 }
+
 .hero-inner {
   position: relative; z-index: 2;
   width: 100%; max-width: 1100px;
   padding: 0 40px;
   display: flex; flex-direction: column;
   align-items: center; gap: 0;
+  margin-top: -24px;  /* slight overlap with illustration */
 }
 /* Stamp badge */
 .hero-stamp {
@@ -500,7 +530,8 @@ body {
    RESPONSIVE
 ══════════════════════════════════════ */
 @media (max-width: 900px) {
-  .hero-inner { padding: 0 28px; }
+  .hero-art-img { height: 170px; }
+  .hero-inner { padding: 0 28px; margin-top: -16px; }
   .hero-cards { height: 240px; max-width: 640px; }
   .f-card { width: 120px; height: 185px; }
   .news-inner { flex-direction: column; gap: 20px; }
@@ -513,6 +544,8 @@ body {
   .guide-art svg { height: 105px; }
 }
 @media (max-width: 600px) {
+  .hero-art-img { height: 130px; }
+  .hero-inner { margin-top: -10px; }
   .header { padding: 0 20px; }
   .logo span { display: none; }
   .nav-item:not(.nav-content) { display: none; }
@@ -575,6 +608,12 @@ body {
 
 <!-- ══ HERO ══ -->
 <section class="hero">
+
+  <!-- Illustration strip (full-width) -->
+  <div class="hero-art-strip">
+    <img src="hero-art.svg" class="hero-art-img" alt="" aria-hidden="true" draggable="false">
+  </div>
+
   <div class="hero-inner">
 
     <!-- Stamp -->

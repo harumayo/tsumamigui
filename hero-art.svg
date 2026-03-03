@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 280" preserveAspectRatio="xMidYMid slice">
+<defs>
+  <filter id="wr" x="-6%" y="-6%" width="112%" height="112%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="9" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</defs>
+
+<!-- ── BACKGROUND ── -->
+<rect width="1440" height="280" fill="#f7f2e8"/>
+<!-- Soft color blobs -->
+<ellipse cx="160"  cy="260" rx="300" ry="170" fill="rgba(200,149,106,.09)"/>
+<ellipse cx="430"  cy="40"  rx="240" ry="140" fill="rgba(176,160,208,.07)"/>
+<ellipse cx="1080" cy="230" rx="310" ry="175" fill="rgba(138,170,136,.08)"/>
+<ellipse cx="1330" cy="55"  rx="190" ry="120" fill="rgba(200,180,120,.07)"/>
+<!-- Subtle dot grid (center breathing zone) -->
+<g opacity=".11" fill="#a89880">
+  <circle cx="468" cy="88" r="2"/> <circle cx="504" cy="72" r="2"/> <circle cx="540" cy="88" r="2"/>
+  <circle cx="576" cy="72" r="2"/> <circle cx="612" cy="88" r="2"/> <circle cx="648" cy="72" r="2"/>
+  <circle cx="684" cy="88" r="2"/> <circle cx="720" cy="72" r="2"/> <circle cx="756" cy="88" r="2"/>
+  <circle cx="792" cy="72" r="2"/> <circle cx="828" cy="88" r="2"/> <circle cx="864" cy="72" r="2"/>
+  <circle cx="900" cy="88" r="2"/> <circle cx="936" cy="72" r="2"/>
+  <circle cx="476" cy="198" r="2"/> <circle cx="512" cy="212" r="2"/> <circle cx="548" cy="198" r="2"/>
+  <circle cx="584" cy="212" r="2"/> <circle cx="620" cy="198" r="2"/> <circle cx="656" cy="212" r="2"/>
+  <circle cx="692" cy="198" r="2"/> <circle cx="728" cy="212" r="2"/> <circle cx="764" cy="198" r="2"/>
+  <circle cx="800" cy="212" r="2"/> <circle cx="836" cy="198" r="2"/> <circle cx="872" cy="212" r="2"/>
+  <circle cx="908" cy="198" r="2"/>
+</g>
+<!-- Gentle wavy lines in center -->
+<path d="M448,130 Q548,112 648,130 Q748,148 848,130 Q948,112 1008,130"
+      fill="none" stroke="rgba(168,152,128,.11)" stroke-width="1.5"/>
+<path d="M448,148 Q548,130 648,148 Q748,166 848,148 Q948,130 1008,148"
+      fill="none" stroke="rgba(168,152,128,.08)" stroke-width="1.2"/>
+<path d="M448,168 Q548,152 648,168 Q748,184 848,168 Q948,152 1008,168"
+      fill="none" stroke="rgba(168,152,128,.06)" stroke-width="1"/>
+
+<!-- ══════════════════════════════════
+     LEFT CLUSTER  :  Books + Tea cup + Blossom
+══════════════════════════════════ -->
+
+<!-- Books (5 standing books) -->
+<g filter="url(#wr)">
+  <!-- Book 1: terracotta, tall -->
+  <rect x="44"  y="48"  width="32" height="182" rx="4" fill="#c8906a" stroke="#905028" stroke-width="2.5"/>
+  <rect x="46"  y="50"  width="28" height="178" rx="3" fill="#d8a07a"/>
+  <text x="60"  y="158" font-size="8" fill="rgba(255,255,255,.65)" text-anchor="middle"
+        font-family="serif" transform="rotate(-90 60 158)">好きなもの</text>
+  <!-- Book 2: sage, tallest -->
+  <rect x="80"  y="30"  width="28" height="200" rx="4" fill="#8aaa88" stroke="#4a7a48" stroke-width="2.5"/>
+  <rect x="82"  y="32"  width="24" height="196" rx="3" fill="#9aba98"/>
+  <!-- Bookmark on book 2 -->
+  <rect x="84"  y="27"  width="5"  height="18"  rx="1.5" fill="#f9a0b0"/>
+  <path d="M84,45 L86.5,41 L89,45" fill="#f9a0b0"/>
+  <!-- Book 3: lavender -->
+  <rect x="112" y="78"  width="26" height="152" rx="4" fill="#b0a0d0" stroke="#705a9a" stroke-width="2.5"/>
+  <rect x="114" y="80"  width="22" height="148" rx="3" fill="#c0b0e0"/>
+  <!-- Book 4: gold -->
+  <rect x="142" y="102" width="22" height="130" rx="3" fill="#d8a018" stroke="#906010" stroke-width="2"/>
+  <rect x="144" y="104" width="18" height="126" rx="2" fill="#eabc28"/>
+  <!-- Book 5: deep red, slim -->
+  <rect x="168" y="62"  width="16" height="170" rx="3" fill="#c04040" stroke="#801818" stroke-width="2"/>
+  <rect x="170" y="64"  width="12" height="166" rx="2" fill="#d05050"/>
+</g>
+
+<!-- Tea cup -->
+<g filter="url(#wr)">
+  <!-- Saucer -->
+  <ellipse cx="265" cy="248" rx="44" ry="9.5" fill="#e0d4c0" stroke="#a09070" stroke-width="1.8"/>
+  <!-- Cup body -->
+  <path d="M232,202 Q230,246 265,248 Q300,246 298,202 Q284,196 265,196 Q246,196 232,202Z"
+        fill="#fdf4e4" stroke="#c09060" stroke-width="2.2"/>
+  <!-- Tea inside -->
+  <ellipse cx="265" cy="206" rx="25" ry="7.5" fill="#b86838" stroke="#884020" stroke-width="1.5"/>
+  <!-- Cup decorative dots -->
+  <circle cx="250" cy="222" r="3"   fill="rgba(200,149,106,.28)"/>
+  <circle cx="278" cy="228" r="2.5" fill="rgba(138,170,136,.28)"/>
+  <circle cx="260" cy="236" r="2"   fill="rgba(176,160,208,.28)"/>
+  <!-- Handle -->
+  <path d="M298,214 Q316,208 316,226 Q316,242 298,236" fill="none" stroke="#c09060" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Steam -->
+  <path d="M250,194 Q244,175 250,160" fill="none" stroke="#c8b8a0" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+  <path d="M265,192 Q259,173 265,159" fill="none" stroke="#c8b8a0" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+  <path d="M280,194 Q274,178 280,163" fill="none" stroke="#c8b8a0" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+</g>
+
+<!-- Cherry blossom -->
+<g transform="translate(362, 132)" filter="url(#wr)">
+  <circle cx="0"   cy="-28" r="13" fill="#fbb8cc" stroke="#d07090" stroke-width="1.8"/>
+  <circle cx="27"  cy="-9"  r="13" fill="#fbb8cc" stroke="#d07090" stroke-width="1.8"/>
+  <circle cx="17"  cy="20"  r="13" fill="#fbb8cc" stroke="#d07090" stroke-width="1.8"/>
+  <circle cx="-17" cy="20"  r="13" fill="#fbb8cc" stroke="#d07090" stroke-width="1.8"/>
+  <circle cx="-27" cy="-9"  r="13" fill="#fbb8cc" stroke="#d07090" stroke-width="1.8"/>
+  <circle cx="0"   cy="0"   r="10" fill="#fde88a" stroke="#c4900a" stroke-width="2"/>
+</g>
+<!-- Cherries above blossom -->
+<g transform="translate(362, 132)">
+  <path d="M0,-44 Q22,-56 34,-34" stroke="#5a8a4a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <circle cx="0"   cy="-45" r="7.5" fill="#e83040" stroke="#901020" stroke-width="1.8"/>
+  <circle cx="34"  cy="-34" r="7.5" fill="#e83040" stroke="#901020" stroke-width="1.8"/>
+</g>
+
+<!-- Small parfait glass (far left, peeking) -->
+<g transform="translate(32, 0)" filter="url(#wr)">
+  <path d="M12,55 L28,55 L36,140 L4,140 Z" fill="rgba(245,240,228,.8)" stroke="#c8956a" stroke-width="1.8" opacity=".7"/>
+  <path d="M12,55 L28,55 L25,76 L15,76 Z" fill="rgba(253,232,138,.6)" stroke="#c4900a" stroke-width="1.2" opacity=".7"/>
+  <path d="M15,76 L25,76 L23,96 L17,96 Z" fill="rgba(249,160,176,.5)" stroke="#c06080" stroke-width="1.2" opacity=".7"/>
+  <ellipse cx="20" cy="140" rx="16" ry="4" fill="rgba(232,220,200,.6)" opacity=".6"/>
+</g>
+
+<!-- ══════════════════════════════════
+     CENTER ITEMS (scattered lightly)
+══════════════════════════════════ -->
+
+<!-- Playing card (tilted left) -->
+<g transform="rotate(-9 628 152)">
+  <rect x="590" y="88" width="76" height="112" rx="9" fill="#faf0d8" stroke="#c4900a" stroke-width="2.5"/>
+  <rect x="594" y="92" width="68" height="104" rx="7" fill="#fffde8" stroke="#c4900a" stroke-width="1.2" stroke-dasharray="3 2"/>
+  <polygon points="628,118 631,132 644,132 634,140 637,153 628,146 619,153 622,140 612,132 625,132"
+           fill="#fde88a" stroke="#c4900a" stroke-width="1.8" stroke-linejoin="round"/>
+  <text x="595" y="108" font-size="9" fill="#c4900a" font-family="serif">★</text>
+  <text x="659" y="194" font-size="9" fill="#c4900a" font-family="serif" transform="rotate(180 661.5 190)">★</text>
+</g>
+
+<!-- Open diary / notebook -->
+<g transform="rotate(5 808 192)">
+  <!-- Pages shadow -->
+  <path d="M760,150 Q759,218 800,218 L800,150 Z" fill="#e8e0d0" stroke="none" transform="translate(4,4)" opacity=".18"/>
+  <path d="M800,150 L800,218 Q841,218 840,150 Z" fill="#e8e0d0" stroke="none" transform="translate(4,4)" opacity=".18"/>
+  <!-- Left page -->
+  <path d="M760,150 Q759,218 800,218 L800,150 Z" fill="#faf7f0" stroke="#a89070" stroke-width="2"/>
+  <!-- Right page -->
+  <path d="M800,150 L800,218 Q841,218 840,150 Z" fill="#f4f0e6" stroke="#a89070" stroke-width="2"/>
+  <!-- Spine -->
+  <line x1="800" y1="148" x2="800" y2="220" stroke="#7a5a28" stroke-width="3.5"/>
+  <!-- Lines - left page -->
+  <line x1="770" y1="168" x2="796" y2="168" stroke="#d0c8b0" stroke-width="1.3"/>
+  <line x1="770" y1="180" x2="796" y2="180" stroke="#d0c8b0" stroke-width="1.3"/>
+  <line x1="770" y1="192" x2="792" y2="192" stroke="#d0c8b0" stroke-width="1.3"/>
+  <line x1="770" y1="204" x2="796" y2="204" stroke="#d0c8b0" stroke-width="1.3"/>
+  <!-- Lines - right page -->
+  <line x1="804" y1="168" x2="832" y2="168" stroke="#d0c8b0" stroke-width="1.3"/>
+  <line x1="804" y1="180" x2="832" y2="180" stroke="#d0c8b0" stroke-width="1.3"/>
+  <line x1="804" y1="192" x2="826" y2="192" stroke="#d0c8b0" stroke-width="1.3"/>
+  <!-- Heart doodle on right page -->
+  <text x="826" y="160" font-size="12" fill="#f9a0b0" text-anchor="middle">♡</text>
+  <!-- Tiny flower doodle on left page -->
+  <circle cx="782" cy="158" r="5" fill="#fde88a" stroke="#c4900a" stroke-width="1.2"/>
+  <circle cx="782" cy="148" r="3.5" fill="#f9c0d0" stroke="#d07090" stroke-width="1"/>
+  <circle cx="791" cy="153" r="3.5" fill="#f9c0d0" stroke="#d07090" stroke-width="1"/>
+  <circle cx="787" cy="163" r="3.5" fill="#f9c0d0" stroke="#d07090" stroke-width="1"/>
+  <circle cx="773" cy="163" r="3.5" fill="#f9c0d0" stroke="#d07090" stroke-width="1"/>
+  <circle cx="771" cy="153" r="3.5" fill="#f9c0d0" stroke="#d07090" stroke-width="1"/>
+</g>
+
+<!-- ══════════════════════════════════
+     RIGHT CLUSTER  :  Clapperboard + Cake + Macarons
+══════════════════════════════════ -->
+
+<!-- Film clapperboard -->
+<g transform="rotate(-5 1000 178)" filter="url(#wr)">
+  <!-- Board body -->
+  <rect x="948"  y="140" width="104" height="76" rx="6" fill="#28283a" stroke="#5a6a8a" stroke-width="2.5"/>
+  <!-- Top strip -->
+  <rect x="948"  y="120" width="104" height="23" rx="6" fill="#38384a" stroke="#5a6a8a" stroke-width="2.5"/>
+  <!-- Diagonal stripes on top strip -->
+  <line x1="948"  y1="143" x2="970"  y2="120" stroke="#f5c842" stroke-width="8"/>
+  <line x1="975"  y1="143" x2="997"  y2="120" stroke="#f5c842" stroke-width="8"/>
+  <line x1="1002" y1="143" x2="1024" y2="120" stroke="#f5c842" stroke-width="8"/>
+  <!-- Horizontal lines inside body -->
+  <line x1="966"  y1="162" x2="1034" y2="162" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+  <line x1="966"  y1="174" x2="1034" y2="174" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+  <line x1="966"  y1="186" x2="1034" y2="186" stroke="#4a5a78" stroke-width="1.5" opacity=".7"/>
+  <!-- Play triangle -->
+  <polygon points="968,208 968,190 988,199" fill="#f5c842" stroke="#c4900a" stroke-width="1.5"/>
+</g>
+
+<!-- Manga panel (peeking right of clapperboard) -->
+<g transform="rotate(6 1110 155)">
+  <rect x="1072" y="84" width="76" height="100" rx="4" fill="white" stroke="#2e2818" stroke-width="2.5"/>
+  <line x1="1072" y1="130" x2="1148" y2="130" stroke="#2e2818" stroke-width="1.5"/>
+  <line x1="1110" y1="84"  x2="1110" y2="130" stroke="#2e2818" stroke-width="1.5"/>
+  <rect x="1075" y="87" width="32" height="40" rx="2" fill="#f0f4ff"/>
+  <rect x="1113" y="87" width="32" height="40" rx="2" fill="#fff0f4"/>
+  <text x="1091" y="113" font-size="14" text-anchor="middle" fill="#fde88a">★</text>
+  <text x="1129" y="111" font-size="12" text-anchor="middle" fill="#f9a0b0">♡</text>
+  <!-- Speech bubble bottom panel -->
+  <ellipse cx="1106" cy="153" rx="26" ry="12" fill="white" stroke="#2e2818" stroke-width="1.5"/>
+  <path d="M1096,164 L1092,175 L1104,167" fill="white" stroke="#2e2818" stroke-width="1.5" stroke-linejoin="round"/>
+  <circle cx="1098" cy="153" r="3" fill="#2e2818"/>
+  <circle cx="1106" cy="153" r="3" fill="#2e2818"/>
+  <circle cx="1114" cy="153" r="3" fill="#2e2818"/>
+</g>
+
+<!-- Layered cake with candle -->
+<g filter="url(#wr)">
+  <!-- Plate shadow -->
+  <ellipse cx="1218" cy="270" rx="60" ry="11" fill="#e0d4c0" stroke="#a09070" stroke-width="1.5"/>
+  <!-- Bottom layer: terracotta -->
+  <rect x="1163" y="226" width="110" height="42" rx="5" fill="#f5c8a8" stroke="#c07850" stroke-width="2.5"/>
+  <!-- Middle layer: sage -->
+  <rect x="1172" y="190" width="92"  height="38" rx="5" fill="#c0d8b0" stroke="#5a8a4a" stroke-width="2.5"/>
+  <!-- Top layer: pink -->
+  <rect x="1181" y="162" width="74"  height="30" rx="5" fill="#f8c8d8" stroke="#d07090" stroke-width="2.5"/>
+  <!-- Frosting lines -->
+  <path d="M1163,228 Q1190,220 1218,228 Q1246,220 1273,228" fill="none" stroke="white" stroke-width="4" opacity=".8"/>
+  <path d="M1172,192 Q1196,184 1218,192 Q1240,184 1264,192" fill="none" stroke="white" stroke-width="4" opacity=".8"/>
+  <!-- Top swirl frosting -->
+  <path d="M1181,164 Q1196,154 1210,162 Q1224,153 1237,162 Q1244,155 1255,164"
+        fill="#fff0f6" stroke="#d07090" stroke-width="2"/>
+  <!-- Candle -->
+  <rect x="1215" y="140" width="7" height="24" rx="2.5" fill="#a0c8e8"/>
+  <path d="M1218.5,134 Q1225,126 1222,138 Q1227,129 1224,140 Q1218.5,134 1213,140 Q1210,129 1215,138 Q1212,126 1218.5,134Z"
+        fill="#ff8020"/>
+  <!-- Cherry on top -->
+  <circle cx="1218" cy="158" r="7.5" fill="#e83040" stroke="#901020" stroke-width="2"/>
+  <line x1="1218" y1="151" x2="1218" y2="147" stroke="#5a8a4a" stroke-width="2.5" stroke-linecap="round"/>
+</g>
+
+<!-- Macarons (stacked, far right) -->
+<g filter="url(#wr)">
+  <!-- Pink macaron -->
+  <ellipse cx="1360" cy="258" rx="30" ry="9.5" fill="#f5a0b8" stroke="#c06080" stroke-width="2"/>
+  <ellipse cx="1360" cy="247" rx="30" ry="9.5" fill="#ffc0ce" stroke="#c06080" stroke-width="2"/>
+  <ellipse cx="1360" cy="240" rx="30" ry="9.5" fill="#f5a0b8" stroke="#c06080" stroke-width="2"/>
+  <line x1="1330" y1="249" x2="1390" y2="249" stroke="#c06080" stroke-width="1.2" opacity=".5"/>
+  <!-- Sage macaron -->
+  <ellipse cx="1362" cy="226" rx="27" ry="8.5" fill="#9aba98" stroke="#4a7a48" stroke-width="2"/>
+  <ellipse cx="1362" cy="215" rx="27" ry="8.5" fill="#b8d0b0" stroke="#4a7a48" stroke-width="2"/>
+  <ellipse cx="1362" cy="209" rx="27" ry="8.5" fill="#9aba98" stroke="#4a7a48" stroke-width="2"/>
+  <line x1="1335" y1="217" x2="1389" y2="217" stroke="#4a7a48" stroke-width="1.2" opacity=".5"/>
+  <!-- Lavender macaron (top) -->
+  <ellipse cx="1355" cy="196" rx="23" ry="7.5" fill="#c0b0e0" stroke="#705aaa" stroke-width="2"/>
+  <ellipse cx="1355" cy="186" rx="23" ry="7.5" fill="#d8c8f0" stroke="#705aaa" stroke-width="2"/>
+  <ellipse cx="1355" cy="180" rx="23" ry="7.5" fill="#c0b0e0" stroke="#705aaa" stroke-width="2"/>
+  <line x1="1332" y1="188" x2="1378" y2="188" stroke="#705aaa" stroke-width="1.2" opacity=".5"/>
+</g>
+
+<!-- ══════════════════════════════════
+     SCATTERED DECORATIONS
+══════════════════════════════════ -->
+<!-- Stars ✦ -->
+<text x="26"   y="46"  font-size="18" fill="#c8956a" opacity=".42">✦</text>
+<text x="320"  y="52"  font-size="14" fill="#8aaa88" opacity=".38">✦</text>
+<text x="430"  y="240" font-size="13" fill="#b0a0d0" opacity=".38">✦</text>
+<text x="550"  y="50"  font-size="11" fill="#c8956a" opacity=".35">✦</text>
+<text x="695"  y="265" font-size="15" fill="#8aaa88" opacity=".32">✦</text>
+<text x="866"  y="46"  font-size="13" fill="#c4900a" opacity=".36">✦</text>
+<text x="1064" y="258" font-size="12" fill="#8aaa88" opacity=".38">✦</text>
+<text x="1138" y="48"  font-size="16" fill="#b0a0d0" opacity=".40">✦</text>
+<text x="1406" y="135" font-size="14" fill="#c8956a" opacity=".38">✦</text>
+<text x="18"   y="265" font-size="11" fill="#b0a0d0" opacity=".32">✦</text>
+
+<!-- Hearts ♡ -->
+<text x="408"  y="98"  font-size="14" fill="#f9a0b0" opacity=".40">♡</text>
+<text x="744"  y="242" font-size="12" fill="#f9a0b0" opacity=".36">♡</text>
+<text x="1148" cy="195" x="1148" y="195" font-size="14" fill="#f9a0b0" opacity=".38">♡</text>
+<text x="1420" y="255" font-size="13" fill="#f9a0b0" opacity=".34">♡</text>
+
+<!-- Tiny dots along the bottom -->
+<g opacity=".18" fill="#c8956a">
+  <circle cx="338" cy="272" r="3.5"/>
+  <circle cx="450" cy="270" r="2.5"/>
+  <circle cx="562" cy="268" r="3"/>
+  <circle cx="698" cy="272" r="3.5"/>
+  <circle cx="764" cy="268" r="2.5"/>
+  <circle cx="908" cy="274" r="3"/>
+  <circle cx="1058" cy="270" r="2.5"/>
+  <circle cx="1144" cy="268" r="3"/>
+</g>
+
+<!-- Small sparkle crosses -->
+<g stroke-linecap="round">
+  <line x1="464" y1="52"  x2="464" y2="60"  stroke="#c4900a" stroke-width="1.5" opacity=".3"/>
+  <line x1="460" y1="56"  x2="468" y2="56"  stroke="#c4900a" stroke-width="1.5" opacity=".3"/>
+  <line x1="996" y1="48"  x2="996" y2="56"  stroke="#8aaa88" stroke-width="1.5" opacity=".3"/>
+  <line x1="992" y1="52"  x2="1000" y2="52" stroke="#8aaa88" stroke-width="1.5" opacity=".3"/>
+  <line x1="1296" y1="62" x2="1296" y2="70" stroke="#b0a0d0" stroke-width="1.5" opacity=".3"/>
+  <line x1="1292" y1="66" x2="1300" y2="66" stroke="#b0a0d0" stroke-width="1.5" opacity=".3"/>
+</g>
+
+</svg>
