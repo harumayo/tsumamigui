@@ -102,28 +102,48 @@ body {
 }
 
 /* ── Clickable hotspot overlays on the image ── */
-/* Positioned as % of the image container */
-/* Left top panel: 毎日のお気に入り */
+/* Coordinates measured from actual image (921x1152px) */
 .hotspot {
   position: absolute;
   cursor: pointer;
-  border-radius: 10px;
-  transition: background .18s;
+  border-radius: 12px;
   text-decoration: none;
+  transition: background .18s;
+  /* label badge */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
 }
 .hotspot:hover {
-  background: rgba(255,255,255,.18);
-  outline: 2px solid rgba(40,34,24,.2);
+  background: rgba(255, 255, 255, .22);
+  outline: 3px solid rgba(40,34,24,.35);
+  outline-offset: -2px;
 }
+.hotspot-label {
+  opacity: 0;
+  background: rgba(40,34,24,.82);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: 5px 12px;
+  border-radius: 20px;
+  transition: opacity .18s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.hotspot:hover .hotspot-label { opacity: 1; }
 
-/* Left top panel → diary + words */
-.hs-left-top  { top: 20%; left: 0%;    width: 32%; height: 34%; }
-/* Left bottom panel → works */
-.hs-left-bot  { top: 54%; left: 0%;    width: 32%; height: 20%; }
-/* Right top panel → sweets + works */
-.hs-right-top { top: 20%; right: 0%;   width: 32%; height: 34%; }
-/* Right bottom panel → profile */
-.hs-right-bot { top: 54%; right: 0%;   width: 32%; height: 20%; }
+/* ── Precise panel positions (% of image 921×1152) ──
+   Left top  (毎日のお気に入り): x30-310, y370-712
+   Left bot  (カフェ&映画館):    x30-310, y725-942
+   Right top (癒やしと楽しみ):  x608-890, y370-712
+   Right bot (旅行&写真):       x608-890, y725-942        */
+.hs-left-top  { left:3.3%;  top:32.1%; width:30.4%; height:29.7%; }
+.hs-left-bot  { left:3.3%;  top:62.9%; width:30.4%; height:18.8%; }
+.hs-right-top { left:66.0%; top:32.1%; width:30.5%; height:29.7%; }
+.hs-right-bot { left:66.0%; top:62.9%; width:30.5%; height:18.8%; }
 
 /* ════════════════════════
    NAVIGATION SECTION
@@ -229,11 +249,19 @@ footer {
         src="harumayou-infographic.png"
         alt="HARUMA YOU'S WORLD — つまみぐいインフォグラフィック"
       >
-      <!-- Clickable zones over the image -->
-      <a class="hotspot hs-left-top"  href="diary.html"   title="日記・言葉へ"></a>
-      <a class="hotspot hs-left-bot"  href="works.html"   title="作品へ"></a>
-      <a class="hotspot hs-right-top" href="sweets.html"  title="スイーツ・作品へ"></a>
-      <a class="hotspot hs-right-bot" href="profile.html" title="プロフィールへ"></a>
+      <!-- Clickable zones over the image (aligned to each panel frame) -->
+      <a class="hotspot hs-left-top"  href="diary.html">
+        <span class="hotspot-label">📔 日記へ</span>
+      </a>
+      <a class="hotspot hs-left-bot"  href="works.html">
+        <span class="hotspot-label">🎬 作品へ</span>
+      </a>
+      <a class="hotspot hs-right-top" href="sweets.html">
+        <span class="hotspot-label">🧁 スイーツへ</span>
+      </a>
+      <a class="hotspot hs-right-bot" href="profile.html">
+        <span class="hotspot-label">👤 プロフィールへ</span>
+      </a>
     </div>
   </section>
 
